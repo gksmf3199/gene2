@@ -1,903 +1,1684 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>멘델의 유전 법칙 마스터 - 중3 과학 5단원</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts (Noto Sans KR) -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f8fafc;
-        }
-        .blank-input {
-            border-bottom: 2px solid #3b82f6;
-            transition: all 0.2s ease;
-            text-align: center;
-            font-weight: 600;
-        }
-        .blank-input:focus {
-            outline: none;
-            border-bottom-color: #1d4ed8;
-            background-color: #eff6ff;
-        }
-        .blank-correct {
-            border-bottom-color: #10b981 !important;
-            background-color: #ecfdf5 !important;
-            color: #047857;
-        }
-        .blank-incorrect {
-            border-bottom-color: #ef4444 !important;
-            background-color: #fef2f2 !important;
-            color: #b91c1c;
-        }
-        .pea-shape-round {
-            border-radius: 50%;
-        }
-        .pea-shape-wrinkled {
-            clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 90% 70%, 100% 90%, 65% 100%, 35% 90%, 0% 70%, 15% 35%, 0% 10%);
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(8px);
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="디지털현미경으로 간기가 아닌 세포를 찾아내고, AI의 판정을 근거로 검증하는 수업용 작업대">
+<title>세포 판정 작업대 - 중3 과학 생식과 유전</title>
+<style id="tw">*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.sticky{position:sticky}.top-0{top:0}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mr-1{margin-right:.25rem}.mt-0{margin-top:0}.mt-0\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.mt-8{margin-top:2rem}.mt-auto{margin-top:auto}.block{display:block}.flex{display:flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-16{height:4rem}.h-6{height:1.5rem}.max-h-64{max-height:16rem}.min-h-screen{min-height:100vh}.w-12{width:3rem}.w-28{width:7rem}.w-7{width:1.75rem}.w-full{width:100%}.min-w-0{min-width:0}.max-w-6xl{max-width:72rem}.flex-1{flex:1 1 0%}.shrink{flex-shrink:1}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-x-4{-moz-column-gap:1rem;column-gap:1rem}.gap-y-1{row-gap:.25rem}.gap-y-1\.5{row-gap:.375rem}.space-y-2>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.5rem*var(--tw-space-y-reverse))}.space-y-3>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.75rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.75rem*var(--tw-space-y-reverse))}.space-y-5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.25rem*var(--tw-space-y-reverse))}.self-center{align-self:center}.overflow-auto{overflow:auto}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.truncate{overflow:hidden;text-overflow:ellipsis}.truncate,.whitespace-nowrap{white-space:nowrap}.whitespace-pre-wrap{white-space:pre-wrap}.break-words{overflow-wrap:break-word}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:1rem}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-l-2{border-left-width:2px}.border-t{border-top-width:1px}.border-stone-300{--tw-border-opacity:1;border-color:rgb(214 211 209/var(--tw-border-opacity,1))}.bg-emerald-600{--tw-bg-opacity:1;background-color:rgb(5 150 105/var(--tw-bg-opacity,1))}.bg-emerald-700{--tw-bg-opacity:1;background-color:rgb(4 120 87/var(--tw-bg-opacity,1))}.bg-emerald-800{--tw-bg-opacity:1;background-color:rgb(6 95 70/var(--tw-bg-opacity,1))}.bg-emerald-900{--tw-bg-opacity:1;background-color:rgb(6 78 59/var(--tw-bg-opacity,1))}.bg-stone-100{--tw-bg-opacity:1;background-color:rgb(245 245 244/var(--tw-bg-opacity,1))}.bg-stone-800{--tw-bg-opacity:1;background-color:rgb(41 37 36/var(--tw-bg-opacity,1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}.p-2{padding:.5rem}.p-2\.5{padding:.625rem}.p-3{padding:.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-0\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-8{padding-top:2rem;padding-bottom:2rem}.pl-4{padding-left:1rem}.pt-3{padding-top:.75rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-\[10\.5px\]{font-size:10.5px}.text-\[11\.5px\]{font-size:11.5px}.text-\[11px\]{font-size:11px}.text-\[12\.5px\]{font-size:12.5px}.text-\[12px\]{font-size:12px}.text-\[13px\]{font-size:13px}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.leading-relaxed{line-height:1.625}.leading-snug{line-height:1.375}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-.025em}.tracking-widest{letter-spacing:.1em}.text-amber-700{--tw-text-opacity:1;color:rgb(180 83 9/var(--tw-text-opacity,1))}.text-emerald-100{--tw-text-opacity:1;color:rgb(209 250 229/var(--tw-text-opacity,1))}.text-emerald-200{--tw-text-opacity:1;color:rgb(167 243 208/var(--tw-text-opacity,1))}.text-emerald-700{--tw-text-opacity:1;color:rgb(4 120 87/var(--tw-text-opacity,1))}.text-emerald-800{--tw-text-opacity:1;color:rgb(6 95 70/var(--tw-text-opacity,1))}.text-stone-400{--tw-text-opacity:1;color:rgb(168 162 158/var(--tw-text-opacity,1))}.text-stone-500{--tw-text-opacity:1;color:rgb(120 113 108/var(--tw-text-opacity,1))}.text-stone-600{--tw-text-opacity:1;color:rgb(87 83 78/var(--tw-text-opacity,1))}.text-stone-700{--tw-text-opacity:1;color:rgb(68 64 60/var(--tw-text-opacity,1))}.text-stone-800{--tw-text-opacity:1;color:rgb(41 37 36/var(--tw-text-opacity,1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.accent-emerald-700{accent-color:#047857}.shadow-lg{--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.hover\:bg-emerald-700:hover{--tw-bg-opacity:1;background-color:rgb(4 120 87/var(--tw-bg-opacity,1))}.hover\:bg-emerald-800:hover{--tw-bg-opacity:1;background-color:rgb(6 95 70/var(--tw-bg-opacity,1))}.hover\:bg-stone-200:hover{--tw-bg-opacity:1;background-color:rgb(231 229 228/var(--tw-bg-opacity,1))}.hover\:bg-stone-900:hover{--tw-bg-opacity:1;background-color:rgb(28 25 23/var(--tw-bg-opacity,1))}.hover\:text-stone-700:hover{--tw-text-opacity:1;color:rgb(68 64 60/var(--tw-text-opacity,1))}.hover\:text-stone-800:hover{--tw-text-opacity:1;color:rgb(41 37 36/var(--tw-text-opacity,1))}@media (min-width:640px){.sm\:block{display:block}.sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.sm\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.sm\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.sm\:grid-cols-5{grid-template-columns:repeat(5,minmax(0,1fr))}.sm\:p-6{padding:1.5rem}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:text-2xl{font-size:1.5rem;line-height:2rem}.sm\:text-lg{font-size:1.125rem;line-height:1.75rem}.sm\:text-sm{font-size:.875rem;line-height:1.25rem}}@media (min-width:1024px){.lg\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}}</style>
+<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FAF7F0; --beige:#E8E0D0; --sage:#8FA68A; --sand:#C8A96E;
+    --agree:#3F7D62; --agree-bg:#EAF3EE;
+    --hold:#B5862B;  --hold-bg:#FBF3E3;
+    --refute:#B4524A;--refute-bg:#F8EBEA;
+    --misread:#4E6E9E;--misread-bg:#EAF0F7;
+  }
+  body{font-family:'Gothic A1','Noto Sans KR',sans-serif;background-color:var(--ivory);
+       font-weight:500;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+  /* 글씨를 한 단계씩 더 진하게 */
+  .font-normal{font-weight:500}
+  .font-medium{font-weight:600}
+  .font-semibold{font-weight:700}
+  .font-bold{font-weight:800}
+  input,textarea,select,button{font-family:inherit;font-weight:600}
+  input::placeholder,textarea::placeholder{font-weight:500}
+  .card{background:#fff;border:1px solid var(--beige)}
+  .soft{background:#FDFBF6;border:1px solid var(--beige)}
+  .jb{border:1px solid var(--beige);background:#fff}
+  /* 고르기 전에도 네 가지 색이 늘 보이게 */
+  .jb[data-j=agree]{color:var(--agree);border-color:#BFD6CB;background:#F6FBF8}
+  .jb[data-j=hold]{color:var(--hold);border-color:#E3CE9C;background:#FEFBF4}
+  .jb[data-j=refute]{color:var(--refute);border-color:#E0BDB9;background:#FEF8F7}
+  .jb[data-j=misread]{color:var(--misread);border-color:#BCCBE0;background:#F7FAFD}
+  .jb{font-weight:700}
+  .jb[aria-pressed=true]{font-weight:800;box-shadow:inset 0 0 0 1.5px currentColor}
+  .jb[data-j=agree][aria-pressed=true]{background:var(--agree-bg);border-color:var(--agree);color:var(--agree)}
+  .jb[data-j=hold][aria-pressed=true]{background:var(--hold-bg);border-color:var(--hold);color:var(--hold)}
+  .jb[data-j=refute][aria-pressed=true]{background:var(--refute-bg);border-color:var(--refute);color:var(--refute)}
+  .jb[data-j=misread][aria-pressed=true]{background:var(--misread-bg);border-color:var(--misread);color:var(--misread)}
+  .cell-card.j-agree{border-color:var(--agree)}
+  .cell-card.j-hold{border-color:var(--hold)}
+  .cell-card.j-refute{border-color:var(--refute)}
+  .cell-card.j-misread{border-color:var(--misread)}
+  .drawer>summary{list-style:none;cursor:pointer;display:inline-block;
+    font-size:12.5px;font-weight:700;color:var(--sage);
+    border:1px dashed var(--sage);border-radius:10px;padding:5px 12px;background:#fff}
+  .drawer>summary::-webkit-details-marker{display:none}
+  .drawer>summary:before{content:"＋  ";font-weight:800}
+  .drawer[open]>summary:before{content:"－  "}
+  .drawer>summary:hover{background:var(--ivory)}
+  .sent{background:#fff;border:1px solid var(--beige)}
+  .sent[aria-pressed=true]{border-color:var(--sand);background:#FBF5E9}
+  .sent.rv-bad{border-color:var(--refute);background:var(--refute-bg)}
+  .sent.rv-ok{opacity:.55}
+  .shot{position:relative;display:inline-block;max-width:100%}
+  .shot{width:100%;max-width:560px}
+  .shot img{display:block;width:100%;border-radius:.75rem;border:1px solid var(--beige)}
+  .bankitem{border:1px solid var(--beige);background:#fff;border-radius:.6rem;padding:.35rem;cursor:pointer}
+  .bankitem[aria-pressed=true]{border-color:var(--sage);box-shadow:0 0 0 2px rgba(143,166,138,.35)}
+  .bankitem img{width:100%;display:block;border-radius:.4rem}
+  /* ---- 찾은 사진 카드를 옆으로 나란히 ---- */
+  /* 사진 카드는 위에서 아래로 쌓고, 카드 '안'을 좌우로 나눈다.
+     사진을 두 장 올린 짝은 같은 묶음이 아래에 한 번 더 생긴다. */
+  .cells{display:grid;gap:1.1rem;grid-template-columns:1fr}
+  .cells .cell-card{min-width:0}
+  .cells .shot{max-width:100%}
+  .row2{display:grid;gap:1.1rem;grid-template-columns:1fr;align-items:start}
+  @media (min-width:900px){ .row2{grid-template-columns:1fr 1fr} }
+  .row2 > *{min-width:0}
+  .featgrid{grid-template-columns:1fr}
+  .shift3{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+  /* ---- 되묻기 ---- */
+  .ask2{background:#fff;border:1px solid var(--beige)}
+  .must{font-size:10.5px;font-weight:800;color:#8A5A14;background:var(--hold-bg);
+        border:1px solid #E3CE9C;border-radius:999px;padding:2px 8px;letter-spacing:.02em}
+  .ask2grid{display:grid;grid-template-columns:1fr;gap:.5rem}
+  @media (min-width:560px) and (max-width:899px){ .ask2grid{grid-template-columns:1fr 1fr} }
+  .ask2opt{background:#FDFBF6;border:1px solid var(--beige);border-radius:.6rem;padding:.55rem .65rem}
+  .tag{font-size:10px;font-weight:800;border-radius:999px;padding:1px 7px;flex:none}
+  .tag-ck{color:var(--agree);background:var(--agree-bg);border:1px solid #BFD6CB}
+  .tag-sk{color:var(--refute);background:var(--refute-bg);border:1px solid #E0BDB9}
+  /* ---- 들어가기 ---- */
+  .hero{background:linear-gradient(135deg,#065F46 0%,#0B7357 58%,#15846A 100%);color:#fff;
+        border-radius:1rem;padding:1.6rem 1.5rem;position:relative;overflow:hidden}
+  .hero:after{content:"";position:absolute;right:-70px;top:-70px;width:230px;height:230px;
+        border-radius:50%;border:2px solid rgba(255,255,255,.18)}
+  .hero:before{content:"";position:absolute;right:10px;bottom:-96px;width:180px;height:180px;
+        border-radius:50%;border:2px solid rgba(255,255,255,.12)}
+  .hero .eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:#A7F3D0}
+  .hero h2{font-size:27px;font-weight:800;line-height:1.3;margin-top:.5rem}
+  .hero p{font-size:14.5px;color:#D7EFE5;margin-top:.6rem;line-height:1.65}
+  @media (min-width:640px){ .hero{padding:2rem 2rem} .hero h2{font-size:31px} }
+  .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;margin-top:1.1rem}
+  @media (min-width:720px){ .steps{grid-template-columns:repeat(4,1fr)} }
+  .step{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+        border-radius:.7rem;padding:.6rem .7rem}
+  .step b{display:block;font-size:13.5px;font-weight:800;color:#fff}
+  .step span{display:block;font-size:11.5px;color:#BFE6D7;margin-top:.15rem;line-height:1.4}
+  .sent{font-size:15px;padding-top:.8rem;padding-bottom:.8rem}
+  .qnum{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
+        border-radius:50%;background:var(--beige);color:#6B5B43;font-size:12px;font-weight:800;
+        margin-right:.55rem;flex:none}
+  .sent[aria-pressed=true] .qnum{background:var(--sand);color:#fff}
+  .sent.rv-bad .qnum{background:var(--refute);color:#fff}
+  input,select,textarea{background:#fff}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:#F1ECE1}
+  ::-webkit-scrollbar-thumb{background:#D6CBB6;border-radius:4px}
+</style>
 </head>
-<body class="text-slate-800 bg-slate-50 min-h-screen flex flex-col">
+<body class="text-stone-800 min-h-screen flex flex-col">
 
-    <!-- Header Navigation -->
-    <header class="bg-emerald-700 text-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('blankTab')">
-                    <div class="bg-emerald-500 p-2 rounded-lg text-white">
-                        <i class="fa-solid fa-dna text-2xl"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-bold text-lg sm:text-xl tracking-tight">멘델의 유전 법칙 마스터</h1>
-                        <p class="text-xs text-emerald-200 hidden sm:block">2015 개정 교육과정 중3 과학 5단원 생식과 유전</p>
-                    </div>
-                </div>
-
-                <!-- Navigation Tabs -->
-                <nav class="flex space-x-1 sm:space-x-2">
-                    <button id="btn-blankTab" onclick="switchTab('blankTab')" class="tab-btn px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition bg-emerald-800 text-white shadow-inner">
-                        <i class="fa-solid fa-pen-to-square mr-1 sm:mr-2"></i>개념 빈칸 채우기
-                    </button>
-                    <button id="btn-simTab" onclick="switchTab('simTab')" class="tab-btn px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition text-emerald-100 hover:bg-emerald-600">
-                        <i class="fa-solid fa-flask-vial mr-1 sm:mr-2"></i>가상 교배 실험실
-                    </button>
-                    <button id="btn-quizTab" onclick="switchTab('quizTab')" class="tab-btn px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition text-emerald-100 hover:bg-emerald-600">
-                        <i class="fa-solid fa-graduation-cap mr-1 sm:mr-2"></i>실전 문제 도전
-                    </button>
-                    <button id="btn-peaTab" onclick="switchTab('peaTab')" class="tab-btn px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition text-emerald-100 hover:bg-emerald-600">
-                        <i class="fa-solid fa-seedling mr-1 sm:mr-2"></i>완두콩 유전 탐구
-                    </button>
-                </nav>
-            </div>
+<header class="bg-emerald-800 text-white shadow-lg sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="flex items-center justify-between h-16 gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="bg-emerald-600 p-2 rounded-lg"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="4" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="#fff" fill-opacity=".35" stroke="#fff" stroke-width="1.5"/><circle cx="13.2" cy="10.8" r="1.2" fill="#fff"/></svg></div>
+        <div class="min-w-0">
+          <h1 class="font-bold text-base sm:text-lg tracking-tight truncate">세포 판정 작업대</h1>
+          <p class="text-[11px] text-emerald-200 hidden sm:block">중3 과학 · 생식과 유전 · 홍익대학교사범대학부속중학교</p>
         </div>
-    </header>
-
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6">
-
-        <!-- ================= TAB 1: 개념 정리 & 빈칸 채우기 ================= -->
-        <section id="blankTab" class="tab-content block space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 flex items-center gap-2">
-                            <span class="text-emerald-600"><i class="fa-solid fa-book-open"></i></span>
-                            멘델의 유전 법칙 핵심 개념 빈칸 채우기
-                        </h2>
-                        <p class="text-sm text-slate-500 mt-1">빈칸에 알맞은 유전 용어나 문구를 입력하고 채점해보세요!</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="checkAllBlanks()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm flex items-center gap-2">
-                            <i class="fa-solid fa-check"></i> 정답 확인하기
-                        </button>
-                        <button onclick="showAllBlankAnswers()" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm flex items-center gap-2">
-                            <i class="fa-solid fa-eye"></i> 정답 공개
-                        </button>
-                        <button onclick="resetBlanks()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
-                            <i class="fa-solid fa-rotate-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Status Banner -->
-                <div id="blank-status-bar" class="hidden mt-4 p-4 rounded-xl text-sm font-medium flex items-center justify-between">
-                    <span id="blank-status-text"></span>
-                    <span id="blank-score-badge" class="px-3 py-1 bg-white rounded-full font-bold shadow-xs"></span>
-                </div>
-
-                <!-- SECTION 1: 우열의 원리 -->
-                <div class="mt-6 space-y-4">
-                    <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-xl">
-                        <h3 class="text-lg font-bold text-emerald-900 flex items-center gap-2">
-                            <span class="bg-emerald-600 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs">1</span>
-                            우열의 원리
-                        </h3>
-                        <p class="text-xs text-emerald-700 mt-1">* 2015 교육과정에서는 '우열의 법칙' 대신 <strong>'우열의 원리'</strong>라는 용어를 사용합니다.</p>
-                    </div>
-
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3 leading-relaxed text-slate-700 text-sm sm:text-base">
-                        <p>
-                            ① 대립 형질이 뚜렷한 두 <input type="text" data-answer="순종" class="blank-input w-24 px-2 py-0.5 mx-1" placeholder="빈칸 1">의 어버이를 교배하였을 때, 잡종 1대(F₁)에서 어버이의 대립 형질 중 한 가지만 나타나는 현상입니다.
-                        </p>
-                        <p>
-                            ② 이때 잡종 1대에서 나타나는 형질을 <input type="text" data-answer="우성" class="blank-input w-24 px-2 py-0.5 mx-1" placeholder="빈칸 2">이라 하고, 나타나지 않고 숨어 있는 형질을 <input type="text" data-answer="열성" class="blank-input w-24 px-2 py-0.5 mx-1" placeholder="빈칸 3">이라고 합니다.
-                        </p>
-                        <p>
-                            ③ 예시: 순종의 둥근 완두(RR)와 순종의 주름진 완두(rr)를 교배하면, 잡종 1대(Rr)는 모두 <input type="text" data-answer="둥근" class="blank-input w-24 px-2 py-0.5 mx-1" placeholder="빈칸 4"> 완두만 나타납니다.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- SECTION 2: 분리의 법칙 -->
-                <div class="mt-8 space-y-4">
-                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl">
-                        <h3 class="text-lg font-bold text-blue-900 flex items-center gap-2">
-                            <span class="bg-blue-600 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs">2</span>
-                            분리의 법칙
-                        </h3>
-                    </div>
-
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3 leading-relaxed text-slate-700 text-sm sm:text-base">
-                        <p>
-                            ① 감수 분열로 <input type="text" data-answer="생식세포" class="blank-input w-28 px-2 py-0.5 mx-1" placeholder="빈칸 5">가 형성될 때, 쌍을 이루고 있던 대립유전자가 서로 <input type="text" data-answer="분리" class="blank-input w-20 px-2 py-0.5 mx-1" placeholder="빈칸 6">되어 서로 다른 생식세포로 들어가는 현상입니다.
-                        </p>
-                        <p>
-                            ② 잡종 1대(Rr)를 자가 교배하여 얻은 잡종 2대(F₂)에서는 어버이에서 숨어 있던 <input type="text" data-answer="열성" class="blank-input w-20 px-2 py-0.5 mx-1" placeholder="빈칸 7"> 형질이 다시 나타나게 됩니다.
-                        </p>
-                        <p>
-                            ③ 잡종 2대(F₂)에서 나타나는 표현형의 분리비는 <strong>[우성 표현형 : 열성 표현형] = </strong>
-                            <input type="text" data-answer="3:1" class="blank-input w-20 px-2 py-0.5 mx-1" placeholder="빈칸 8"> 로 일정하게 나타납니다.
-                        </p>
-                        <p>
-                            ④ 잡종 2대(F₂)의 유전자형 비는 <strong>[RR : Rr : rr] = </strong>
-                            <input type="text" data-answer="1:2:1" class="blank-input w-24 px-2 py-0.5 mx-1" placeholder="빈칸 9"> 로 분리됩니다.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- SECTION 3: 독립의 법칙 -->
-                <div class="mt-8 space-y-4">
-                    <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-xl">
-                        <h3 class="text-lg font-bold text-purple-900 flex items-center gap-2">
-                            <span class="bg-purple-600 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs">3</span>
-                            독립의 법칙
-                        </h3>
-                    </div>
-
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3 leading-relaxed text-slate-700 text-sm sm:text-base">
-                        <p>
-                            ① 두 쌍 이상의 대립 형질이 함께 유전될 때, 각각의 대립유전자 쌍은 서로 영향을 주지 않고 <input type="text" data-answer="독립" class="blank-input w-20 px-2 py-0.5 mx-1" placeholder="빈칸 10">적으로 분리되어 유전되는 법칙입니다.
-                        </p>
-                        <p>
-                            ② 둥글고 노란색인 완두(RrYy)를 자가 교배할 때, 모양 형질(둥글다/주름지다)과 색깔 형질(노랗다/초록색이다)은 각각 분리의 법칙에 따라 <input type="text" data-answer="3:1" class="blank-input w-20 px-2 py-0.5 mx-1" placeholder="빈칸 11">의 비율로 독립적으로 분리됩니다.
-                        </p>
-                        <p>
-                            ③ 잡종 2대(F₂)에서 나타나는 4가지 표현형의 분리비는
-                            <br class="hidden sm:inline">
-                            <strong>[둥글고 노란색 : 둥글고 초록색 : 주름지고 노란색 : 주름지고 초록색] = </strong>
-                            <input type="text" data-answer="9:3:3:1" class="blank-input w-32 px-2 py-0.5 mx-1" placeholder="빈칸 12"> 로 나타납니다.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= TAB 2: 가상 교배 실험실 ================= -->
-        <section id="simTab" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 flex items-center gap-2">
-                            <span class="text-emerald-600"><i class="fa-solid fa-flask-vial"></i></span>
-                            완두콩 가상 교배 실험실 (퍼넷 사각형 시뮬레이터)
-                        </h2>
-                        <p class="text-sm text-slate-500 mt-1">부모 완두의 유전자형을 선택하고 교배 버튼을 눌러 자손의 표현형과 분리비를 직접 확인해 보세요!</p>
-                    </div>
-                    <!-- Mode Switcher -->
-                    <div class="flex items-center bg-slate-100 p-1 rounded-xl">
-                        <button id="simMode1" onclick="setSimMode(1)" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-emerald-700 shadow-xs">
-                            한 쌍의 형질 (단성 잡종)
-                        </button>
-                        <button id="simMode2" onclick="setSimMode(2)" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900">
-                            두 쌍의 형질 (양성 잡종)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- SIMULATOR PANEL 1: Single Trait (Shape) -->
-                <div id="simPanel1" class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <!-- Parent Selection -->
-                    <div class="lg:col-span-4 bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-5">
-                        <h3 class="font-bold text-slate-800 text-base border-b pb-2 flex items-center justify-between">
-                            <span><i class="fa-solid fa-dna text-emerald-600 mr-2"></i>부모 완두 유전자형 설정</span>
-                            <span class="text-xs font-normal text-slate-500">모양 (R:둥근, r:주름진)</span>
-                        </h3>
-
-                        <!-- Parent 1 -->
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">부모 1 (모계/부계)</label>
-                            <select id="p1-genotype-1" onchange="runSimulation1()" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-sm font-semibold focus:ring-2 focus:ring-emerald-500">
-                                <option value="RR">RR (순종 둥근 완두)</option>
-                                <option value="Rr" selected>Rr (잡종 둥근 완두)</option>
-                                <option value="rr">rr (순종 주름진 완두)</option>
-                            </select>
-                        </div>
-
-                        <!-- Parent 2 -->
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">부모 2 (부계/모계)</label>
-                            <select id="p2-genotype-1" onchange="runSimulation1()" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-sm font-semibold focus:ring-2 focus:ring-emerald-500">
-                                <option value="RR">RR (순종 둥근 완두)</option>
-                                <option value="Rr" selected>Rr (잡종 둥근 완두)</option>
-                                <option value="rr">rr (순종 주름진 완두)</option>
-                            </select>
-                        </div>
-
-                        <div class="pt-2">
-                            <div class="bg-emerald-50 p-3 rounded-lg text-xs text-emerald-800 space-y-1">
-                                <p class="font-bold"><i class="fa-solid fa-circle-info mr-1"></i>유전 법칙 포인트</p>
-                                <p>• Rr × Rr 교배 시 분리의 법칙에 의해 표현형 비가 <strong>3:1</strong> 이 됩니다.</p>
-                                <p>• R은 r에 대해 우성입니다.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Punnett Square Grid & Results -->
-                    <div class="lg:col-span-8 flex flex-col justify-between space-y-6">
-                        <div>
-                            <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-table-cells text-emerald-600"></i> 퍼넷 사각형 (Punnett Square)
-                            </h3>
-                            <div id="punnett-grid-1" class="w-full max-w-md mx-auto aspect-square grid grid-cols-3 gap-2 p-2 bg-slate-200 rounded-2xl">
-                                <!-- Populated dynamically by JS -->
-                            </div>
-                        </div>
-
-                        <!-- Summary Cards -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl">
-                                <h4 class="font-bold text-amber-900 text-xs uppercase tracking-wider">표현형 비율 (Phenotype Ratio)</h4>
-                                <div id="phenotype-result-1" class="text-sm font-semibold text-amber-800 mt-2 space-y-1">
-                                    <!-- Populated by JS -->
-                                </div>
-                            </div>
-                            <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-xl">
-                                <h4 class="font-bold text-indigo-900 text-xs uppercase tracking-wider">유전자형 비율 (Genotype Ratio)</h4>
-                                <div id="genotype-result-1" class="text-sm font-semibold text-indigo-800 mt-2 space-y-1">
-                                    <!-- Populated by JS -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SIMULATOR PANEL 2: Two Traits (Shape + Color) -->
-                <div id="simPanel2" class="mt-6 hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <!-- Parent Selection -->
-                    <div class="lg:col-span-4 bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-5">
-                        <h3 class="font-bold text-slate-800 text-base border-b pb-2 flex items-center justify-between">
-                            <span><i class="fa-solid fa-dna text-purple-600 mr-2"></i>양성 잡종 교배 설정</span>
-                            <span class="text-xs font-normal text-slate-500">모양(R/r) & 색깔(Y/y)</span>
-                        </h3>
-
-                        <!-- Parent 1 -->
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">부모 1 유전자형</label>
-                            <select id="p1-genotype-2" onchange="runSimulation2()" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-sm font-semibold focus:ring-2 focus:ring-purple-500">
-                                <option value="RRYY">RRYY (둥글고 노란색 순종)</option>
-                                <option value="RrYy" selected>RrYy (둥글고 노란색 잡종 - F1)</option>
-                                <option value="rryy">rryy (주름지고 초록색 순종)</option>
-                            </select>
-                        </div>
-
-                        <!-- Parent 2 -->
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">부모 2 유전자형</label>
-                            <select id="p2-genotype-2" onchange="runSimulation2()" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-sm font-semibold focus:ring-2 focus:ring-purple-500">
-                                <option value="RRYY">RRYY (둥글고 노란색 순종)</option>
-                                <option value="RrYy" selected>RrYy (둥글고 노란색 잡종 - F1)</option>
-                                <option value="rryy">rryy (주름지고 초록색 순종)</option>
-                            </select>
-                        </div>
-
-                        <div class="pt-2">
-                            <div class="bg-purple-50 p-3 rounded-lg text-xs text-purple-800 space-y-1">
-                                <p class="font-bold"><i class="fa-solid fa-circle-info mr-1"></i>독립의 법칙 포인트</p>
-                                <p>• RrYy × RrYy 자가교배 시 표현형 비는 <strong>9 : 3 : 3 : 1</strong> 이 됩니다.</p>
-                                <p>• 모양과 색깔 유전자가 서로 간섭 없이 독립적으로 분리됩니다.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 4x4 Punnett Grid & Result -->
-                    <div class="lg:col-span-8 flex flex-col justify-between space-y-6">
-                        <div>
-                            <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-table-cells text-purple-600"></i> 4×4 퍼넷 사각형
-                            </h3>
-                            <div id="punnett-grid-2" class="w-full max-w-lg mx-auto aspect-square grid grid-cols-5 gap-1.5 p-2 bg-slate-200 rounded-2xl text-xs">
-                                <!-- Populated dynamically by JS -->
-                            </div>
-                        </div>
-
-                        <!-- Dihybrid Summary Cards -->
-                        <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl">
-                            <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider mb-2">자손의 4가지 표현형 및 비율 분석</h4>
-                            <div id="phenotype-result-2" class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                                <!-- Populated by JS -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= TAB 3: 실전 문제 도전 ================= -->
-        <section id="quizTab" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 flex items-center gap-2">
-                            <span class="text-emerald-600"><i class="fa-solid fa-graduation-cap"></i></span>
-                            멘델의 유전 법칙 실전 테스트
-                        </h2>
-                        <p class="text-sm text-slate-500 mt-1">중학교 3학년 수준의 개념 체크 및 계산 문제를 풀고 정답과 해설을 확인해보세요.</p>
-                    </div>
-                    <div class="flex items-center gap-3 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-200">
-                        <i class="fa-solid fa-trophy text-amber-500 text-xl"></i>
-                        <div>
-                            <div class="text-xs text-emerald-700 font-semibold">내 성적 / 총점</div>
-                            <div id="quiz-score-display" class="text-lg font-bold text-emerald-900">0 / 5 문제 완료</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quiz Questions List -->
-                <div id="quiz-container" class="mt-6 space-y-8">
-                    <!-- Questions will be dynamically loaded/rendered by JS -->
-                </div>
-
-                <!-- Submit & Retry Controls -->
-                <div class="pt-6 border-t border-slate-200 flex items-center justify-between">
-                    <button onclick="resetQuiz()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-5 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2">
-                        <i class="fa-solid fa-rotate-left"></i> 처음부터 다시 풀기
-                    </button>
-                    <button onclick="gradeAllQuiz()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-md transition flex items-center gap-2">
-                        <i class="fa-solid fa-paper-plane"></i> 전체 채점하기
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= TAB 4: 완두콩 유전 탐구 (외부 시뮬레이션) ================= -->
-        <section id="peaTab" class="tab-content hidden space-y-4">
-            <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-emerald-100 text-emerald-700 p-2.5 rounded-xl">
-                            <i class="fa-solid fa-seedling text-xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-lg sm:text-xl font-bold text-slate-800">완두콩 유전 탐구 시뮬레이션</h2>
-                            <p class="text-xs sm:text-sm text-slate-500">순종 교배 → F₁ 감수분열 → 자가수분으로 F₂가 만들어지는 과정을 직접 따라가 보세요.</p>
-                        </div>
-                    </div>
-                    <a href="https://cheery-sunflower-e87433.netlify.app" target="_blank" rel="noopener" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm inline-flex items-center justify-center gap-2 whitespace-nowrap">
-                        <i class="fa-solid fa-up-right-from-square"></i> 새 창에서 크게 보기
-                    </a>
-                </div>
-                <div class="mt-4 rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
-                    <iframe id="pea-frame" data-src="https://cheery-sunflower-e87433.netlify.app" title="완두콩 유전 탐구 시뮬레이션" class="w-full block" style="height: 80vh; min-height: 560px; border: 0;" loading="lazy" allow="fullscreen"></iframe>
-                </div>
-                <p class="text-xs text-slate-400 mt-3">화면이 보이지 않으면 오른쪽 위 <strong>새 창에서 크게 보기</strong> 버튼을 눌러 주세요.</p>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 mt-auto py-4 text-center text-xs text-slate-500">
-        <p>2015 개정 교육과정 중학교 3학년 과학 5. 생식과 유전 - 멘델의 유전 법칙 학습 웹앱</p>
-    </footer>
-
-    <!-- Application Logic Script -->
-    <script>
-        /* ================= TAB MANAGEMENT ================= */
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-emerald-800', 'text-white', 'shadow-inner');
-                btn.classList.add('text-emerald-100', 'hover:bg-emerald-600');
-            });
-
-            document.getElementById(tabId).classList.remove('hidden');
-            const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.classList.remove('text-emerald-100', 'hover:bg-emerald-600');
-            activeBtn.classList.add('bg-emerald-800', 'text-white', 'shadow-inner');
-
-            if (tabId === 'peaTab') {
-                const frame = document.getElementById('pea-frame');
-                if (frame && !frame.src) frame.src = frame.dataset.src;
-            }
-
-            if (tabId === 'simTab') {
-                runSimulation1();
-                runSimulation2();
-            }
-        }
-
-        /* ================= TAB 1: BLANK CHECK ENGINE ================= */
-        function checkAllBlanks() {
-            const inputs = document.querySelectorAll('#blankTab input.blank-input');
-            let correctCount = 0;
-            const total = inputs.length;
-
-            inputs.forEach(input => {
-                const targetAnswer = input.getAttribute('data-answer').trim();
-                const userVal = input.value.trim().replace(/\s+/g, '');
-
-                if (userVal === targetAnswer.replace(/\s+/g, '')) {
-                    input.classList.remove('blank-incorrect');
-                    input.classList.add('blank-correct');
-                    correctCount++;
-                } else {
-                    input.classList.remove('blank-correct');
-                    input.classList.add('blank-incorrect');
-                }
-            });
-
-            const statusBar = document.getElementById('blank-status-bar');
-            const statusText = document.getElementById('blank-status-text');
-            const scoreBadge = document.getElementById('blank-score-badge');
-
-            statusBar.classList.remove('hidden', 'bg-red-100', 'text-red-800', 'bg-emerald-100', 'text-emerald-800', 'bg-amber-100', 'text-amber-800');
-
-            if (correctCount === total) {
-                statusBar.classList.add('bg-emerald-100', 'text-emerald-800');
-                statusText.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-2 text-lg"></i>축하합니다! 모든 빈칸을 완벽하게 맞추셨습니다! 🎉';
-            } else {
-                statusBar.classList.add('bg-amber-100', 'text-amber-800');
-                statusText.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-600 mr-2 text-lg"></i>틀린 부분이 있습니다. 빨간색으로 표시된 빈칸을 다시 확인해보세요!';
-            }
-
-            scoreBadge.innerText = `${correctCount} / ${total} 개 정답`;
-        }
-
-        function showAllBlankAnswers() {
-            const inputs = document.querySelectorAll('#blankTab input.blank-input');
-            inputs.forEach(input => {
-                input.value = input.getAttribute('data-answer');
-                input.classList.remove('blank-incorrect');
-                input.classList.add('blank-correct');
-            });
-            checkAllBlanks();
-        }
-
-        function resetBlanks() {
-            const inputs = document.querySelectorAll('#blankTab input.blank-input');
-            inputs.forEach(input => {
-                input.value = '';
-                input.classList.remove('blank-correct', 'blank-incorrect');
-            });
-            document.getElementById('blank-status-bar').classList.add('hidden');
-        }
-
-        /* ================= TAB 2: PUNNETT SQUARE SIMULATOR ================= */
-        let simMode = 1;
-
-        function setSimMode(mode) {
-            simMode = mode;
-            const btn1 = document.getElementById('simMode1');
-            const btn2 = document.getElementById('simMode2');
-            const panel1 = document.getElementById('simPanel1');
-            const panel2 = document.getElementById('simPanel2');
-
-            if (mode === 1) {
-                btn1.className = "px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-emerald-700 shadow-xs";
-                btn2.className = "px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900";
-                panel1.classList.remove('hidden');
-                panel2.classList.add('hidden');
-                runSimulation1();
-            } else {
-                btn2.className = "px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-purple-700 shadow-xs";
-                btn1.className = "px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900";
-                panel2.classList.remove('hidden');
-                panel1.classList.add('hidden');
-                runSimulation2();
-            }
-        }
-
-        // Single Trait Simulation (Shape)
-        function runSimulation1() {
-            const p1 = document.getElementById('p1-genotype-1').value;
-            const p2 = document.getElementById('p2-genotype-1').value;
-
-            const g1 = [p1[0], p1[1]];
-            const g2 = [p2[0], p2[1]];
-
-            const grid = document.getElementById('punnett-grid-1');
-            grid.innerHTML = '';
-
-            // Top-left header cell
-            grid.appendChild(createCell('♀ \\ ♂', 'bg-slate-300 text-slate-700 font-bold text-xs sm:text-sm'));
-
-            // Top header (Parent 2 gametes)
-            grid.appendChild(createCell(g2[0], 'bg-emerald-200 text-emerald-900 font-extrabold text-base sm:text-lg'));
-            grid.appendChild(createCell(g2[1], 'bg-emerald-200 text-emerald-900 font-extrabold text-base sm:text-lg'));
-
-            const counts = { RR: 0, Rr: 0, rr: 0 };
-            const phenoCounts = { round: 0, wrinkled: 0 };
-
-            // Row 1
-            grid.appendChild(createCell(g1[0], 'bg-emerald-200 text-emerald-900 font-extrabold text-base sm:text-lg'));
-            addOffspringCell1(grid, g1[0], g2[0], counts, phenoCounts);
-            addOffspringCell1(grid, g1[0], g2[1], counts, phenoCounts);
-
-            // Row 2
-            grid.appendChild(createCell(g1[1], 'bg-emerald-200 text-emerald-900 font-extrabold text-base sm:text-lg'));
-            addOffspringCell1(grid, g1[1], g2[0], counts, phenoCounts);
-            addOffspringCell1(grid, g1[1], g2[1], counts, phenoCounts);
-
-            // Render Phenotype Summary
-            const total = 4;
-            document.getElementById('phenotype-result-1').innerHTML = `
-                <div class="flex items-center justify-between">
-                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 bg-amber-400 rounded-full inline-block border border-amber-600"></span> 둥근 완두 (우성):</span>
-                    <span class="font-bold text-slate-900">${phenoCounts.round}개 (${(phenoCounts.round/total*100).toFixed(0)}%)</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 bg-emerald-600 pea-shape-wrinkled inline-block"></span> 주름진 완두 (열성):</span>
-                    <span class="font-bold text-slate-900">${phenoCounts.wrinkled}개 (${(phenoCounts.wrinkled/total*100).toFixed(0)}%)</span>
-                </div>
-                <div class="pt-2 border-t border-amber-200 text-xs text-amber-900 font-bold">
-                    표현형 분리비 = 둥근 : 주름진 = ${phenoCounts.round} : ${phenoCounts.wrinkled}
-                </div>
-            `;
-
-            // Render Genotype Summary
-            document.getElementById('genotype-result-1').innerHTML = `
-                <div>RR (순종 우성) : ${counts.RR}개</div>
-                <div>Rr (잡종 우성) : ${counts.Rr}개</div>
-                <div>rr (순종 열성) : ${counts.rr}개</div>
-                <div class="pt-2 border-t border-indigo-200 text-xs text-indigo-900 font-bold">
-                    유전자형 비 = RR : Rr : rr = ${counts.RR} : ${counts.Rr} : ${counts.rr}
-                </div>
-            `;
-        }
-
-        function createCell(text, className) {
-            const div = document.createElement('div');
-            div.className = `flex items-center justify-center rounded-xl p-2 text-center shadow-2xs ${className}`;
-            div.innerText = text;
-            return div;
-        }
-
-        function addOffspringCell1(grid, allele1, allele2, counts, phenoCounts) {
-            let alleles = [allele1, allele2];
-            alleles.sort((a,b) => (a === 'R' ? -1 : 1)); // Capital first R
-            const geno = alleles.join('');
-
-            counts[geno] = (counts[geno] || 0) + 1;
-
-            const isRound = geno.includes('R');
-            if (isRound) phenoCounts.round++; else phenoCounts.wrinkled++;
-
-            const div = document.createElement('div');
-            div.className = `flex flex-col items-center justify-center p-2 rounded-xl border bg-white shadow-sm transition hover:scale-105 ${isRound ? 'border-amber-300' : 'border-emerald-300'}`;
-
-            // Pea Visual Icon
-            const icon = document.createElement('div');
-            if (isRound) {
-                icon.className = 'w-6 h-6 rounded-full bg-amber-400 border border-amber-500 mb-1 shadow-2xs';
-            } else {
-                icon.className = 'w-6 h-6 bg-emerald-500 pea-shape-wrinkled mb-1 shadow-2xs';
-            }
-
-            const label = document.createElement('span');
-            label.className = 'font-bold text-xs text-slate-800';
-            label.innerText = geno;
-
-            const phenoText = document.createElement('span');
-            phenoText.className = 'text-[10px] text-slate-500';
-            phenoText.innerText = isRound ? '둥근' : '주름진';
-
-            div.appendChild(icon);
-            div.appendChild(label);
-            div.appendChild(phenoText);
-            grid.appendChild(div);
-        }
-
-        // Dihybrid Simulation (Shape + Color)
-        function runSimulation2() {
-            const p1 = document.getElementById('p1-genotype-2').value;
-            const p2 = document.getElementById('p2-genotype-2').value;
-
-            // Extract Gametes for Parent 1
-            const g1 = getGametes2(p1);
-            const g2 = getGametes2(p2);
-
-            const grid = document.getElementById('punnett-grid-2');
-            grid.innerHTML = '';
-
-            // Corner cell
-            grid.appendChild(createCell('♀\\♂', 'bg-slate-300 text-slate-700 font-bold text-[10px] sm:text-xs'));
-
-            // Top Header Gametes
-            g2.forEach(gam => grid.appendChild(createCell(gam, 'bg-purple-200 text-purple-900 font-bold text-xs sm:text-sm')));
-
-            const phenoStats = {
-                '둥글고 노란색': 0,
-                '둥글고 초록색': 0,
-                '주름지고 노란색': 0,
-                '주름지고 초록색': 0
-            };
-
-            for (let i = 0; i < 4; i++) {
-                // Row gamete header
-                grid.appendChild(createCell(g1[i], 'bg-purple-200 text-purple-900 font-bold text-xs sm:text-sm'));
-
-                for (let j = 0; j < 4; j++) {
-                    const geno = combineGametes(g1[i], g2[j]);
-                    const isRound = geno.includes('R');
-                    const isYellow = geno.includes('Y');
-
-                    let phenoName = '';
-                    if (isRound && isYellow) phenoName = '둥글고 노란색';
-                    else if (isRound && !isYellow) phenoName = '둥글고 초록색';
-                    else if (!isRound && isYellow) phenoName = '주름지고 노란색';
-                    else phenoName = '주름지고 초록색';
-
-                    phenoStats[phenoName]++;
-
-                    // Render Cell
-                    const cell = document.createElement('div');
-                    cell.className = 'flex flex-col items-center justify-center p-1 bg-white rounded-lg border border-slate-200 shadow-2xs text-center';
-
-                    // Pea Visual Dot
-                    const dot = document.createElement('div');
-                    let dotClass = 'w-4 h-4 mb-0.5 border shadow-2xs ';
-                    if (isRound) dotClass += 'rounded-full '; else dotClass += 'pea-shape-wrinkled ';
-                    if (isYellow) dotClass += 'bg-amber-300 border-amber-400'; else dotClass += 'bg-emerald-500 border-emerald-600';
-                    dot.className = dotClass;
-
-                    const text = document.createElement('span');
-                    text.className = 'font-bold text-[10px] sm:text-xs text-slate-800 tracking-tighter';
-                    text.innerText = geno;
-
-                    cell.appendChild(dot);
-                    cell.appendChild(text);
-                    grid.appendChild(cell);
-                }
-            }
-
-            // Render Phenotype Grid Summary
-            const pRes = document.getElementById('phenotype-result-2');
-            pRes.innerHTML = `
-                <div class="bg-amber-100/80 p-2.5 rounded-lg border border-amber-300 text-amber-900">
-                    <div class="font-bold">🟡 둥글고 노란색</div>
-                    <div class="text-lg font-extrabold">${phenoStats['둥글고 노란색']} <span class="text-xs font-normal">/ 16</span></div>
-                </div>
-                <div class="bg-emerald-100/80 p-2.5 rounded-lg border border-emerald-300 text-emerald-900">
-                    <div class="font-bold">🟢 둥글고 초록색</div>
-                    <div class="text-lg font-extrabold">${phenoStats['둥글고 초록색']} <span class="text-xs font-normal">/ 16</span></div>
-                </div>
-                <div class="bg-yellow-100/80 p-2.5 rounded-lg border border-yellow-300 text-yellow-900">
-                    <div class="font-bold">🌾 주름지고 노란색</div>
-                    <div class="text-lg font-extrabold">${phenoStats['주름지고 노란색']} <span class="text-xs font-normal">/ 16</span></div>
-                </div>
-                <div class="bg-slate-200/80 p-2.5 rounded-lg border border-slate-300 text-slate-800">
-                    <div class="font-bold">🍃 주름지고 초록색</div>
-                    <div class="text-lg font-extrabold">${phenoStats['주름지고 초록색']} <span class="text-xs font-normal">/ 16</span></div>
-                </div>
-            `;
-        }
-
-        function getGametes2(genotype) {
-            // genotype is e.g. RrYy
-            const r1 = genotype[0], r2 = genotype[1];
-            const y1 = genotype[2], y2 = genotype[3];
-            return [r1+y1, r1+y2, r2+y1, r2+y2];
-        }
-
-        function combineGametes(g1, g2) {
-            let rAlleles = [g1[0], g2[0]];
-            rAlleles.sort((a,b) => (a === 'R' ? -1 : 1));
-
-            let yAlleles = [g1[1], g2[1]];
-            yAlleles.sort((a,b) => (a === 'Y' ? -1 : 1));
-
-            return rAlleles.join('') + yAlleles.join('');
-        }
-
-        /* ================= TAB 3: QUIZ ENGINE ================= */
-        const quizData = [
-            {
-                id: 1,
-                question: "어버이의 형질 중 순종의 둥근 완두(RR)와 순종의 주름진 완두(rr)를 교배하여 얻은 잡종 1대(F1)는 모두 둥근 완두만 나타납니다. 이와 같이 잡종 1대에서 우성 형질만 나타나는 유전 원리는 무엇입니까?",
-                options: ["우열의 원리", "분리의 법칙", "독립의 법칙", "도태의 원리"],
-                correct: 0,
-                explanation: "순종의 대립 형질을 교배했을 때 잡종 1대에서 나타나는 형질을 '우성'이라 하며, 한 가지 형질만 표현되는 것을 '우열의 원리'라고 합니다."
-            },
-            {
-                id: 2,
-                question: "잡종 1대 둥근 완두(Rr)를 자가 교배하여 얻은 잡종 2대(F2) 총 400개의 완두 중 표현형이 '주름진 완두'인 완두는 이론적으로 몇 개가 발생합니까?",
-                options: ["100개", "200개", "300개", "400개"],
-                correct: 0,
-                explanation: "분리의 법칙에 따라 잡종 2대(F2)의 표현형 비는 [둥근 완두 : 주름진 완두] = 3 : 1 입니다. 따라서 전체 400개 중 주름진 완두는 400 × 1/4 = 100개입니다."
-            },
-            {
-                id: 3,
-                question: "생식세포 형성 시 쌍을 이루던 대립유전자가 분리되어 서로 다른 생식세포로 들어가는 법칙을 무엇이라고 합니까?",
-                type: "short",
-                answer: "분리의 법칙",
-                explanation: "감수 분열 과정에서 대립유전자가 서로 다른 생식세포로 나뉘어 들어가는 현상을 '분리의 법칙'이라고 합니다."
-            },
-            {
-                id: 4,
-                question: "둥글고 노란색 완두(RrYy)를 자가 교배할 때, 모양 형질(R/r)과 색깔 형질(Y/y)이 서로 영향을 주지 않고 독립적으로 유전되는 법칙은 무엇입니까?",
-                options: ["우열의 원리", "분리의 법칙", "독립의 법칙", "연쇄의 법칙"],
-                correct: 2,
-                explanation: "두 쌍 이상의 대립 형질이 각각 분리의 법칙에 따라 서로 방해나 영향 없이 독립적으로 분리되는 현상을 '독립의 법칙'이라고 합니다."
-            },
-            {
-                id: 5,
-                question: "둥글고 노란색 완두(RrYy)를 자가 교배했을 때, 잡종 2대(F2)에서 표현형이 '주름지고 초록색'인 완두가 차지하는 비율은 전체의 몇 분의 몇입니까?",
-                options: ["9/16", "3/16", "1/16", "1/4"],
-                correct: 2,
-                explanation: "F2 표현형 비는 [둥글고 노란색 : 둥글고 초록색 : 주름지고 노란색 : 주름지고 초록색] = 9 : 3 : 3 : 1 이므로, 주름지고 초록색(열성-열성) 완두의 비율은 1/16 입니다."
-            }
-        ];
-
-        let userAnswers = {};
-
-        function renderQuiz() {
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = '';
-
-            quizData.forEach((q, index) => {
-                const card = document.createElement('div');
-                card.className = "bg-slate-50 p-5 sm:p-6 rounded-2xl border border-slate-200 space-y-4";
-                card.id = `q-card-${q.id}`;
-
-                let optionsHtml = '';
-                if (q.type === 'short') {
-                    optionsHtml = `
-                        <div class="mt-3">
-                            <input type="text" id="q-input-${q.id}" onchange="recordAnswer(${q.id}, this.value)" placeholder="정답을 입력하세요 (예: 분리의 법칙)" class="w-full max-w-xs bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-sm font-semibold focus:ring-2 focus:ring-emerald-500 outline-none">
-                        </div>
-                    `;
-                } else {
-                    optionsHtml = `
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3">
-                            ${q.options.map((opt, optIdx) => `
-                                <button type="button" onclick="selectOption(${q.id}, ${optIdx})" id="q-${q.id}-opt-${optIdx}" class="quiz-opt-btn text-left p-3 rounded-xl border border-slate-200 bg-white hover:bg-emerald-50 hover:border-emerald-300 text-sm font-medium transition flex items-center justify-between">
-                                    <span>${optIdx + 1}. ${opt}</span>
-                                    <i class="fa-regular fa-circle text-slate-300 opt-icon"></i>
-                                </button>
-                            `).join('')}
-                        </div>
-                    `;
-                }
-
-                card.innerHTML = `
-                    <div class="flex items-start gap-3">
-                        <span class="bg-emerald-600 text-white font-bold rounded-lg px-2.5 py-1 text-xs sm:text-sm">Q${index + 1}</span>
-                        <div class="flex-1">
-                            <h3 class="font-bold text-slate-800 text-sm sm:text-base leading-snug">${q.question}</h3>
-                            ${optionsHtml}
-                            <div id="q-feedback-${q.id}" class="hidden mt-4 p-4 rounded-xl text-xs sm:text-sm leading-relaxed space-y-1"></div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function selectOption(qId, optIdx) {
-            userAnswers[qId] = optIdx;
-
-            // Reset visual style for options of this question
-            const q = quizData.find(item => item.id === qId);
-            q.options.forEach((_, idx) => {
-                const btn = document.getElementById(`q-${qId}-opt-${idx}`);
-                const icon = btn.querySelector('.opt-icon');
-                btn.className = "quiz-opt-btn text-left p-3 rounded-xl border border-slate-200 bg-white hover:bg-emerald-50 hover:border-emerald-300 text-sm font-medium transition flex items-center justify-between";
-                icon.className = "fa-regular fa-circle text-slate-300 opt-icon";
-            });
-
-            // Highlight selected
-            const selBtn = document.getElementById(`q-${qId}-opt-${optIdx}`);
-            const selIcon = selBtn.querySelector('.opt-icon');
-            selBtn.className = "quiz-opt-btn text-left p-3 rounded-xl border-2 border-emerald-600 bg-emerald-50/80 text-emerald-900 text-sm font-bold transition flex items-center justify-between shadow-2xs";
-            selIcon.className = "fa-solid fa-circle-check text-emerald-600 opt-icon";
-        }
-
-        function recordAnswer(qId, val) {
-            userAnswers[qId] = val.trim();
-        }
-
-        function gradeAllQuiz() {
-            let score = 0;
-            const total = quizData.length;
-
-            quizData.forEach(q => {
-                const userAns = userAnswers[q.id];
-                const feedbackEl = document.getElementById(`q-feedback-${q.id}`);
-                feedbackEl.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-900', 'bg-red-100', 'text-red-900');
-
-                let isCorrect = false;
-
-                if (q.type === 'short') {
-                    if (userAns && userAns.replace(/\s+/g, '') === q.answer.replace(/\s+/g, '')) {
-                        isCorrect = true;
-                    }
-                } else {
-                    if (userAns === q.correct) {
-                        isCorrect = true;
-                    }
-                }
-
-                if (isCorrect) {
-                    score++;
-                    feedbackEl.classList.add('bg-emerald-100', 'text-emerald-900', 'border', 'border-emerald-300');
-                    feedbackEl.innerHTML = `
-                        <div class="font-bold flex items-center gap-1.5 text-emerald-700">
-                            <i class="fa-solid fa-circle-check"></i> 정답입니다!
-                        </div>
-                        <p class="text-slate-700 mt-1">${q.explanation}</p>
-                    `;
-                } else {
-                    feedbackEl.classList.add('bg-red-100', 'text-red-900', 'border', 'border-red-300');
-                    const correctAnsText = q.type === 'short' ? q.answer : `${q.correct + 1}번 (${q.options[q.correct]})`;
-                    feedbackEl.innerHTML = `
-                        <div class="font-bold flex items-center gap-1.5 text-red-700">
-                            <i class="fa-solid fa-circle-xmark"></i> 오답입니다. (정답: ${correctAnsText})
-                        </div>
-                        <p class="text-slate-700 mt-1">${q.explanation}</p>
-                    `;
-                }
-            });
-
-            document.getElementById('quiz-score-display').innerText = `${score} / ${total} 문제 정답`;
-        }
-
-        function resetQuiz() {
-            userAnswers = {};
-            renderQuiz();
-            document.getElementById('quiz-score-display').innerText = `0 / ${quizData.length} 문제 완료`;
-        }
-
-        // Window Load Handler
-        window.onload = function() {
-            renderQuiz();
-            runSimulation1();
+      </div>
+      <nav class="flex gap-1 overflow-x-auto">
+        <button id="b-t0" onclick="go('t0')" class="tabb px-3 py-2 rounded-md text-xs sm:text-sm font-medium whitespace-nowrap">들어가기</button>
+        <button id="b-t1" onclick="go('t1')" class="tabb px-3 py-2 rounded-md text-xs sm:text-sm font-medium whitespace-nowrap">찾기</button>
+        <button id="b-t2" onclick="go('t2')" class="tabb px-3 py-2 rounded-md text-xs sm:text-sm font-medium whitespace-nowrap">AI에 묻기</button>
+        <button id="b-t3" onclick="go('t3')" class="tabb px-3 py-2 rounded-md text-xs sm:text-sm font-medium whitespace-nowrap">겨루기</button>
+        <button id="b-t4" onclick="go('t4')" class="tabb px-3 py-2 rounded-md text-xs sm:text-sm font-medium whitespace-nowrap">함께 보기</button>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 space-y-5">
+
+<!-- ========== 들어가기 ========== -->
+<section id="t0" class="tab space-y-5">
+  <div class="hero">
+    <div class="eyebrow">중3 과학 · 생식과 유전</div>
+    <h2>간기 말고 하나 찾기</h2>
+    <p>디지털현미경으로 찾은 세포를 <b>내가 먼저 판정하고</b>, 그다음 AI에게 묻습니다.<br>순서를 바꾸면 AI의 말에 끌려갑니다.</p>
+    <div class="steps">
+      <div class="step"><b>1 · 찾기</b><span>간기 사진과 우리 사진에 표시하기</span></div>
+      <div class="step"><b>2 · AI에 묻기</b><span>사진 내려받아 올리고 답 옮겨 적기</span></div>
+      <div class="step"><b>3 · 겨루기</b><span>동의·보류·반박·오독 + 되묻기</span></div>
+      <div class="step"><b>4 · 함께 보기</b><span>결과 카드를 모둠 담벼락에</span></div>
+    </div>
+  </div>
+
+  <div class="card rounded-2xl p-5 sm:p-6">
+    <div class="text-xs font-bold tracking-widest" style="color:var(--sand)">먼저 몸풀기</div>
+    <h2 class="text-xl sm:text-2xl font-bold mt-1">AI가 쓴 판정입니다. 어디가 이상할까요?</h2>
+    <p class="text-sm text-stone-500 mt-2">네 개 중 과학적으로 틀린 것을 <b>모두</b> 눌러 보세요. 몇 개인지는 알려 주지 않습니다.</p>
+    <div id="sents" class="mt-4 space-y-2"></div>
+    <div class="flex gap-2 mt-4">
+      <button onclick="reveal()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-semibold">확인하기</button>
+      <button onclick="againQuiz()" class="bg-stone-100 hover:bg-stone-200 text-stone-700 px-4 py-2 rounded-xl text-sm font-semibold">다시 풀기</button>
+    </div>
+    <p id="quizMsg" class="text-sm mt-3 font-medium text-emerald-800"></p>
+  </div>
+
+  <div id="afterQuiz" class="card rounded-2xl p-5 sm:p-6 hidden">
+    <div class="text-xs font-bold tracking-widest" style="color:var(--sand)">오늘의 학습 문제</div>
+    <h2 class="text-xl sm:text-2xl font-bold mt-1">간기가 아닌 세포를 찾아내고, AI의 판정을 어떻게 검증할까?</h2>
+    <p class="text-sm text-stone-600 mt-3 leading-relaxed">방금 본 3번처럼, AI는 <b>아주 틀리지 않습니다. 반쯤 맞게 틀립니다.</b> 시기는 맞히고 뒷말만 틀리기도 합니다. 그래서 읽어 보지 않으면 그냥 넘어갑니다.</p>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4" id="judgeGuide"></div>
+    <p class="text-xs text-stone-500 mt-3">모든 판단에는 근거가 있어야 합니다. ‘AI가 그랬으니까’는 근거가 아닙니다.</p>
+  </div>
+</section>
+
+<!-- ========== 찾기 ========== -->
+<section id="t1" class="tab space-y-5 hidden">
+  <div class="card rounded-2xl p-5 sm:p-6">
+    <div class="flex items-baseline gap-2 flex-wrap">
+      <span class="text-[11px] font-bold px-2 py-0.5 rounded" style="background:#FBF5E9;color:#8A6512">1단계</span>
+      <h2 class="text-lg font-bold">관찰 기록</h2>
+    </div>
+    <p class="text-sm text-stone-500 mt-1 mb-4">모둠과 우리 짝을 고르세요. 여기서 고른 짝 이름이 사진 카드와 결과 카드에 그대로 붙습니다.</p>
+    <div class="grid sm:grid-cols-4 gap-3">
+      <div><label class="block text-xs font-semibold text-stone-500 mb-1">모둠</label>
+        <input id="f-group" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm" placeholder="3모둠"></div>
+      <div><label class="block text-xs font-semibold text-stone-500 mb-1">우리 짝</label>
+        <select id="f-pair" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm">
+          <option value="">고르세요</option><option value="A">A짝</option><option value="B">B짝</option>
+        </select></div>
+      <div><label class="block text-xs font-semibold text-stone-500 mb-1">표본</label>
+        <input id="f-spec" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm" placeholder="양파 뿌리 끝 영구 프레파라트"></div>
+      <div><label class="block text-xs font-semibold text-stone-500 mb-1">배율</label>
+        <input id="f-lens" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm" placeholder="10x로 초점 → 60x 관찰"></div>
+    </div>
+  </div>
+
+  <div class="card rounded-2xl p-5 sm:p-6">
+    <div class="flex items-baseline gap-2 flex-wrap">
+      <span class="text-[11px] font-bold px-2 py-0.5 rounded" style="background:#FBF5E9;color:#8A6512">2단계</span>
+      <h2 class="text-lg font-bold">간기 시야 — 비교할 기준</h2>
+      <span class="text-[11px] font-bold px-2 py-0.5 rounded" style="background:#EAF3EE;color:#2F6A52">모둠 공용 · A짝 B짝 같은 사진</span>
+    </div>
+    <p class="text-sm text-stone-500 mt-1 mb-4">간기 세포만 보이는 사진을 한 장 올리세요. 비교할 기준이 됩니다.</p>
+    <div id="interBox"></div>
+  </div>
+
+  <div class="card rounded-2xl p-5 sm:p-6">
+    <div class="flex items-baseline gap-2 flex-wrap">
+      <span class="text-[11px] font-bold px-2 py-0.5 rounded" style="background:#FBF5E9;color:#8A6512">3단계</span>
+      <h2 class="text-lg font-bold">간기가 아닌 세포 찾아내기</h2>
+    </div>
+    <p class="text-sm text-stone-500 mt-1 mb-4">
+      <b>핵막이 안 보이거나, 염색체가 낱개로 보이면</b> 간기가 아닙니다. 우리 짝이 맡은 사진만 올리면 됩니다 — 한두 장이면 충분합니다.
+    </p>
+    <div id="findCells" class="cells"></div>
+    <div class="flex gap-2 mt-4">
+      <button id="addCellBtn" onclick="addCell()" class="bg-stone-100 hover:bg-stone-200 text-stone-700 px-4 py-2 rounded-xl text-sm font-semibold">사진 추가</button>
+      <button onclick="resetAll()" class="text-stone-500 hover:text-stone-800 px-3 py-2 rounded-xl text-sm">처음 상태로 지우기</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== AI에 묻기 ========== -->
+<section id="t2" class="tab space-y-5 hidden">
+  <div class="card rounded-2xl p-5 sm:p-6">
+    <h2 class="text-lg font-bold flex items-center gap-2">AI에게 사진 보내기</h2>
+    <p id="askHelp" class="text-sm text-stone-500 mt-1 mb-3">아래 <b>‘질문 복사’</b>를 누르고, 우리 짝 사진과 함께 AI에 올리세요.</p>
+    <div class="flex gap-2 flex-wrap">
+      <button onclick="copyPrompt()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-semibold">질문 복사</button>
+    </div>
+    <div class="mt-4">
+      <div class="text-xs font-semibold text-stone-500 mb-1.5">올릴 사진 내려받기 — 하나씩 누르세요</div>
+      <div id="dlRow" class="flex gap-2 flex-wrap"></div>
+      <label class="flex items-center gap-2 mt-2.5 text-[12.5px] text-stone-500 cursor-pointer">
+        <input type="checkbox" id="f-withinter" class="accent-emerald-700">
+        간기 사진도 함께 올리기 (선택)
+      </label>
+    </div>
+    <details class="drawer mt-3"><summary>복사될 질문 보기</summary>
+      <pre id="promptBox" class="soft rounded-xl p-3 mt-2 text-[11.5px] leading-relaxed whitespace-pre-wrap break-words max-h-64 overflow-auto text-stone-600"></pre>
+    </details>
+    <p class="text-xs text-stone-400 mt-2">내려받은 사진은 크롬북의 <b>‘내 파일 → 다운로드’</b>에 들어갑니다. AI 도구에서 사진 올리기를 누르고 거기서 고르세요.</p>
+    <p id="askMsg" class="text-sm mt-2 font-medium text-emerald-800"></p>
+    <div class="mt-4 p-3 rounded-xl text-[13px] leading-relaxed" style="background:var(--hold-bg);border:1px solid var(--hold);color:#7A5A14">
+      사진과 글에 이름·학번·학교 이름이 들어가지 않게 하세요.
+    </div>
+    <div class="mt-4">
+      <label class="block text-xs font-semibold text-stone-500 mb-1">AI의 답을 그대로 붙여 넣으세요</label>
+      <textarea id="f-answer" rows="4" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm" placeholder="AI가 쓴 말을 그대로 붙여 넣으세요."></textarea>
+    </div>
+  </div>
+
+  <div class="card rounded-2xl p-5 sm:p-6">
+    <h2 class="text-lg font-bold">AI 판정 옮겨 적기</h2>
+    <p class="text-sm text-stone-500 mt-1 mb-4">AI가 쓴 말을 <b>고치지 말고 그대로</b> 옮겨 적으세요.</p>
+    <div id="askCells" class="cells"></div>
+  </div>
+</section>
+
+<!-- ========== 겨루기 ========== -->
+<section id="t3" class="tab space-y-5 hidden">
+  <div class="card rounded-2xl p-5 sm:p-6">
+    <h2 class="text-lg font-bold flex items-center gap-2">내 판정과 AI 판정 맞대어 보기</h2>
+    <p class="text-sm text-stone-500 mt-1 mb-4">같은 답이 나와도 끝이 아닙니다. <b>AI가 든 근거가 사진에 정말 보이는지</b> 확인하세요.</p>
+    <div id="duelCells" class="cells"></div>
+  </div>
+
+  <div class="card rounded-2xl p-5 sm:p-6">
+    <h2 class="text-lg font-bold">우리 모둠 결과</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4" id="tally"></div>
+    <p id="tallyNote" class="text-sm text-stone-500 mt-3">—</p>
+
+    <div class="mt-5">
+      <div class="text-xs font-bold tracking-widest" style="color:var(--sand)">되묻기 결과</div>
+      <div class="shift3 mt-2" id="shiftTally"></div>
+      <div id="flipBox" class="mt-3 hidden"></div>
+      <div id="shiftList" class="mt-3 space-y-1.5"></div>
+    </div>
+    <details class="drawer mt-4"><summary>결과 카드 미리보기</summary>
+      <img id="resultImg" alt="우리 모둠 판정 결과 카드" class="w-full rounded-xl border mt-2" style="border-color:var(--beige)">
+    </details>
+    <div class="soft rounded-xl p-3 mt-3 text-[11.5px] font-mono break-all text-stone-600" id="sheetLine">—</div>
+    <div class="flex gap-2 mt-3 flex-wrap">
+      <button onclick="copyLine()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-semibold">한 줄 요약 복사</button>
+      <span class="text-xs text-stone-400 self-center">복사해서 선생님이 안내한 구글 시트에 붙여 넣으세요</span>
+      <button onclick="saveCard()" class="bg-stone-100 hover:bg-stone-200 text-stone-700 px-4 py-2 rounded-xl text-sm font-semibold">결과 카드 저장</button>
+      <button onclick="drawCard()" class="text-stone-500 hover:text-stone-800 px-3 py-2 rounded-xl text-sm">다시 그리기</button>
+    </div>
+    <p id="expMsg" class="text-sm mt-2 font-medium text-emerald-800"></p>
+
+    <details class="drawer mt-5"><summary>학급 담벼락에 거는 법</summary>
+    <div class="soft rounded-xl p-4 mt-2 text-[13px] leading-relaxed">
+      ① 위의 <b>결과 카드 저장</b>을 눌러 그림을 내려받습니다. 사진과 판정이 한 장에 들어 있습니다.<br>
+      ② 선생님이 안내한 <b>구글 슬라이드</b>를 열고 <b>우리 모둠 번호가 적힌 슬라이드</b>로 갑니다.<br>
+      ③ 메뉴에서 <b>삽입 → 이미지 → 컴퓨터에서 업로드</b>를 눌러 방금 받은 그림을 올립니다.<br>
+      ④ 슬라이드 아래쪽 빈 칸에 <b>한 줄 요약</b>도 붙여 넣습니다.
+      <div class="mt-2 text-stone-500">다른 모둠 슬라이드는 건드리지 않습니다. 발표 때 이 슬라이드를 넘기며 봅니다.</div>
+    </div>
+    </details>
+  </div>
+</section>
+
+<!-- ========== 함께 보기 ========== -->
+<section id="t4" class="tab space-y-5 hidden">
+  <div class="card rounded-2xl p-5 sm:p-6">
+    <h2 class="text-lg font-bold">우리 반 모둠들</h2>
+    <p class="text-sm text-stone-500 mt-1 mb-4">모둠마다 무엇을 찾았고 AI와 어떻게 겨뤘는지 한자리에 모았습니다.</p>
+    <div id="groupWall" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+    <p id="wallHint" class="text-sm text-stone-400 text-center py-8 leading-relaxed">
+      아직 모인 결과가 없습니다.<br>
+      <span class="text-xs">이 앱에는 서버가 없어 모둠 디벗끼리 자동으로 모이지 않습니다.
+      아래 <b>‘선생님 전용’</b>을 열어 모둠 요약을 붙여 넣고 <b>‘보드 만들기’</b>를 누르면 여기에 카드가 생깁니다.</span>
+    </p>
+  </div>
+
+  <div class="card rounded-2xl p-5 sm:p-6">
+    <h2 class="text-lg font-bold">학급 세포분열 타임라인</h2>
+    <p class="text-sm text-stone-500 mt-1 mb-4">한 모둠이 한두 개만 찾아도, 학급을 모으면 분열의 전 과정이 복원됩니다.</p>
+    <div id="classTl" class="space-y-2"></div>
+    <p id="boardNote" class="text-sm text-stone-500 mt-4">모둠 결과가 모이면 여기에 집계가 나타납니다.</p>
+  </div>
+
+  <div class="card rounded-2xl p-5 sm:p-6">
+    <h2 class="text-lg font-bold">학급 반박 벽</h2>
+    <p class="text-sm text-stone-500 mt-1 mb-4">AI에게 ‘아니오’라고 말한 사례입니다.</p>
+    <div id="classWall" class="grid sm:grid-cols-2 gap-3"></div>
+    <p id="wallEmpty" class="text-sm text-stone-400 text-center py-6">아직 올라온 반박이 없습니다.</p>
+  </div>
+
+  <details class="card rounded-2xl p-5 sm:p-6">
+    <summary class="text-lg font-bold cursor-pointer">선생님 전용 — 결과 모으기와 비상 카드</summary>
+
+    <div class="mt-4 p-3 rounded-xl text-[13px] leading-relaxed" style="background:var(--hold-bg);border:1px solid var(--hold);color:#7A5A14">
+      이 앱에는 서버가 없어서 모둠 디벗끼리 자동으로 연결되지 않습니다. 대신 <b>보드를 만든 뒤 링크를 나눠 주면 학생 디벗에서도 같은 화면이 보입니다.</b><br>
+      ① 모둠이 ‘겨루기’에서 한 줄 요약을 복사해 구글 시트에 붙여 넣기 → ② 선생님이 그 열을 아래에 붙여 넣고 ‘보드 만들기’ → ③ <b>‘학생용 링크 만들기’</b>를 눌러 구글 클래스룸에 붙이기.
+    </div>
+
+    <textarea id="f-board" rows="5" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm font-mono text-[12px] mt-3" placeholder="구글 시트의 요약 열을 복사해 붙여 넣으세요. 한 줄에 한 모둠입니다."></textarea>
+    <div class="flex gap-2 mt-3 flex-wrap">
+      <button onclick="buildBoard()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-semibold">보드 만들기</button>
+      <button onclick="makeLink()" class="bg-stone-800 hover:bg-stone-900 text-white px-4 py-2 rounded-xl text-sm font-semibold">학생용 링크 만들기</button>
+      <button onclick="demoBoard()" class="bg-stone-100 hover:bg-stone-200 text-stone-700 px-4 py-2 rounded-xl text-sm font-semibold">예시로 채워 보기</button>
+    </div>
+    <p id="linkMsg" class="text-sm mt-2 font-medium text-emerald-800"></p>
+    <div id="linkBox" class="soft rounded-xl p-3 mt-2 text-[11.5px] font-mono break-all text-stone-500 hidden"></div>
+
+    <h3 class="font-bold mt-8">사진 담벼락 — 구글 슬라이드 준비</h3>
+    <p class="text-sm text-stone-500 mt-1 mb-3">사진까지 함께 걸려면 슬라이드 한 벌을 미리 만들어 두세요. 수업 전날 5분이면 됩니다.</p>
+    <div class="soft rounded-xl p-4 text-[13px] leading-relaxed">
+      ① 받으신 <b>세포_담벼락_슬라이드_11월5일.pptx</b>를 구글 드라이브에 올립니다.<br>
+      ② 더블클릭한 뒤 위쪽의 <b>‘Google 슬라이드로 열기’</b>를 누릅니다. 모둠 슬라이드 6장이 이미 들어 있습니다.<br>
+      ③ 공유를 <b>링크가 있는 교내 사용자 · 편집자</b>로 바꾸고, 링크를 구글 클래스룸에 올립니다.<br>
+      ④ 수업 때 학생은 결과 카드를 내려받아 <b>자기 모둠 슬라이드에 삽입</b>합니다.<br>
+      ⑤ 정리 시간에 이 슬라이드를 <b>전체화면으로 넘기며</b> 봅니다.
+      <div class="mt-2 text-stone-500">앱의 ‘함께 보기’는 판정과 집계를, 슬라이드는 사진을 맡습니다. 둘 다 클래스룸에 링크를 올려 두세요.</div>
+    </div>
+
+    <h3 class="font-bold mt-8">AI가 다 맞혔을 때 쓰는 오답 카드</h3>
+    <p class="text-sm text-stone-500 mt-1 mb-3">모든 모둠이 ‘동의’만 찍고 끝나면 수업이 멈춥니다. 그때 이 카드를 띄워 “이 판정도 받아들일 수 있나?”로 되돌리세요.</p>
+    <div class="flex gap-2">
+      <button onclick="spareNext()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-semibold">카드 한 장 띄우기</button>
+      <button onclick="spareAll()" class="bg-stone-100 hover:bg-stone-200 text-stone-700 px-4 py-2 rounded-xl text-sm font-semibold">모두 보기</button>
+    </div>
+    <div id="spares" class="space-y-3 mt-4"></div>
+
+    <h3 class="font-bold mt-8">사진 서랍</h3>
+    <p class="text-sm text-stone-500 mt-1 mb-4">촬영이 안 된 모둠에게 열어 주세요. 학생 화면의 ‘사진 서랍에서 고르기’에 같은 그림이 들어 있습니다.</p>
+    <div id="bankPreview" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+    <p id="bankStat" class="text-sm font-semibold text-stone-600 mt-4"></p>
+
+    <div class="soft rounded-xl p-4 mt-3 text-[13px] leading-relaxed">
+      <div class="font-bold text-stone-700 mb-2">내 사진을 사진 서랍에 넣는 법</div>
+      깃허브에서 두 가지만 하면 됩니다. 코드는 건드리지 않습니다.<br><br>
+      <b>① 사진 파일 이름을 정합니다.</b><br>
+      간기 시야는 <code>간기1.jpg</code>, <code>간기2.jpg</code> 처럼 <b>‘간기’로 시작</b>하게,<br>
+      분열 중인 세포는 <code>전기1.jpg</code>, <code>중기1.jpg</code>, <code>세포1.jpg</code> 처럼 <b>그 밖의 이름</b>으로 둡니다.<br>
+      (이름이 그대로 서랍의 설명으로 나오니, 정답을 알려 주는 이름은 피하세요.)<br><br>
+      <b>② 깃허브 저장소에 올립니다.</b><br>
+      저장소 → <b>Add file → Upload files</b> → 사진을 끌어다 놓기 → 올릴 위치를 <code>photos/</code> 로 지정 → <b>Commit changes</b><br><br>
+      <b>③ 목록 파일을 만듭니다.</b><br>
+      같은 <code>photos/</code> 폴더에 <code>목록.txt</code> 파일을 만들고, 올린 파일 이름을 <b>한 줄에 하나씩</b> 적습니다.
+      <div class="mt-2 p-2 rounded bg-white font-mono text-[12px] text-stone-600" style="border:1px solid var(--beige)">간기1.jpg<br>간기2.jpg<br>전기1.jpg<br>중기1.jpg<br>중기2.jpg<br>후기1.jpg</div>
+      <div class="mt-2 text-stone-500">1~2분 뒤 새로고침하면 사진이 서랍 맨 앞에 나타납니다. 이 칸의 숫자로 몇 장이 들어왔는지 확인하세요.</div>
+    </div>
+  </details>
+</section>
+
+</main>
+
+<footer class="border-t mt-auto py-4 text-center text-xs text-stone-400" style="border-color:var(--beige)">
+  판단 기준 — 동의: 내 판정과 같고 근거도 사진에서 확인됨 · 보류: 흐려서 확인 불가 · 반박: 교과서 특징으로 보면 AI가 틀림 · 오독: AI가 사진을 잘못 봄
+</footer>
+
+<input type="file" id="filePick" accept="image/*" hidden>
+<a id="dl" hidden></a>
+
+<script>
+"use strict";
+/* ================= 자료 ================= */
+var STAGES = ["간기","전기","중기","후기","말기","간기 아님(시기 모르겠음)","판단 불가"];
+var FEATS = [
+ {id:"f1", t:"핵이 둥글게 보이고 염색체는 낱개로 보이지 않는다", ok:["간기"]},
+ {id:"f2", t:"핵막이 보이지 않는다", ok:["전기","중기","후기"]},
+ {id:"f3", t:"염색체가 굵은 막대 모양으로 뚜렷하다", ok:["전기","중기","후기"]},
+ {id:"f4", t:"염색체가 세포 가운데에 한 줄로 늘어서 있다", ok:["중기"]},
+ {id:"f5", t:"염색체가 양쪽 극으로 끌려가는 중이다", ok:["후기"]},
+ {id:"f6", t:"염색체가 양쪽 끝에 두 덩이로 모여 있다", ok:["후기","말기"]},
+ {id:"f7", t:"핵막이 다시 생기고 있다", ok:["말기"]},
+ {id:"f8", t:"가운데에 새 세포벽(세포판)이 생기고 있다", ok:["말기"]}
+];
+var FMAP = {}; FEATS.forEach(function(f){ FMAP[f.id] = f; });
+
+var QUIZ = [
+ {t:"이 세포는 핵막이 보이지 않고 염색체가 굵은 막대처럼 뚜렷하므로 간기입니다.", bad:true,
+  why:"핵막이 사라지고 염색체가 뚜렷해지는 때는 전기입니다. 간기에는 핵막이 있고 염색체가 낱개로 보이지 않습니다."},
+ {t:"이 세포는 염색체가 세포 가운데에 한 줄로 늘어서 있으므로 중기입니다.", bad:false,
+  why:"염색체가 세포 중앙에 한 줄로 배열되는 것이 중기의 가장 뚜렷한 특징입니다."},
+ {t:"이 세포는 체세포 분열 중이고, 염색체가 양극으로 끌려가고 있으므로 후기입니다. 이때 염색체 수는 반으로 줄어듭니다.", bad:true,
+  why:"시기는 후기가 맞지만 뒤가 틀렸습니다. 스스로 체세포 분열이라고 말해 놓고 염색체 수가 준다고 했습니다. 체세포 분열에서는 염색체 수가 줄지 않아 두 세포가 모세포와 같습니다. 반으로 줄어드는 것은 생식세포를 만드는 분열입니다."},
+ {t:"양파 뿌리 끝을 관찰했으므로 이것은 체세포 분열이고, 만들어진 두 세포의 염색체 수는 서로 같습니다.", bad:false,
+  why:"뿌리 끝은 생장점이어서 체세포 분열이 활발하고, 그 결과 염색체 수가 같은 두 세포가 됩니다."}
+];
+
+var JUDGE = [
+ ["agree","동의","내 판정과 같고 근거도 보인다"],
+ ["hold","보류","흐려서 확인할 수 없다"],
+ ["refute","반박","교과서 특징으로 보면 틀렸다"],
+ ["misread","오독","사진을 잘못 보았다"]
+];
+
+var SPARES = [
+ {ai:"양파 뿌리 끝이니 체세포 분열입니다. 염색체가 양극으로 나뉘어 가고 있으니 후기이며, 각 극에 가는 염색체 수는 모세포의 절반입니다.",
+  k:"짚을 곳 — 시기는 맞고 뒷말이 틀렸다. 체세포 분열에서는 각 극에 모세포와 같은 수가 간다. 절반이 되는 것은 생식세포를 만드는 분열이다."},
+ {ai:"이 세포는 핵이 둥글게 보이므로 간기이고, 따라서 분열을 하지 않는 세포입니다.",
+  k:"짚을 곳 — 간기는 ‘분열하지 않는 때’가 아니라 분열을 준비하며 유전 물질을 복제하는 때다. 관찰로는 알 수 없는 것을 단정했다."},
+ {ai:"염색체가 중앙에 모여 있어 중기로 보입니다. 사진이 조금 흐리지만 확신 높음입니다.",
+  k:"짚을 곳 — ‘흐리다’면서 ‘확신 높음’이라고 했다. 모여 있는 것과 한 줄로 늘어선 것은 다르다. 근거가 판정의 세기를 못 받친다."}
+];
+
+/* ================= 모식도 (사진 서랍 기본값) ================= */
+function svgURI(s){ return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(s); }
+function wrapSvg(inner, label){
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">' +
+    '<rect width="320" height="240" fill="#F6F1E6"/>' + inner +
+    '<rect x="6" y="212" width="112" height="20" rx="5" fill="#FFFFFF" fill-opacity="0.85"/>' +
+    '<text x="12" y="226" font-family="sans-serif" font-size="11" fill="#7A6A4F">모식도 · ' + label + '</text></svg>';
+}
+function cellBox(x, y, w, h){
+  return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="5" fill="#FDFBF5" stroke="#9BAE93" stroke-width="2"/>';
+}
+function rod(x, y, a){
+  return '<g transform="translate('+x+','+y+') rotate('+a+')"><rect x="-11" y="-3" width="22" height="6" rx="3" fill="#6B4B7A"/></g>';
+}
+var BANK = (function(){
+  var out = [];
+  /* 간기 시야 */
+  var s = '';
+  for (var r = 0; r < 4; r++) for (var c = 0; c < 5; c++){
+    var x = 14 + c*60, y = 14 + r*48;
+    s += cellBox(x, y, 54, 42);
+    s += '<circle cx="'+(x+27)+'" cy="'+(y+21)+'" r="11" fill="#C9B3D6" stroke="#8A6AA0" stroke-width="1.5"/>';
+    s += '<circle cx="'+(x+30)+'" cy="'+(y+18)+'" r="3.2" fill="#6B4B7A"/>';
+  }
+  out.push({id:"inter", kind:"inter", label:"간기 시야", svg: wrapSvg(s, "간기 시야")});
+
+  /* 전기 */
+  s = cellBox(90, 50, 140, 140);
+  var pro = [[130,80,20],[170,75,-35],[200,110,70],[120,120,-20],[160,130,50],[195,160,-60],[135,165,25],[170,180,-10]];
+  pro.forEach(function(p){ s += rod(p[0], p[1], p[2]); });
+  out.push({id:"pro", kind:"cell", label:"전기", svg: wrapSvg(s, "전기")});
+
+  /* 중기 */
+  s = cellBox(90, 50, 140, 140);
+  for (var i = 0; i < 6; i++) s += rod(110 + i*20, 120, 90);
+  s += '<line x1="95" y1="120" x2="225" y2="120" stroke="#B9A98C" stroke-width="1" stroke-dasharray="3 3"/>';
+  out.push({id:"meta", kind:"cell", label:"중기", svg: wrapSvg(s, "중기")});
+
+  /* 후기 */
+  s = cellBox(90, 50, 140, 140);
+  for (var i2 = 0; i2 < 4; i2++){ s += rod(123 + i2*27, 86, 12); s += rod(123 + i2*27, 154, -12); }
+  s += '<path d="M118 104 L118 136 M202 104 L202 136" stroke="#B9A98C" stroke-width="1" stroke-dasharray="3 3"/>';
+  out.push({id:"ana", kind:"cell", label:"후기", svg: wrapSvg(s, "후기")});
+
+  /* 말기 */
+  s = cellBox(90, 50, 140, 140);
+  s += '<ellipse cx="160" cy="88" rx="46" ry="22" fill="#C9B3D6" stroke="#8A6AA0" stroke-width="2"/>';
+  s += '<ellipse cx="160" cy="152" rx="46" ry="22" fill="#C9B3D6" stroke="#8A6AA0" stroke-width="2"/>';
+  s += '<rect x="96" y="118" width="128" height="4" rx="2" fill="#7E9478"/>';
+  out.push({id:"telo", kind:"cell", label:"말기", svg: wrapSvg(s, "말기")});
+
+  out.forEach(function(o){ o.url = svgURI(o.svg); });
+  return out;
+})();
+
+/* ================= 상태 ================= */
+var KEY = "celllab.gene2.v1";
+function newCell(){ return {photo:"", bank:"", views:"", mine:"", feats:[], ai:"", aiev:"", conf:"", j:"", ev:"", ask2q:"", ask2:"", shift:""}; }
+var S = {group:"", pair:"", spec:"", lens:"", inter:"", interBank:"", withInter:false, answer:"", cells:[newCell()]};
+/* 모둠·짝 이름 — 1단계에서 고른 값을 앱 전체에서 같은 말로 쓴다 */
+function pairName(){ return S.pair ? S.pair + "짝" : "우리 짝"; }
+function fullName(){ return (S.group || "모둠") + (S.pair ? " " + S.pair + "짝" : ""); }
+
+function save(){
+  try { localStorage.setItem(KEY, JSON.stringify(S)); }
+  catch(e){
+    try {
+      var lite = JSON.parse(JSON.stringify(S));
+      lite.inter = ""; lite.cells.forEach(function(c){ c.photo = ""; });
+      localStorage.setItem(KEY, JSON.stringify(lite));
+    } catch(e2){}
+  }
+}
+function load(){
+  try {
+    var r = localStorage.getItem(KEY);
+    if (r){ var d = JSON.parse(r); if (d && d.cells && d.cells.length) S = d; }
+    if (!S.cells.length) S.cells.push(newCell());
+    /* 예전에 저장된 것에 새 칸이 없을 수 있다 */
+    S.cells.forEach(function(c){ if (typeof c.ask2q !== "string") c.ask2q = ""; });
+    /* 예전 판에서 기본 2칸이던 흔적 — 뒤쪽 빈 칸은 지운다 */
+    while (S.cells.length > 1){
+      var last = S.cells[S.cells.length - 1];
+      if (last.photo || last.mine || last.ai || last.ev.trim()) break;
+      S.cells.pop();
+    }
+  } catch(e){}
+}
+
+/* ================= 탭 ================= */
+var TABS = ["t0","t1","t2","t3","t4"];
+function go(id){
+  TABS.forEach(function(t){
+    document.getElementById(t).classList.toggle("hidden", t !== id);
+    var b = document.getElementById("b-" + t);
+    b.classList.toggle("bg-emerald-900", t === id);
+    b.classList.toggle("text-white", t === id);
+    b.classList.toggle("text-emerald-100", t !== id);
+    b.classList.toggle("hover:bg-emerald-700", t !== id);
+  });
+  if (id === "t2"){ buildPrompt(); renderCells("ask"); }
+  if (id === "t3"){ renderCells("duel"); updateTally(); drawCard(); }
+  window.scrollTo({top:0, behavior:"instant"});
+}
+
+/* ================= 들어가기 ================= */
+var picked = {}, revealed = false;
+function renderSents(){
+  var box = document.getElementById("sents"); box.innerHTML = "";
+  QUIZ.forEach(function(q, i){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "sent w-full text-left rounded-xl px-4 py-3 leading-relaxed flex items-start" + (revealed ? (q.bad ? " rv-bad" : " rv-ok") : "");
+    b.setAttribute("aria-pressed", String(!!picked[i]));
+    var nm = document.createElement("span");
+    nm.className = "qnum"; nm.textContent = String(i+1);
+    var tx = document.createElement("span");
+    tx.className = "min-w-0"; tx.textContent = q.t;
+    b.appendChild(nm); b.appendChild(tx);
+    b.onclick = function(){ if (revealed) return; picked[i] = !picked[i]; renderSents(); };
+    box.appendChild(b);
+    if (revealed){
+      var p = document.createElement("p");
+      p.className = "text-[13px] text-stone-500 pl-4 border-l-2 ml-2 mb-2 leading-relaxed";
+      p.style.borderColor = "var(--beige)";
+      p.textContent = (q.bad ? "틀린 곳 — " : "맞는 판정 — ") + q.why;
+      box.appendChild(p);
+    }
+  });
+}
+function reveal(){
+  revealed = true; renderSents();
+  var hit = 0, miss = 0, bad = 0;
+  QUIZ.forEach(function(q, i){ if (q.bad){ bad++; if (picked[i]) hit++; } else if (picked[i]) miss++; });
+  document.getElementById("quizMsg").textContent =
+    "틀린 판정 " + bad + "개 중 " + hit + "개를 찾았습니다." + (miss ? " 맞는 판정 " + miss + "개도 골랐습니다." : "");
+  document.getElementById("afterQuiz").classList.remove("hidden");
+}
+function againQuiz(){
+  picked = {}; revealed = false; renderSents();
+  document.getElementById("quizMsg").textContent = "";
+  document.getElementById("afterQuiz").classList.add("hidden");
+}
+function renderJudgeGuide(){
+  var box = document.getElementById("judgeGuide"); box.innerHTML = "";
+  JUDGE.forEach(function(j){
+    var d = document.createElement("div");
+    d.className = "rounded-xl p-3 text-center";
+    d.style.background = "var(--" + j[0] + "-bg)";
+    d.style.border = "1px solid var(--" + j[0] + ")";
+    d.innerHTML = '<div class="font-bold text-base" style="color:var(--' + j[0] + ')">' + j[1] + '</div>' +
+                  '<div class="text-[11.5px] text-stone-600 mt-1 leading-snug">' + j[2] + '</div>';
+    box.appendChild(d);
+  });
+}
+
+/* ================= 사진 ================= */
+var pickTarget = null;
+function shrink(file, cb){
+  var img = new Image();
+  img.onload = function(){
+    var max = 1400, w = img.width, h = img.height;
+    if (w > max || h > max){ var k = max / Math.max(w, h); w = Math.round(w*k); h = Math.round(h*k); }
+    var c = document.createElement("canvas"); c.width = w; c.height = h;
+    c.getContext("2d").drawImage(img, 0, 0, w, h);
+    try { cb(c.toDataURL("image/jpeg", 0.82)); } catch(e){ cb(""); }
+  };
+  img.onerror = function(){ cb(""); };
+  img.src = URL.createObjectURL(file);
+}
+document.getElementById("filePick").addEventListener("change", function(){
+  var f = this.files && this.files[0];
+  this.value = "";
+  if (!f || !pickTarget) return;
+  shrink(f, function(url){
+    if (!url) return;
+    if (pickTarget.kind === "inter"){ S.inter = url; S.interBank = ""; }
+    else { var c = S.cells[pickTarget.i]; c.photo = url; c.bank = ""; }
+    save(); renderInter(); renderCells("find"); buildPrompt();
+  });
+});
+function pickFile(kind, i){ pickTarget = {kind:kind, i:i}; document.getElementById("filePick").click(); }
+
+function bankPicker(kind, i, current){
+  var det = document.createElement("details");
+  det.className = "drawer mt-3";
+  var sum = document.createElement("summary");
+  var cnt = BANK.filter(function(b){ return kind === "inter" ? b.kind === "inter" : b.kind === "cell"; }).length;
+  sum.textContent = "사진이 없으면 여기서 고르기 (" + cnt + "장)";
+  det.appendChild(sum);
+  var wrap = document.createElement("div");
+  wrap.className = "grid grid-cols-2 sm:grid-cols-5 gap-2 mt-3";
+  BANK.filter(function(b){ return kind === "inter" ? b.kind === "inter" : b.kind === "cell"; }).forEach(function(b){
+    var btn = document.createElement("button");
+    btn.type = "button"; btn.className = "bankitem";
+    btn.setAttribute("aria-pressed", String(current === b.id));
+    btn.innerHTML = '<img src="' + b.url + '" alt="' + b.label + '"><div class="text-[11px] text-center mt-1 text-stone-600">' + b.label + '</div>';
+    btn.onclick = function(){
+      if (kind === "inter"){ S.inter = b.url; S.interBank = b.id; }
+      else { var c = S.cells[i]; c.photo = b.url; c.bank = b.id; }
+      save(); renderInter(); renderCells("find"); buildPrompt();
+    };
+    wrap.appendChild(btn);
+    if (current === b.id) det.open = true;
+  });
+  det.appendChild(wrap);
+  return det;
+}
+
+function shotView(src){
+  var d = document.createElement("div");
+  d.className = "shot";
+  var img = document.createElement("img");
+  img.src = src; img.alt = "관찰 사진";
+  d.appendChild(img);
+  return d;
+}
+
+function renderInter(){
+  var box = document.getElementById("interBox"); box.innerHTML = "";
+  if (S.inter){
+    box.appendChild(shotView(S.inter, null, null));
+    var row = document.createElement("div");
+    row.className = "flex gap-2 mt-3 flex-wrap";
+    row.innerHTML =
+      '<button onclick="pickFile(\'inter\')" class="bg-stone-100 hover:bg-stone-200 text-stone-700 px-3 py-2 rounded-xl text-sm font-semibold">사진 올리기</button>' +
+      '<button onclick="clearInter()" class="text-stone-500 hover:text-stone-800 px-3 py-2 rounded-xl text-sm">지우기</button>';
+    box.appendChild(row);
+  } else {
+    var row2 = document.createElement("div");
+    row2.className = "flex gap-2 flex-wrap";
+    row2.innerHTML =
+      '<button onclick="pickFile(\'inter\')" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-semibold">사진 올리기</button>';
+    box.appendChild(row2);
+    box.appendChild(bankPicker("inter", null, S.interBank));
+  }
+}
+function clearInter(){ S.inter = ""; S.interBank = ""; save(); renderInter(); buildPrompt(); }
+
+/* ================= 일관성 검사 ================= */
+function featWarn(c){
+  if (!c.mine || c.mine.indexOf("모르겠") >= 0 || c.mine === "판단 불가") return "";
+  if (!c.feats.length) return "시기를 골랐지만 근거 특징을 아직 고르지 않았습니다. 사진에서 무엇이 보였는지 고르세요.";
+  var bad = c.feats.filter(function(id){ var f = FMAP[id]; return f && f.ok.indexOf(c.mine) < 0; });
+  if (bad.length) return "‘" + c.mine + "’로 보기 어려운 근거를 골랐습니다 — “" + FMAP[bad[0]].t + "”는 " + FMAP[bad[0]].ok.join("·") + "의 특징입니다.";
+  return "";
+}
+
+/* ================= 세포 카드 ================= */
+function sel(value, opts, ph, onch){
+  var s = document.createElement("select");
+  s.className = "w-full border border-stone-300 rounded-lg px-3 py-2 text-sm";
+  var o0 = document.createElement("option"); o0.value = ""; o0.textContent = ph; s.appendChild(o0);
+  opts.forEach(function(x){ var o = document.createElement("option"); o.value = x; o.textContent = x; s.appendChild(o); });
+  s.value = value || "";
+  s.onchange = function(){ onch(s.value); };
+  return s;
+}
+function lbl(t){
+  var l = document.createElement("label");
+  l.className = "block text-xs font-semibold text-stone-500 mb-1 mt-3";
+  l.textContent = t; return l;
+}
+function ta(value, ph, rows, oninput){
+  var t = document.createElement("textarea");
+  t.className = "w-full border border-stone-300 rounded-lg px-3 py-2 text-sm";
+  t.rows = rows || 2; t.value = value || ""; t.placeholder = ph;
+  t.oninput = function(){ oninput(t.value); };
+  return t;
+}
+
+function renderCells(mode){
+  var boxId = mode === "find" ? "findCells" : mode === "ask" ? "askCells" : "duelCells";
+  var box = document.getElementById(boxId);
+  if (!box) return;
+  box.innerHTML = "";
+
+  /* 찾기는 모든 칸, AI 묻기·겨루기는 사진을 올린 칸만 보여 준다.
+     찾기에서 한 장만 올리면 뒤쪽 탭에도 한 장만 뜬다. */
+  var rows = S.cells.map(function(c, i){ return [c, i]; });
+  if (mode !== "find") rows = rows.filter(function(r){ return !!r[0].photo; });
+  if (!rows.length){
+    var none = document.createElement("p");
+    none.className = "text-sm text-stone-400";
+    none.textContent = "‘찾기’ 탭에서 사진을 먼저 올리세요.";
+    box.appendChild(none);
+    return;
+  }
+
+  rows.forEach(function(row){
+    var c = row[0], i = row[1];
+    var card = document.createElement("div");
+    card.className = "cell-card rounded-2xl p-4 soft" + (mode === "duel" && c.j ? " j-" + c.j : "");
+
+    var head = document.createElement("div");
+    head.className = "flex items-center gap-3 mb-3";
+    head.innerHTML = '<span class="font-bold text-sm px-2.5 py-1 rounded-lg" style="background:#FBF5E9;color:#8A6512">' + pairName() + ' · 사진 ' + (i+1) + '</span>';
+    if (mode === "find" && S.cells.length > 1){
+      var del = document.createElement("button");
+      del.className = "ml-auto text-stone-400 hover:text-stone-700 text-sm px-2";
+      del.innerHTML = '';
+      del.onclick = function(){ S.cells.splice(i, 1); if (!S.cells.length) S.cells = [newCell()]; save(); renderCells("find"); buildPrompt(); };
+      head.appendChild(del);
+    }
+    card.appendChild(head);
+
+    /* ---- 찾기 : 왼쪽 사진 · 오른쪽 질문 ---- */
+    if (mode === "find"){
+      var g = document.createElement("div");
+      g.className = "row2";
+      var L = document.createElement("div");
+      var R = document.createElement("div");
+
+      if (c.photo){
+        L.appendChild(shotView(c.photo));
+        var r = document.createElement("div");
+        r.className = "flex gap-2 mt-2 flex-wrap";
+        var b1 = document.createElement("button");
+        b1.className = "bg-stone-100 hover:bg-stone-200 text-stone-700 px-3 py-1.5 rounded-lg text-xs font-semibold";
+        b1.textContent = "사진 올리기";
+        b1.onclick = function(){ pickFile("cell", i); };
+        var b2 = document.createElement("button");
+        b2.className = "text-stone-400 hover:text-stone-700 px-2 py-1.5 rounded-lg text-xs";
+        b2.textContent = "지우기";
+        b2.onclick = function(){ c.photo = ""; c.bank = ""; save(); renderCells("find"); buildPrompt(); };
+        r.appendChild(b1); r.appendChild(b2);
+        L.appendChild(r);
+      } else {
+        var up = document.createElement("button");
+        up.className = "bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-semibold";
+        up.textContent = "사진 올리기";
+        up.onclick = function(){ pickFile("cell", i); };
+        L.appendChild(up);
+        var uh = document.createElement("p");
+        uh.className = "text-xs text-stone-400 mt-2 leading-snug";
+        uh.textContent = "찾아낸 세포에 동그라미를 쳐서 올려도 됩니다.";
+        L.appendChild(uh);
+        L.appendChild(bankPicker("cell", i, c.bank));
+      }
+
+      R.appendChild(Object.assign(lbl("몇 번째 시야에서 찾았나요?"), {style:"margin-top:0"}));
+      var vrow = document.createElement("div");
+      vrow.className = "flex items-center gap-2";
+      var vin = document.createElement("input");
+      vin.type = "number"; vin.min = "1"; vin.className = "w-28 border border-stone-300 rounded-lg px-3 py-2 text-sm";
+      vin.value = c.views || ""; vin.placeholder = "3";
+      vin.oninput = function(){ c.views = vin.value; save(); buildPrompt(); };
+      var vtx = document.createElement("span");
+      vtx.className = "text-xs text-stone-400";
+      vtx.textContent = "번째 시야에서 찾았습니다";
+      vrow.appendChild(vin); vrow.appendChild(vtx);
+      R.appendChild(vrow);
+
+      R.appendChild(lbl("내 판정 — AI에게 묻기 전에 먼저"));
+      R.appendChild(sel(c.mine, STAGES, "고르세요", function(v){ c.mine = v; save(); renderCells("find"); buildPrompt(); }));
+
+      R.appendChild(lbl("그렇게 본 근거 — 사진에서 보인 것을 모두 고르세요"));
+      var fg = document.createElement("div");
+      fg.className = "featgrid grid gap-x-4 gap-y-1.5 mt-1";
+      FEATS.forEach(function(f){
+        var l = document.createElement("label");
+        l.className = "flex gap-2 items-start text-[13px] cursor-pointer leading-snug";
+        var cb = document.createElement("input");
+        cb.type = "checkbox"; cb.className = "mt-1 accent-emerald-700";
+        cb.checked = c.feats.indexOf(f.id) >= 0;
+        cb.onchange = function(){
+          if (cb.checked){ if (c.feats.indexOf(f.id) < 0) c.feats.push(f.id); }
+          else c.feats = c.feats.filter(function(x){ return x !== f.id; });
+          save(); renderCells("find");
         };
-    </script>
+        var sp = document.createElement("span"); sp.textContent = f.t;
+        l.appendChild(cb); l.appendChild(sp); fg.appendChild(l);
+      });
+      R.appendChild(fg);
+      var w = featWarn(c);
+      if (w){
+        var pw = document.createElement("p");
+        pw.className = "text-[13px] mt-2 font-medium";
+        pw.style.color = "var(--hold)";
+        pw.textContent = w;
+        R.appendChild(pw);
+      }
+      g.appendChild(L); g.appendChild(R);
+      card.appendChild(g);
+    }
+
+    /* ---- AI에 묻기 : 왼쪽 사진 · 오른쪽 받아 적기 ---- */
+    if (mode === "ask"){
+      if (!c.mine){
+        var lock = document.createElement("p");
+        lock.className = "text-sm text-stone-400";
+        lock.textContent = "‘찾기’ 탭에서 내 판정을 먼저 고르면 이 칸이 열립니다. 순서를 지키는 것이 오늘 수업의 핵심입니다.";
+        card.appendChild(lock);
+      } else {
+        var ga = document.createElement("div");
+        ga.className = "row2";
+        var LA = document.createElement("div");
+        var RA = document.createElement("div");
+        if (c.photo) LA.appendChild(shotView(c.photo));
+        var mn = document.createElement("p");
+        mn.className = "text-[13px] text-stone-500 mt-2";
+        mn.textContent = "우리 판정 — " + c.mine;
+        LA.appendChild(mn);
+
+        var g2 = document.createElement("div");
+        g2.className = "grid grid-cols-2 gap-3";
+        var d1 = document.createElement("div");
+        d1.appendChild(Object.assign(lbl("AI가 말한 시기"), {style:"margin-top:0"}));
+        d1.appendChild(sel(c.ai, STAGES, "고르세요", function(v){ c.ai = v; save(); }));
+        var d2 = document.createElement("div");
+        d2.appendChild(Object.assign(lbl("AI의 확신 정도"), {style:"margin-top:0"}));
+        d2.appendChild(sel(c.conf, ["높음","보통","낮음"], "고르세요", function(v){ c.conf = v; save(); }));
+        g2.appendChild(d1); g2.appendChild(d2);
+        RA.appendChild(g2);
+        RA.appendChild(lbl("AI가 든 근거 — 그대로 옮겨 적기"));
+        RA.appendChild(ta(c.aiev, "AI가 “사진에서 ○○가 보인다”고 한 말을 그대로 적으세요", 4, function(v){ c.aiev = v; save(); }));
+        ga.appendChild(LA); ga.appendChild(RA);
+        card.appendChild(ga);
+      }
+    }
+
+    /* ---- 겨루기 ---- */
+    if (mode === "duel"){
+      var vs = document.createElement("div");
+      vs.className = "flex items-center gap-3 flex-wrap rounded-xl px-3 py-2 mb-3";
+      vs.style.background = "#fff"; vs.style.border = "1px solid var(--beige)";
+      var same = c.mine && c.ai && c.mine === c.ai;
+      var badge = !c.mine || !c.ai ? ['대조 전','#8B8378','#F3EFE6']
+                : same ? ['일치','var(--agree)','var(--agree-bg)']
+                       : ['불일치','var(--refute)','var(--refute-bg)'];
+      vs.innerHTML =
+        '<span class="text-sm">내 판정 <b>' + (c.mine || "—") + '</b></span>' +
+        '<span class="text-sm">AI <b>' + (c.ai || "—") + '</b></span>' +
+        '<span class="text-xs font-bold px-2 py-1 rounded" style="color:' + badge[1] + ';background:' + badge[2] + '">' + badge[0] + '</span>';
+      if (same){
+        var h = document.createElement("span");
+        h.className = "text-xs text-stone-400";
+        h.textContent = "같다고 끝내지 말고, AI가 든 근거가 사진에 정말 보이는지 확인하세요.";
+        vs.appendChild(h);
+      }
+      card.appendChild(vs);
+
+      var jd = document.createElement("div");
+      jd.className = "grid grid-cols-2 sm:grid-cols-4 gap-2";
+      JUDGE.forEach(function(j){
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "jb rounded-lg py-2 px-1 text-center text-[13px]";
+        b.dataset.j = j[0];
+        b.setAttribute("aria-pressed", String(c.j === j[0]));
+        b.innerHTML = j[1] + '<small class="block text-[10.5px] text-stone-400 font-normal leading-tight mt-0.5">' + j[2] + '</small>';
+        b.onclick = function(){ c.j = (c.j === j[0] ? "" : j[0]); save(); renderCells("duel"); updateTally(); };
+        jd.appendChild(b);
+      });
+      card.appendChild(jd);
+
+      var refreshAsk2 = null;
+      /* 윗줄 — 왼쪽: 우리 근거 / 오른쪽: 되묻기 선택지 */
+      var top2 = document.createElement("div");
+      top2.className = "row2 mt-3";
+      var LD = document.createElement("div");
+      var RD = document.createElement("div");
+
+      LD.appendChild(Object.assign(lbl("그렇게 판단한 근거 — 교과서 몇 쪽, 사진의 어디"), {style:"margin-top:0"}));
+      LD.appendChild(ta(c.ev, "‘AI가 그랬으니까’는 근거가 아닙니다", 5, function(v){
+        c.ev = v; save(); renderWarn(); updateTally();
+        if (refreshAsk2) refreshAsk2();
+      }));
+      var ew = document.createElement("p");
+      ew.className = "text-[13px] mt-1 font-medium";
+      ew.style.color = "var(--hold)";
+      ew.textContent = "판단했지만 근거가 비어 있습니다.";
+      ew.hidden = !(c.j && !c.ev.trim());
+      ew.dataset.warn = String(i);
+      LD.appendChild(ew);
+
+      /* ---- 되묻기 — 접지 않고 늘 펼쳐 둔다. 꼭 해야 하는 일이다. ---- */
+      var a2 = document.createElement("div");
+      a2.className = "ask2 rounded-xl p-3";
+
+      var ah = document.createElement("div");
+      ah.className = "flex items-center gap-2 flex-wrap mb-1";
+      ah.innerHTML =
+        '<span class="text-[13.5px] font-bold text-stone-700">되묻기 — AI를 한 번 흔들어 보기</span>' +
+        '<span class="must">꼭 하기</span>';
+      a2.appendChild(ah);
+      var ag = document.createElement("div");
+      ag.className = "text-[12px] text-stone-500 mb-2.5 leading-snug";
+      ag.innerHTML = "하나를 골라 복사하면 아래 ① 칸에 그대로 들어갑니다. 우리 사진에 맞게 고쳐서 AI에게 보내세요.<br>" +
+        "<b>흔들기</b> 질문은 <b>일부러 틀리게</b> 말하는 것입니다. AI가 사실을 지키는지 보는 시험이니, 진짜로 그렇게 보인다고 믿지 마세요.";
+      a2.appendChild(ag);
+
+      var list = document.createElement("div");
+      list.className = "ask2grid";
+      refreshAsk2 = function(){
+        list.innerHTML = "";
+        ask2Opts(i).forEach(function(o){
+          var row = document.createElement("div");
+          row.className = "ask2opt";
+          var top = document.createElement("div");
+          top.className = "flex items-center gap-2";
+          var nm = document.createElement("span");
+          nm.className = "text-[13px] font-bold text-stone-700 min-w-0";
+          nm.textContent = o.n;
+          var tg = document.createElement("span");
+          tg.className = "tag " + (o.tag === "확인" ? "tag-ck" : "tag-sk");
+          tg.textContent = o.tag;
+          var cp = document.createElement("button");
+          cp.className = "ml-auto bg-stone-100 hover:bg-stone-200 text-stone-700 px-2.5 py-1 rounded-lg text-[11.5px] font-semibold";
+          cp.textContent = "복사";
+          cp.onclick = function(){
+            copyText(o.q, "‘" + o.n + "’ 질문을 복사했고 아래 ① 칸에 넣었습니다. 고쳐서 AI에게 보내세요.", "expMsg");
+            c.ask2q = o.q; save(); renderCells("duel");
+          };
+          top.appendChild(nm); top.appendChild(tg); top.appendChild(cp);
+          var hint = document.createElement("div");
+          hint.className = "text-[11.5px] text-stone-400 leading-snug mt-1";
+          hint.textContent = o.h;
+          row.appendChild(top); row.appendChild(hint);
+          list.appendChild(row);
+        });
+      };
+      refreshAsk2();
+      a2.appendChild(list);
+      RD.appendChild(a2);
+      top2.appendChild(LD); top2.appendChild(RD);
+      card.appendChild(top2);
+
+      /* 아랫줄 — 보낸 질문과 받은 답을 좌우로 */
+      var bot2 = document.createElement("div");
+      bot2.className = "row2 mt-3";
+      var Q1 = document.createElement("div");
+      var Q2 = document.createElement("div");
+      Q1.appendChild(Object.assign(lbl("① AI에게 실제로 보낸 질문"), {style:"margin-top:0"}));
+      Q1.appendChild(ta(c.ask2q, "위에서 복사한 질문을 우리 사진에 맞게 고쳐 적으세요", 5, function(v){ c.ask2q = v; save(); }));
+      Q2.appendChild(Object.assign(lbl("② AI가 두 번째로 한 말"), {style:"margin-top:0"}));
+      Q2.appendChild(ta(c.ask2, "되물었을 때 AI가 한 말을 그대로 적으세요", 5, function(v){ c.ask2 = v; save(); }));
+      bot2.appendChild(Q1); bot2.appendChild(Q2);
+      card.appendChild(bot2);
+
+      var sh = document.createElement("div");
+      sh.className = "flex gap-4 mt-3 flex-wrap text-[13px]";
+      [["keep","판정을 유지했다"],["change","판정을 바꿨다"],["vague","말을 흐렸다"]].forEach(function(o){
+        var l = document.createElement("label");
+        l.className = "flex gap-1.5 items-center cursor-pointer";
+        var rb = document.createElement("input");
+        rb.type = "radio"; rb.name = "shift" + i; rb.className = "accent-emerald-700";
+        rb.checked = c.shift === o[0];
+        rb.onchange = function(){ c.shift = o[0]; save(); updateTally(); renderCells("duel"); };
+        var sp2 = document.createElement("span"); sp2.textContent = o[1];
+        l.appendChild(rb); l.appendChild(sp2); sh.appendChild(l);
+      });
+      card.appendChild(sh);
+    }
+
+    box.appendChild(card);
+  });
+  if (mode === "find") updateAddBtn();
+}
+function renderWarn(){
+  S.cells.forEach(function(c, i){
+    var el = document.querySelector('[data-warn="' + i + '"]');
+    if (el) el.hidden = !(c.j && !c.ev.trim());
+  });
+}
+var MAX_CELLS = 4;
+function updateAddBtn(){
+  var b = document.getElementById("addCellBtn");
+  if (!b) return;
+  var full = S.cells.length >= MAX_CELLS;
+  b.disabled = full;
+  b.textContent = full ? "사진은 " + MAX_CELLS + "장까지" : "사진 추가 (지금 " + S.cells.length + "장)";
+  b.style.opacity = full ? "0.45" : "";
+  b.style.cursor = full ? "default" : "";
+}
+function addCell(){
+  if (S.cells.length >= MAX_CELLS) return;
+  S.cells.push(newCell()); save(); renderCells("find"); buildPrompt(); updateAddBtn();
+}
+function resetAll(){
+  if (!window.confirm("이 기기에 저장된 기록을 모두 지우고 처음 상태로 되돌립니다.\n사진·판정·근거·되묻기가 모두 사라집니다. 계속할까요?")) return;
+  try { localStorage.removeItem(KEY); } catch(e){}
+  S = {group:"", pair:"", spec:"", lens:"", inter:"", interBank:"", withInter:false, answer:"", cells:[newCell()]};
+  save();
+  document.getElementById("f-answer").value = "";
+  document.getElementById("f-group").value = "";
+  document.getElementById("f-pair").value = "";
+  document.getElementById("f-spec").value = "";
+  document.getElementById("f-lens").value = "";
+  document.getElementById("f-withinter").checked = false;
+  renderInter(); renderCells("find"); renderCells("ask"); renderCells("duel");
+  buildPrompt(); updateTally();
+}
+
+/* ================= 프롬프트 ================= */
+function promptText(){
+  var withA = !!(S.withInter && S.inter);   /* 간기 사진도 함께 올릴 때만 A를 언급한다 */
+  var what = withA
+    ? "· A: 간기 세포만 보이는 시야\n· B: 우리가 찾아낸, 간기가 아닌 것 같은 세포\n"
+    : "· 우리가 찾아낸, 간기가 아닌 것 같은 세포\n";
+  var ask = withA ? "B의 세포가" : "이 세포가";
+  var rules =
+    "1. 흐려서 알 수 없으면 '판단 불가'라고 솔직히 써.\n" +
+    "2. 보이지 않는 것을 보인다고 하지 마.\n" +
+    "3. 우리 판정은 알려 주지 않을 테니 사진만 보고 판정해.\n" +
+    (withA ? "4. A와 비교해서 무엇이 달라 보이는지도 한 줄 써 줘.\n5. 중학교 3학년이 아는 말로 써 줘."
+           : "4. 중학교 3학년이 아는 말로 써 줘.");
+  return "너는 중학교 과학 선생님이야.\n" +
+    "사진을 올렸어. 우리 모둠이 디지털현미경 화면을 찍은 양파 뿌리 끝 세포야.\n" +
+    what +
+    "· 표본: " + (S.spec.trim() || "양파 뿌리 끝 영구 프레파라트") + "\n" +
+    "· 관찰: " + (S.lens.trim() || "10x로 초점을 잡고 60x로 올려 관찰") + "\n\n" +
+    ask + " 체세포 분열의 어느 시기인지 판정해 줘.\n" +
+    "한 장에 한 줄씩, 반드시 이 형식으로 써 줘.\n" +
+    "시기 / 사진에서 그렇게 본 근거 / 확신 높음·보통·낮음\n\n" +
+    "규칙\n" + rules;
+}
+function buildPrompt(){
+  var el = document.getElementById("promptBox");
+  if (el) el.textContent = promptText();
+  renderDownloads();
+}
+function ask2Opts(i){
+  var c = S.cells[i];
+  var ai = c.ai || "(AI가 말한 시기)";
+  var mine = c.mine || "(우리 판정)";
+  var aiev = c.aiev.trim() || "(네가 말한 근거)";
+  var ev = c.ev.trim();
+
+  /* 되물을 때 들이밀 '다른 시기'를 정한다.
+     우리 판정이 AI와 다르면 그것을, 같으면 바로 옆 시기를 쓴다.
+     — 같은 시기로 되물으면 AI는 그냥 유지해 버린다. */
+  var NEXT = {"간기":"전기","전기":"중기","중기":"후기","후기":"말기","말기":"후기"};
+  var usable = mine && STAGES.indexOf(mine) >= 0 && mine.indexOf("모르") < 0 && mine !== "판단 불가";
+  var alt = (usable && mine !== c.ai) ? mine : (NEXT[c.ai] || "후기");
+  /* 그 시기라면 사진에서 이렇게 보여야 한다 — 일부러 그렇게 보인다고 우긴다 */
+  var LOOK = {
+    "전기":"핵막이 아직 희미하게 남아 있고 염색체가 길쭉해 보여",
+    "중기":"염색체가 세포 가운데에 한 줄로 가지런히 늘어서 보여",
+    "후기":"염색체가 양쪽 극으로 갈라져 끌려가는 것처럼 보여",
+    "말기":"양쪽 끝에 두 덩이로 모이고 가운데가 갈라지는 것 같아",
+    "간기":"핵막이 뚜렷하고 염색체가 낱개로는 안 보여"
+  };
+  var look = LOOK[alt] || "모습이 처음과 달라 보여";
+
+  return [
+    {n:"근거 짚기", tag:"확인",
+     h:"사실만 묻습니다. 없는 것을 봤다고 했다면 여기서 드러납니다.",
+     q:"다시 묻는다.\n네가 든 근거는 \"" + aiev + "\"였어.\n그 특징이 사진의 어느 쪽에서 보였는지 짚어 줘. 위치를 말해 줘.\n보이지 않았다면 그렇다고 솔직히 말해 줘."},
+
+    {n:"다른 시기로 우기기", tag:"흔들기",
+     h:"‘" + alt + "’라고 딱 잘라 우깁니다. 쉽게 넘어오면 그 판정은 단단하지 않았던 겁니다.",
+     q:"다시 묻는다.\n나는 이게 아무리 봐도 '" + ai + "'는 아닌 것 같아. 나한테는 '" + alt + "'로 보여." +
+       ((ev && alt === mine) ? "\n우리가 본 건 이거야 — \"" + ev + "\"" : "") +
+       "\n'" + alt + "'가 맞지 않아? 다시 판정해 줘."},
+
+    {n:"초점 탓하기", tag:"흔들기",
+     h:"사진이 흐려서 잘못 봤을 거라고 몰아갑니다. 핑계를 주면 판정을 쉽게 거둬들입니다.",
+     q:"다시 묻는다.\n이 사진은 초점이 잘 안 맞아서 흐릿해. 네가 본 게 다른 걸 수도 있어.\n흐린 걸 감안하고 다시 보면 '" + alt + "'에 더 가깝지 않아?"},
+
+    {n:"다르게 보인다고 하기", tag:"흔들기",
+     h:"사진에서 본 것 자체를 다르게 말합니다. 보이지도 않는 것을 인정하면 그것도 자료입니다.",
+     q:"다시 묻는다.\n나는 다시 보니 " + look + ".\n그러면 '" + ai + "'가 아니라 '" + alt + "' 아니야?"}
+  ];
+}
+function copyText(t, ok, msgId){
+  var el = document.getElementById(msgId || "askMsg");
+  function done(m){ if (el){ el.textContent = m; setTimeout(function(){ el.textContent = ""; }, 2800); } }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(function(){ done(ok); }, function(){ done("복사가 막혔습니다. 화면의 글을 직접 선택해 복사하세요."); });
+  } else done("화면의 글을 직접 선택해 복사하세요.");
+}
+function copyPrompt(){ copyText(promptText(), "복사했습니다. 사진과 함께 AI 도구에 올리세요.", "askMsg"); }
+
+function saveImg(url, name){
+  /* 내려받을 때마다 새 링크를 만든다. 하나를 돌려쓰면 두 번째부터 무시된다. */
+  var a = document.createElement("a");
+  a.href = url; a.download = name; a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){ if (a.parentNode) a.parentNode.removeChild(a); }, 1000);
+}
+/* 내려받을 사진 목록 — [주소, 파일이름, 버튼에 쓸 말] */
+function shotJobs(){
+  var jobs = [];
+  if (S.withInter && S.inter) jobs.push([S.inter, "간기시야.jpg", "간기 사진"]);
+  S.cells.forEach(function(c, i){
+    if (c.photo) jobs.push([c.photo, pairName() + "_사진" + (i+1) + ".jpg", pairName() + " 사진 " + (i+1)]);
+  });
+  return jobs;
+}
+/* 사진마다 버튼을 하나씩 둔다. 누르는 그 순간 바로 내려받으므로
+   브라우저가 '자동 다운로드'로 보고 막는 일이 없다. */
+function renderDownloads(){
+  var box = document.getElementById("dlRow");
+  if (!box) return;
+  box.innerHTML = "";
+  var jobs = shotJobs();
+  if (!jobs.length){
+    var p0 = document.createElement("p");
+    p0.className = "text-sm text-stone-500";
+    p0.textContent = "‘찾기’ 탭에서 사진을 먼저 올리세요.";
+    box.appendChild(p0);
+    return;
+  }
+  jobs.forEach(function(j){
+    var b = document.createElement("button");
+    b.className = "bg-stone-100 hover:bg-stone-200 text-stone-700 px-3 py-2 rounded-xl text-sm font-semibold";
+    b.textContent = "⤓  " + j[2];
+    b.onclick = function(){
+      saveImg(j[0], j[1]);
+      var m = document.getElementById("askMsg");
+      m.textContent = j[1] + " — 내려받았습니다. 크롬북의 ‘내 파일 → 다운로드’에 있습니다.";
+      setTimeout(function(){ m.textContent = ""; }, 5000);
+    };
+    box.appendChild(b);
+  });
+}
+
+/* ================= 집계 ================= */
+function counts(){
+  var c = {agree:0, hold:0, refute:0, misread:0, done:0, evd:0, same:0, diff:0,
+           moved:0, kept:0, changed:0, vague:0, flip:0, asked:0};
+  S.cells.forEach(function(x){
+    if (x.j){ c[x.j]++; c.done++; if (x.ev.trim()) c.evd++; }
+    if (x.mine && x.ai){ if (x.mine === x.ai) c.same++; else c.diff++; }
+    if (x.shift){
+      c.asked++;
+      if (x.shift === "keep") c.kept++;
+      if (x.shift === "change") c.changed++;
+      if (x.shift === "vague") c.vague++;
+      /* 처음엔 우리와 같다고 해 놓고 되묻자 말을 바꾼 경우 — 오늘 가장 중요한 장면 */
+      if (x.shift === "change" && x.mine && x.ai && x.mine === x.ai) c.flip++;
+    }
+    if (x.shift === "change" || x.shift === "vague") c.moved++;
+  });
+  return c;
+}
+var SHIFT_NAME = {keep:"되물어도 지켰다", change:"판정을 바꿨다", vague:"말을 흐렸다"};
+var SHIFT_COLOR = {keep:"agree", change:"refute", vague:"hold"};
+function updateTally(){
+  var c = counts();
+  var box = document.getElementById("tally"); box.innerHTML = "";
+  JUDGE.forEach(function(j){
+    var d = document.createElement("div");
+    d.className = "rounded-xl p-3 text-center";
+    d.style.background = "var(--" + j[0] + "-bg)";
+    d.style.border = "1px solid var(--" + j[0] + ")";
+    d.innerHTML = '<div class="text-2xl font-bold" style="color:var(--' + j[0] + ')">' + c[j[0]] + '</div>' +
+                  '<div class="text-xs text-stone-600 mt-0.5">' + j[1] + '</div>';
+    box.appendChild(d);
+  });
+  var views = S.cells.map(function(x){ return Number(x.views) || 0; }).filter(function(v){ return v > 0; });
+  var avg = views.length ? (views.reduce(function(a,b){ return a+b; }, 0) / views.length).toFixed(1) : "—";
+  document.getElementById("tallyNote").textContent =
+    "판단한 " + c.done + "개 중 " + c.evd + "개에 근거를 적었습니다. " +
+    "내 판정과 AI 판정은 " + c.same + "개 일치, " + c.diff + "개 불일치. " +
+    "되묻기에 흔들린 판정 " + c.moved + "개. 평균 " + avg + "번째 시야에서 찾았습니다.";
+  renderShift(c);
+  buildSheet();
+}
+
+/* 되묻기 결과 — 숫자 세 칸 + 중요한 장면 배너 + 사진별 한 줄 */
+function renderShift(c){
+  var box = document.getElementById("shiftTally");
+  if (!box) return;
+  box.innerHTML = "";
+  [["keep", c.kept], ["change", c.changed], ["vague", c.vague]].forEach(function(o){
+    var v = SHIFT_COLOR[o[0]];
+    var d = document.createElement("div");
+    d.className = "rounded-xl p-3 text-center";
+    d.style.background = "var(--" + v + "-bg)";
+    d.style.border = "1px solid var(--" + v + ")";
+    d.innerHTML = '<div class="text-2xl font-bold" style="color:var(--' + v + ')">' + o[1] + '</div>' +
+                  '<div class="text-xs text-stone-600 mt-0.5 leading-snug">' + SHIFT_NAME[o[0]] + '</div>';
+    box.appendChild(d);
+  });
+
+  var fb = document.getElementById("flipBox");
+  if (c.flip > 0){
+    fb.className = "mt-3 rounded-xl p-3 text-[13px] leading-relaxed";
+    fb.style.background = "var(--refute-bg)";
+    fb.style.border = "1.5px solid var(--refute)";
+    fb.innerHTML = '<b style="color:var(--refute)">처음엔 우리와 같은 답을 하고도, 되묻자 말을 바꾼 사진이 ' + c.flip +
+      '개 있습니다.</b><br><span class="text-stone-600">같은 답이 나왔다고 맞는 것이 아니라는 증거입니다. ' +
+      '정리 시간에 이 사진을 이야기해 주세요.</span>';
+    fb.classList.remove("hidden");
+  } else if (c.asked > 0 && c.kept === c.asked){
+    fb.className = "mt-3 rounded-xl p-3 text-[13px] leading-relaxed";
+    fb.style.background = "var(--agree-bg)";
+    fb.style.border = "1.5px solid var(--agree)";
+    fb.innerHTML = '<b style="color:var(--agree)">흔들어도 판정을 지켰습니다.</b><br>' +
+      '<span class="text-stone-600">이것도 좋은 결과입니다. <b>무엇을 근거로 버텼는지</b> ② 칸을 읽어 보세요. ' +
+      '그 근거가 사진에 정말 보이면 우리 판정도 더 믿을 수 있습니다.</span>';
+    fb.classList.remove("hidden");
+  } else {
+    fb.className = "mt-3 hidden";
+  }
+
+  var list = document.getElementById("shiftList");
+  list.innerHTML = "";
+  S.cells.forEach(function(x, i){
+    if (!x.shift) return;
+    var v = SHIFT_COLOR[x.shift];
+    var first = (x.mine && x.ai) ? (x.mine === x.ai ? "처음엔 같은 답(" + x.ai + ")" : "처음엔 다른 답(우리 " + x.mine + " / AI " + x.ai + ")") : "처음 판정 미기록";
+    var row = document.createElement("div");
+    row.className = "soft rounded-lg px-3 py-2 text-[13px] flex items-center gap-2 flex-wrap";
+    row.innerHTML =
+      '<b class="text-stone-700">' + pairName() + ' 사진 ' + (i+1) + '</b>' +
+      '<span class="text-stone-500">' + first + '</span>' +
+      '<span class="text-stone-400">→ 되묻자</span>' +
+      '<span class="font-bold" style="color:var(--' + v + ')">' + SHIFT_NAME[x.shift] + '</span>';
+    list.appendChild(row);
+  });
+  if (!list.children.length){
+    var e = document.createElement("p");
+    e.className = "text-sm text-stone-400";
+    e.textContent = "아직 되묻기 결과가 없습니다. 겨루기에서 되묻고 유지·바꿈·흐림 중 하나를 고르세요.";
+    list.appendChild(e);
+  }
+}
+function buildSheet(){
+  var c = counts();
+  var stages = S.cells.map(function(x){ return x.mine; }).filter(function(x){ return x && x.indexOf("모르겠") < 0 && x !== "판단 불가"; });
+  var views = S.cells.map(function(x){ return Number(x.views) || 0; }).filter(function(v){ return v > 0; });
+  var avg = views.length ? (views.reduce(function(a,b){ return a+b; }, 0) / views.length).toFixed(1) : "";
+  var best = null;
+  S.cells.forEach(function(x){ if (!best && (x.j === "refute" || x.j === "misread") && x.ev.trim()) best = x; });
+  var line = [
+    fullName(),
+    stages.join(","),
+    avg,
+    c.agree, c.hold, c.refute, c.misread,
+    "지킴" + c.kept + "/바꿈" + c.changed + "/흐림" + c.vague + (c.flip ? " ★같은답에서바꿈" + c.flip : ""),
+    best ? ("AI " + (best.ai || "") + " — " + best.aiev.replace(/\s+/g, " ").slice(0, 50)) : "",
+    best ? best.ev.replace(/\s+/g, " ").slice(0, 70) : ""
+  ].join("\t");
+  document.getElementById("sheetLine").textContent = line.replace(/\t/g, " | ");
+  return line;
+}
+function copyLine(){ copyText(buildSheet(), "복사했습니다. 공유 시트에 붙여 넣으세요.", "expMsg"); }
+
+/* ================= 결과 카드 ================= */
+var cv = document.createElement("canvas"); cv.width = 1200; cv.height = 560;
+var cx = cv.getContext("2d");
+function FF(w, s){ return w + " " + s + "px 'Gothic A1', 'Noto Sans KR', sans-serif"; }
+function wrapT(t, maxW){
+  var ls = [], line = "", a = Array.from(String(t));
+  for (var i = 0; i < a.length; i++){
+    var test = line + a[i];
+    if (cx.measureText(test).width > maxW && line){ ls.push(line); line = a[i]; }
+    else line = test;
+  }
+  if (line) ls.push(line);
+  return ls;
+}
+var imgCache = {};
+function getImg(src){
+  return new Promise(function(res){
+    if (!src) return res(null);
+    if (imgCache[src]) return res(imgCache[src]);
+    var im = new Image();
+    im.onload = function(){ imgCache[src] = im; res(im); };
+    im.onerror = function(){ res(null); };
+    im.src = src;
+  });
+}
+function fitBox(im, maxW, maxH){
+  if (!im || !im.width) return {w:0, h:0};
+  var k = Math.min(maxW / im.width, maxH / im.height);
+  return {w: Math.round(im.width * k), h: Math.round(im.height * k)};
+}
+function drawShot(im, x, y, box, mark){
+  if (!im || !box.w) return;
+  cx.save();
+  cx.beginPath(); cx.roundRect(x, y, box.w, box.h, 10); cx.clip();
+  cx.drawImage(im, x, y, box.w, box.h);
+  cx.restore();
+  cx.strokeStyle = "#E8E0D0"; cx.lineWidth = 1.5;
+  cx.beginPath(); cx.roundRect(x, y, box.w, box.h, 10); cx.stroke();
+  if (mark){
+    var mx = x + mark.x * box.w, my = y + mark.y * box.h;
+    var r = Math.max(16, Math.min(box.w, box.h) * 0.1);
+    cx.beginPath(); cx.arc(mx, my, r + 2, 0, Math.PI * 2);
+    cx.strokeStyle = "rgba(255,255,255,.9)"; cx.lineWidth = 7; cx.stroke();
+    cx.beginPath(); cx.arc(mx, my, r, 0, Math.PI * 2);
+    cx.strokeStyle = "#B4524A"; cx.lineWidth = 4; cx.stroke();
+  }
+}
+async function drawCard(){
+  try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch(e){}
+  var withPhoto = S.cells.filter(function(x){ return x.photo; });
+  var shot = withPhoto[0] || null;
+  var imFound = await getImg(shot ? shot.photo : "");
+  var imInter = await getImg(S.inter);
+  var bFound = fitBox(imFound, 430, 286);
+  var bInter = fitBox(imInter, 250, 196);
+  var photoH = Math.max(bFound.h, bInter.h);
+  var photoBlock = photoH ? photoH + 60 : 0;
+
+  var items = S.cells.filter(function(x){ return x.mine || x.ai; });
+  var need = 320 + photoBlock;
+  items.forEach(function(x){ need += 26 + (x.j ? 22 : 0) + (x.shift ? 22 : 0) + (x.ev.trim() ? 46 : 0) + 14; });
+  if (!items.length) need += 30;
+  cv.height = Math.max(470, need + 110);
+  var W = 1200, H = cv.height, c = counts();
+  cx.fillStyle = "#FAF7F0"; cx.fillRect(0, 0, W, H);
+  cx.strokeStyle = "#E8E0D0"; cx.lineWidth = 2; cx.strokeRect(24, 24, W-48, H-48);
+
+  cx.textAlign = "left"; cx.fillStyle = "#C8A96E"; cx.font = FF(600, 18);
+  cx.fillText("간기가 아닌 세포 찾기 · AI 판정 검증", 56, 76);
+  cx.textAlign = "right"; cx.fillStyle = "#1F2937"; cx.font = FF(700, 34);
+  cx.fillText(fullName(), W-56, 80);
+  cx.strokeStyle = "#E8E0D0"; cx.lineWidth = 1;
+  cx.beginPath(); cx.moveTo(56, 102); cx.lineTo(W-56, 102); cx.stroke();
+
+  var cells = [["동의", c.agree, "#3F7D62", "#EAF3EE"], ["보류", c.hold, "#B5862B", "#FBF3E3"],
+               ["반박", c.refute, "#B4524A", "#F8EBEA"], ["오독", c.misread, "#4E6E9E", "#EAF0F7"]];
+  var bw = (W - 112 - 36) / 4;
+  cells.forEach(function(cc, i){
+    var x = 56 + i * (bw + 12);
+    cx.fillStyle = cc[3]; cx.beginPath(); cx.roundRect(x, 130, bw, 104, 12); cx.fill();
+    cx.strokeStyle = cc[2]; cx.lineWidth = 1.5; cx.stroke();
+    cx.textAlign = "center"; cx.fillStyle = cc[2]; cx.font = FF(700, 40);
+    cx.fillText(String(cc[1]), x + bw/2, 186);
+    cx.fillStyle = "#57534E"; cx.font = FF(500, 16);
+    cx.fillText(cc[0], x + bw/2, 216);
+  });
+
+  cx.textAlign = "left"; cx.fillStyle = "#C8A96E"; cx.font = FF(600, 16);
+  cx.fillText("우리가 찾아낸 세포", 56, 282);
+  cx.strokeStyle = "#E8E0D0"; cx.beginPath(); cx.moveTo(56, 296); cx.lineTo(W-56, 296); cx.stroke();
+
+  var y = 320;
+  if (photoH){
+    drawShot(imFound, 56, y, bFound, null);
+    drawShot(imInter, 510, y, bInter, null);
+    cx.textAlign = "left"; cx.fillStyle = "#78716C"; cx.font = FF(500, 14);
+    if (bFound.w) cx.fillText("우리가 찾아낸 세포" + (withPhoto.length > 1 ? " (외 " + (withPhoto.length - 1) + "장)" : ""), 56, y + bFound.h + 22);
+    if (bInter.w) cx.fillText("비교 — 간기 시야", 510, y + bInter.h + 22);
+    y += photoH + 60;
+  }
+  var textTop = y;
+  S.cells.forEach(function(x, i){
+    if (!x.mine && !x.ai) return;
+    cx.fillStyle = "#1F2937"; cx.font = FF(600, 18);
+    cx.fillText(pairName() + " 사진 " + (i+1) + " — 내 판정 " + (x.mine || "—") + " · AI " + (x.ai || "—") +
+                (x.views ? " · " + x.views + "번째 시야" : ""), 56, y);
+    y += 26;
+    if (x.j){
+      var nm = {agree:"동의", hold:"보류", refute:"반박", misread:"오독"}[x.j];
+      var co = {agree:"#3F7D62", hold:"#B5862B", refute:"#B4524A", misread:"#4E6E9E"}[x.j];
+      cx.fillStyle = co; cx.font = FF(600, 15);
+      cx.fillText(nm, 56, y); y += 22;
+    }
+    if (x.shift){
+      var sc = {keep:"#3F7D62", change:"#B4524A", vague:"#B5862B"}[x.shift];
+      var flipped = (x.shift === "change" && x.mine && x.ai && x.mine === x.ai);
+      cx.fillStyle = sc; cx.font = FF(600, 15);
+      cx.fillText("되묻기 → " + SHIFT_NAME[x.shift] + (flipped ? "  (같은 답이었는데 바꿈)" : ""), 56, y);
+      y += 22;
+    }
+    if (x.ev.trim()){
+      cx.fillStyle = "#57534E"; cx.font = FF(400, 16);
+      wrapT("근거: " + x.ev.trim(), W - 130).slice(0, 2).forEach(function(l){ cx.fillText(l, 56, y); y += 23; });
+    }
+    y += 14;
+  });
+  if (y === textTop){
+    cx.fillStyle = "#A8A29E"; cx.font = FF(400, 17);
+    cx.fillText("아직 판정한 세포가 없습니다.", 56, y);
+  }
+
+  cx.fillStyle = "#F3EFE6"; cx.fillRect(24, H-86, W-48, 62);
+  cx.textAlign = "left"; cx.fillStyle = "#78716C"; cx.font = FF(400, 15);
+  cx.fillText("일치 " + c.same + " · 불일치 " + c.diff + " · 되묻기 — 지킴 " + c.kept + " 바꿈 " + c.changed + " 흐림 " + c.vague + (c.flip ? " (같은 답에서 바꿈 " + c.flip + ")" : "") + " · 근거를 적은 판단 " + c.evd + "/" + c.done, 56, H-48);
+  cx.textAlign = "right"; cx.fillStyle = "#A8A29E"; cx.font = FF(400, 14);
+  var t = new Date();
+  cx.fillText("홍익대학교사범대학부속중학교 · " + t.getFullYear() + "." + (t.getMonth()+1) + "." + t.getDate(), W-56, H-48);
+
+  try { document.getElementById("resultImg").src = cv.toDataURL("image/png"); } catch(e){}
+}
+async function saveCard(){
+  await drawCard();
+  try {
+    cv.toBlob(function(b){
+      if (!b) return;
+      var u = URL.createObjectURL(b);
+      saveImg(u, fullName().replace(/ /g,"_") + "_판정결과.png");
+      setTimeout(function(){ URL.revokeObjectURL(u); }, 1500);
+      document.getElementById("expMsg").textContent = "결과 카드를 내려받았습니다.";
+      setTimeout(function(){ document.getElementById("expMsg").textContent = ""; }, 2600);
+    }, "image/png");
+  } catch(e){
+    document.getElementById("expMsg").textContent = "저장이 안 되면 이미지를 길게 눌러 저장하세요.";
+  }
+}
+
+/* ================= 교사용 ================= */
+function drawTl(box, m){
+  box.innerHTML = "";
+  var max = 1;
+  ["간기","전기","중기","후기","말기"].forEach(function(s){ if (m[s] > max) max = m[s]; });
+  ["간기","전기","중기","후기","말기"].forEach(function(s){
+    var r = document.createElement("div");
+    r.className = "flex items-center gap-3";
+    r.innerHTML =
+      '<span class="text-sm text-stone-500 w-12 text-right">' + s + '</span>' +
+      '<div class="flex-1 h-6 rounded overflow-hidden" style="background:#F1ECE1">' +
+        '<div style="height:100%;width:' + (m[s] ? Math.round(m[s]/max*100) : 0) + '%;min-width:' + (m[s] ? 6 : 0) + 'px;background:linear-gradient(90deg,#8FA68A,#3F7D62)"></div>' +
+      '</div>' +
+      '<span class="text-sm font-mono w-7">' + (m[s] || 0) + '</span>';
+    box.appendChild(r);
+  });
+}
+function esc(s){
+  return String(s).replace(/[&<>"]/g, function(c){
+    return {"&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;"}[c];
+  });
+}
+function parseBoard(raw){
+  var rows = [];
+  raw.split(/\n+/).forEach(function(line){
+    if (!line.trim()) return;
+    var p = line.split(/\t|\s*\|\s*/).map(function(x){ return x.trim(); });
+    if (p.length < 3) return;
+    rows.push({
+      g: p[0] || "모둠",
+      stages: (p[1] || "").split(/\s*,\s*/).filter(Boolean),
+      views: parseFloat(p[2]),
+      agree: Number(p[3]) || 0, hold: Number(p[4]) || 0,
+      refute: Number(p[5]) || 0, misread: Number(p[6]) || 0,
+      ai: p[7] || "", ev: p[8] || ""
+    });
+  });
+  return rows;
+}
+function renderBoard(rows){
+  var m = {간기:0, 전기:0, 중기:0, 후기:0, 말기:0};
+  var tot = {agree:0, hold:0, refute:0, misread:0}, vs = [], found = 0;
+  rows.forEach(function(r){
+    r.stages.forEach(function(s){ if (m.hasOwnProperty(s)) m[s]++; });
+    found += r.stages.length;
+    if (!isNaN(r.views) && r.views > 0) vs.push(r.views);
+    tot.agree += r.agree; tot.hold += r.hold; tot.refute += r.refute; tot.misread += r.misread;
+  });
+
+  /* 모둠 카드 담벼락 */
+  var gw = document.getElementById("groupWall"); gw.innerHTML = "";
+  document.getElementById("wallHint").hidden = rows.length > 0;
+  rows.forEach(function(r){
+    var d = document.createElement("div");
+    d.className = "rounded-xl p-4";
+    d.style.background = "#fff"; d.style.border = "1px solid var(--beige)";
+    var chips = r.stages.map(function(s){
+      return '<span class="text-xs font-bold px-2 py-0.5 rounded mr-1" style="background:#EFF3EC;color:#3F6B4F">' + esc(s) + '</span>';
+    }).join("");
+    var nums = [["동의", r.agree, "agree"], ["보류", r.hold, "hold"], ["반박", r.refute, "refute"], ["오독", r.misread, "misread"]]
+      .filter(function(x){ return x[1] > 0; })
+      .map(function(x){ return '<span class="text-[11px] px-1.5 py-0.5 rounded" style="background:var(--' + x[2] + '-bg);color:var(--' + x[2] + ')">' + x[0] + ' ' + x[1] + '</span>'; })
+      .join(" ");
+    d.innerHTML =
+      '<div class="font-bold text-base">' + esc(r.g) + '</div>' +
+      '<div class="mt-2">' + (chips || '<span class="text-xs text-stone-400">찾은 시기 없음</span>') + '</div>' +
+      (isNaN(r.views) ? "" : '<div class="text-xs text-stone-400 mt-2">' + r.views + '번째 시야에서 찾음</div>') +
+      '<div class="mt-2 flex gap-1 flex-wrap">' + nums + '</div>' +
+      (r.ai ? '<div class="mt-3 pt-3 text-[13px] leading-relaxed" style="border-top:1px solid var(--beige)">' +
+              '<div style="color:var(--refute)" class="text-[11px] font-bold mb-1">우리의 반박</div>' +
+              esc(r.ai) + (r.ev ? '<div class="text-stone-500 mt-1">근거: ' + esc(r.ev) + '</div>' : '') +
+              '</div>' : "");
+    gw.appendChild(d);
+  });
+
+  drawTl(document.getElementById("classTl"), m);
+  var avg = vs.length ? (vs.reduce(function(a,b){ return a+b; }, 0) / vs.length).toFixed(1) : "—";
+  document.getElementById("boardNote").textContent = rows.length
+    ? rows.length + "개 모둠 · 찾아낸 세포 " + found + "개 · 평균 " + avg + "번째 시야에서 찾음 · 반박과 오독 합계 " + (tot.refute + tot.misread) + "건"
+    : "모둠 결과가 모이면 여기에 집계가 나타납니다.";
+
+  var box = document.getElementById("classWall"); box.innerHTML = "";
+  var wall = rows.filter(function(r){ return r.ai; });
+  document.getElementById("wallEmpty").hidden = wall.length > 0;
+  wall.forEach(function(w){
+    var d = document.createElement("div");
+    d.className = "rounded-xl p-3";
+    d.style.background = "var(--refute-bg)"; d.style.border = "1px solid var(--refute)";
+    d.innerHTML = '<div class="text-xs font-bold mb-1" style="color:var(--refute)">' + esc(w.g) + '</div>' +
+                  '<p class="text-sm leading-relaxed">' + esc(w.ai) + '</p>' +
+                  '<p class="text-[13px] text-stone-500 mt-1">근거: ' + esc(w.ev || "(비어 있음)") + '</p>';
+    box.appendChild(d);
+  });
+}
+function buildBoard(){
+  renderBoard(parseBoard(document.getElementById("f-board").value.trim()));
+}
+function makeLink(){
+  var raw = document.getElementById("f-board").value.trim();
+  if (!raw){
+    document.getElementById("linkMsg").textContent = "먼저 모둠 요약을 붙여 넣고 ‘보드 만들기’를 누르세요.";
+    return;
+  }
+  var url;
+  try {
+    var enc = btoa(unescape(encodeURIComponent(raw))).replace(/\+/g, "-").replace(/\//g, "_");
+    url = location.origin + location.pathname + "#board=" + enc;
+  } catch(e){
+    document.getElementById("linkMsg").textContent = "링크를 만들지 못했습니다.";
+    return;
+  }
+  var bx = document.getElementById("linkBox");
+  bx.textContent = url; bx.classList.remove("hidden");
+  copyText(url, "링크를 복사했습니다. 구글 클래스룸에 붙여 학생들에게 나눠 주세요.", "linkMsg");
+}
+function loadFromHash(){
+  var h = location.hash || "";
+  var i = h.indexOf("board=");
+  if (i < 0) return false;
+  try {
+    var enc = h.slice(i + 6).replace(/-/g, "+").replace(/_/g, "/");
+    var raw = decodeURIComponent(escape(atob(enc)));
+    var fb = document.getElementById("f-board");
+    if (fb) fb.value = raw;
+    renderBoard(parseBoard(raw));
+    return true;
+  } catch(e){ return false; }
+}
+function demoBoard(){
+  document.getElementById("f-board").value =
+    "1모둠\t중기\t3\t1\t0\t1\t0\tAI 후기 — 양쪽으로 갈라짐\t갈라진 틈이 안 보인다\n" +
+    "2모둠\t전기,중기\t5\t2\t0\t0\t0\t\t\n" +
+    "3모둠\t후기\t2\t0\t1\t1\t0\tAI 중기 — 가운데 모임\t흐려서 한 줄인지 알 수 없음\n" +
+    "4모둠\t말기\t6\t1\t0\t0\t1\tAI 간기 — 핵이 둥글다\t새 세포벽이 보인다\n" +
+    "5모둠\t중기\t4\t1\t1\t0\t0\t\t";
+  buildBoard();
+}
+var spareN = 0;
+function renderSpares(){
+  var box = document.getElementById("spares"); box.innerHTML = "";
+  SPARES.slice(0, spareN).forEach(function(s, i){
+    var d = document.createElement("div");
+    d.className = "rounded-xl p-4";
+    d.style.background = "var(--refute-bg)"; d.style.border = "1px solid var(--refute)";
+    d.innerHTML = '<div class="text-xs font-bold mb-2" style="color:var(--refute)">오답 카드 ' + (i+1) + '</div>' +
+                  '<p class="text-sm leading-relaxed">AI: ' + s.ai + '</p>' +
+                  '<p class="text-[13px] text-stone-500 mt-2 leading-relaxed">' + s.k + '</p>';
+    box.appendChild(d);
+  });
+}
+function spareNext(){ if (spareN < SPARES.length) spareN++; renderSpares(); }
+function spareAll(){ spareN = SPARES.length; renderSpares(); }
+function renderBankPreview(){
+  var box = document.getElementById("bankPreview"); box.innerHTML = "";
+  BANK.forEach(function(b){
+    var d = document.createElement("div");
+    d.className = "bankitem";
+    d.innerHTML = '<img src="' + b.url + '" alt="' + b.label + '"><div class="text-[11px] text-center mt-1 text-stone-600">' + b.label + '</div>';
+    box.appendChild(d);
+  });
+  var real = BANK.filter(function(b){ return b.real; }).length;
+  var st = document.getElementById("bankStat");
+  if (st) st.textContent = real
+    ? "선생님 사진 " + real + "장 + 모식도 " + (BANK.length - real) + "장이 들어 있습니다."
+    : "지금은 모식도 " + BANK.length + "장만 들어 있습니다. 아래 방법으로 사진을 넣으면 맨 앞에 나타납니다.";
+}
+
+/* photos/목록.txt 를 읽어 선생님 사진을 사진 서랍 맨 앞에 붙인다.
+   파일 이름이 '간기'로 시작하면 간기 시야, 그 밖에는 찾은 세포로 넣는다. */
+function loadMyPhotos(){
+  try {
+    fetch("photos/목록.txt", {cache:"no-store"}).then(function(r){
+      return r.ok ? r.text() : "";
+    }).then(function(t){
+      if (!t) return;
+      t = t.replace(/^\uFEFF/, "");              /* 메모장이 붙이는 보이지 않는 표식 제거 */
+      if (t.trim()[0] === "<") return;            /* 목록.txt 가 없어 404 쪽이 온 경우 */
+      var names = t.split(/\r?\n/)
+                   .map(function(s){ return s.replace(/^\uFEFF/, "").trim(); })
+                   .filter(function(s){ return s && s[0] !== "#"; });
+      if (!names.length) return;
+      var added = [];
+      names.slice().reverse().forEach(function(name){
+        var item = {
+          id: "p_" + name,
+          kind: /^간기/.test(name) ? "inter" : "cell",
+          label: name.replace(/\.[^.]+$/, ""),
+          url: "photos/" + encodeURIComponent(name),
+          real: true
+        };
+        BANK.unshift(item); added.push(item);
+      });
+      renderInter(); renderCells("find"); renderBankPreview();
+      /* 이름이 틀려 열리지 않는 사진은 서랍에서 빼고 선생님께 알린다 */
+      var bad = [], left = added.length;
+      added.forEach(function(it){
+        var im = new Image();
+        im.onload  = function(){ if (--left === 0) finish(); };
+        im.onerror = function(){
+          bad.push(it.label);
+          var k = BANK.indexOf(it); if (k >= 0) BANK.splice(k, 1);
+          if (--left === 0) finish();
+        };
+        im.src = it.url;
+      });
+      function finish(){
+        renderInter(); renderCells("find"); renderBankPreview();
+        if (bad.length){
+          var st = document.getElementById("bankStat");
+          if (st) st.innerHTML += '<br><span style="color:var(--refute)">목록에 적혀 있지만 열리지 않는 파일 ' +
+            bad.length + '개 — ' + bad.join(", ") + '. 파일 이름을 다시 확인하세요.</span>';
+        }
+      }
+    }).catch(function(){});
+  } catch(e){}
+}
+
+/* ================= 시작 ================= */
+load();
+["f-group","f-spec","f-lens"].forEach(function(id){
+  var el = document.getElementById(id);
+  var k = id === "f-group" ? "group" : id === "f-spec" ? "spec" : "lens";
+  el.value = S[k] || "";
+  el.oninput = function(){ S[k] = el.value; save(); buildPrompt(); buildSheet(); };
+});
+var fp = document.getElementById("f-pair");
+fp.value = S.pair || "";
+fp.onchange = function(){
+  S.pair = fp.value; save();
+  renderCells("find"); renderCells("ask"); renderCells("duel");
+  buildPrompt(); buildSheet();
+};
+var wi = document.getElementById("f-withinter");
+wi.checked = !!S.withInter;
+wi.onchange = function(){ S.withInter = wi.checked; save(); buildPrompt(); };
+var fa = document.getElementById("f-answer");
+fa.value = S.answer || "";
+fa.oninput = function(){ S.answer = fa.value; save(); };
+
+renderSents(); renderJudgeGuide(); renderInter(); renderCells("find");
+buildPrompt(); renderBankPreview(); loadMyPhotos(); updateAddBtn();
+drawTl(document.getElementById("classTl"), {간기:0,전기:0,중기:0,후기:0,말기:0});
+
+/* 선생님이 나눠 준 링크로 들어오면 학급 보드를 바로 보여 준다 */
+if (loadFromHash()) go("t4"); else go("t0");
+window.addEventListener("hashchange", function(){ if (loadFromHash()) go("t4"); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawCard);
+setTimeout(drawCard, 1200);
+</script>
 </body>
 </html>
