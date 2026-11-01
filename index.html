@@ -365,6 +365,7 @@
     <div id="bankPreview" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
     <p id="bankStat" class="text-sm font-semibold text-stone-600 mt-4"></p>
     <div id="bankDiag" class="text-[12.5px] leading-relaxed mt-2 rounded-xl p-3" style="background:#FDFBF6;border:1px solid var(--beige)"></div>
+    <button onclick="loadMyPhotos()" class="bg-stone-100 hover:bg-stone-200 text-stone-700 px-3 py-2 rounded-xl text-sm font-semibold mt-2">사진 서랍 다시 읽기</button>
 
     <div class="soft rounded-xl p-4 mt-3 text-[13px] leading-relaxed">
       <div class="font-bold text-stone-700 mb-2">내 사진을 사진 서랍에 넣는 법</div>
@@ -1593,6 +1594,7 @@ function bankDiag(msg, ok){
   d.innerHTML =
     '<div style="color:' + (ok ? "var(--agree)" : "var(--refute)") + ';font-weight:800">' + msg + '</div>' +
     '<div class="text-stone-500 mt-1">지금 보고 있는 주소 — ' + here + '</div>' +
+    '<div class="text-stone-500">앱 판 번호 — <b>' + APPVER + '</b> (이 번호가 보이면 새 파일이 떠 있는 것입니다)</div>' +
     (preview ? '<div style="color:var(--hold);font-weight:700;margin-top:4px">여기는 미리보기 화면입니다. 미리보기에는 photos 폴더가 없어 모식도만 나옵니다. 깃허브 주소에서 확인하세요.</div>' : "");
 }
 
@@ -1613,9 +1615,14 @@ function renderBankPreview(){
 
 /* photos/목록.txt 를 읽어 선생님 사진을 사진 서랍 맨 앞에 붙인다.
    파일 이름이 '간기'로 시작하면 간기 시야, 그 밖에는 찾은 세포로 넣는다. */
+var APPVER = "2026-11-01 e";
+var CB = "";                      /* 캐시 우회 꼬리표 — ‘다시 읽기’를 누를 때마다 바뀐다 */
 function loadMyPhotos(){
   try {
-    fetch("photos/목록.txt", {cache:"no-store"}).then(function(r){
+    CB = "?v=" + Date.now();
+    /* 서랍에 있던 예전 사진은 비우고 새로 읽는다 */
+    for (var q = BANK.length - 1; q >= 0; q--) if (BANK[q].real) BANK.splice(q, 1);
+    fetch("photos/목록.txt" + CB, {cache:"no-store"}).then(function(r){
       if (!r.ok){
         bankDiag("photos/목록.txt 를 찾지 못했습니다 (" + r.status + "). 폴더 이름이 photos 인지, 목록 파일 이름이 목록.txt 인지 확인하세요.", false);
         return "";
@@ -1641,7 +1648,7 @@ function loadMyPhotos(){
           id: "p_" + name,
           kind: /^간기/.test(name) ? "inter" : "cell",
           label: name.replace(/\.[^.]+$/, ""),
-          url: "photos/" + encodeURIComponent(name),
+          url: "photos/" + encodeURIComponent(name) + CB,
           real: true
         };
         BANK.unshift(item); added.push(item);
@@ -1699,7 +1706,7 @@ fa.oninput = function(){ S.answer = fa.value; save(); };
 
 renderSents(); renderJudgeGuide(); renderInter(); renderCells("find");
 buildPrompt(); renderBankPreview();
-bankDiag("photos/목록.txt 를 읽는 중…", true);
+bankDiag("사진 서랍을 읽는 중…", true);
 loadMyPhotos(); updateAddBtn();
 drawTl(document.getElementById("classTl"), {간기:0,전기:0,중기:0,후기:0,말기:0});
 
