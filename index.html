@@ -364,6 +364,7 @@
     <p class="text-sm text-stone-500 mt-1 mb-4">촬영이 안 된 모둠에게 열어 주세요. 학생 화면의 ‘사진 서랍에서 고르기’에 같은 그림이 들어 있습니다.</p>
     <div id="bankPreview" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
     <p id="bankStat" class="text-sm font-semibold text-stone-600 mt-4"></p>
+    <div id="bankDiag" class="text-[12.5px] leading-relaxed mt-2 rounded-xl p-3" style="background:#FDFBF6;border:1px solid var(--beige)"></div>
 
     <div class="soft rounded-xl p-4 mt-3 text-[13px] leading-relaxed">
       <div class="font-bold text-stone-700 mb-2">내 사진을 사진 서랍에 넣는 법</div>
@@ -1583,6 +1584,18 @@ function renderSpares(){
 }
 function spareNext(){ if (spareN < SPARES.length) spareN++; renderSpares(); }
 function spareAll(){ spareN = SPARES.length; renderSpares(); }
+/* 사진 서랍이 왜 비었는지 선생님께 그대로 알려 준다 */
+function bankDiag(msg, ok){
+  var d = document.getElementById("bankDiag");
+  if (!d) return;
+  var here = location.protocol === "file:" ? "내 컴퓨터의 파일(file://)" : location.origin + location.pathname;
+  var preview = /claude\.ai|claudeusercontent|anthropic/.test(location.hostname);
+  d.innerHTML =
+    '<div style="color:' + (ok ? "var(--agree)" : "var(--refute)") + ';font-weight:800">' + msg + '</div>' +
+    '<div class="text-stone-500 mt-1">지금 보고 있는 주소 — ' + here + '</div>' +
+    (preview ? '<div style="color:var(--hold);font-weight:700;margin-top:4px">여기는 미리보기 화면입니다. 미리보기에는 photos 폴더가 없어 모식도만 나옵니다. 깃허브 주소에서 확인하세요.</div>' : "");
+}
+
 function renderBankPreview(){
   var box = document.getElementById("bankPreview"); box.innerHTML = "";
   BANK.forEach(function(b){
@@ -1603,15 +1616,25 @@ function renderBankPreview(){
 function loadMyPhotos(){
   try {
     fetch("photos/목록.txt", {cache:"no-store"}).then(function(r){
-      return r.ok ? r.text() : "";
+      if (!r.ok){
+        bankDiag("photos/목록.txt 를 찾지 못했습니다 (" + r.status + "). 폴더 이름이 photos 인지, 목록 파일 이름이 목록.txt 인지 확인하세요.", false);
+        return "";
+      }
+      return r.text();
     }).then(function(t){
-      if (!t) return;
+      if (!t){ return; }
       t = t.replace(/^\uFEFF/, "");              /* 메모장이 붙이는 보이지 않는 표식 제거 */
-      if (t.trim()[0] === "<") return;            /* 목록.txt 가 없어 404 쪽이 온 경우 */
+      if (t.trim()[0] === "<"){                   /* 목록.txt 대신 404 쪽이 온 경우 */
+        bankDiag("photos/목록.txt 자리에 엉뚱한 쪽이 왔습니다. 파일이 정말 photos 폴더 안에 있는지 확인하세요.", false);
+        return;
+      }
       var names = t.split(/\r?\n/)
                    .map(function(s){ return s.replace(/^\uFEFF/, "").trim(); })
                    .filter(function(s){ return s && s[0] !== "#"; });
-      if (!names.length) return;
+      if (!names.length){
+        bankDiag("목록.txt 는 읽었지만 사진 이름이 한 줄도 없습니다. # 없는 줄에 파일 이름을 한 줄씩 적으세요.", false);
+        return;
+      }
       var added = [];
       names.slice().reverse().forEach(function(name){
         var item = {
@@ -1638,13 +1661,17 @@ function loadMyPhotos(){
       });
       function finish(){
         renderInter(); renderCells("find"); renderBankPreview();
+        var good = added.length - bad.length;
         if (bad.length){
-          var st = document.getElementById("bankStat");
-          if (st) st.innerHTML += '<br><span style="color:var(--refute)">목록에 적혀 있지만 열리지 않는 파일 ' +
-            bad.length + '개 — ' + bad.join(", ") + '. 파일 이름을 다시 확인하세요.</span>';
+          bankDiag("목록에 적힌 " + added.length + "장 중 " + good + "장만 열렸습니다. 열리지 않는 " +
+            bad.length + "장 — " + bad.join(", ") + " . 목록의 이름과 올린 파일 이름이 글자 하나까지 같은지 확인하세요.", false);
+        } else {
+          bankDiag("사진 " + good + "장을 모두 불러왔습니다.", true);
         }
       }
-    }).catch(function(){});
+    }).catch(function(e){
+      bankDiag("photos/목록.txt 를 읽는 중 막혔습니다. 깃허브 페이지가 아직 배포 중이거나, 주소가 깃허브가 아닐 수 있습니다. (" + e + ")", false);
+    });
   } catch(e){}
 }
 
@@ -1671,7 +1698,9 @@ fa.value = S.answer || "";
 fa.oninput = function(){ S.answer = fa.value; save(); };
 
 renderSents(); renderJudgeGuide(); renderInter(); renderCells("find");
-buildPrompt(); renderBankPreview(); loadMyPhotos(); updateAddBtn();
+buildPrompt(); renderBankPreview();
+bankDiag("photos/목록.txt 를 읽는 중…", true);
+loadMyPhotos(); updateAddBtn();
 drawTl(document.getElementById("classTl"), {간기:0,전기:0,중기:0,후기:0,말기:0});
 
 /* 선생님이 나눠 준 링크로 들어오면 학급 보드를 바로 보여 준다 */
