@@ -70,6 +70,13 @@
   .row2 > *{min-width:0}
   .featgrid{grid-template-columns:1fr}
   .shift3{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+  /* ---- AI 답 적는 칸의 안내 — 학생이 놓치지 않게 크게 ---- */
+  .answer-head{display:flex;align-items:center;gap:.5rem;font-size:17px;font-weight:800;
+    color:var(--agree);margin-bottom:.45rem;line-height:1.35}
+  .answer-head b{color:#1F2937}
+  .answer-head .n{display:inline-flex;align-items:center;justify-content:center;
+    width:23px;height:23px;border-radius:50%;background:var(--agree);color:#fff;
+    font-size:13px;font-weight:800;flex:none}
   /* ---- 되묻기 ---- */
   .ask2{background:#fff;border:1px solid var(--beige)}
   .must{font-size:10.5px;font-weight:800;color:#8A5A14;background:var(--hold-bg);
@@ -176,18 +183,29 @@
       <span class="text-[11px] font-bold px-2 py-0.5 rounded" style="background:#FBF5E9;color:#8A6512">1단계</span>
       <h2 class="text-lg font-bold">관찰 기록</h2>
     </div>
-    <p class="text-sm text-stone-500 mt-1 mb-4">모둠과 우리 짝을 고르세요. 여기서 고른 짝 이름이 사진 카드와 결과 카드에 그대로 붙습니다.</p>
+    <p class="text-sm text-stone-500 mt-1 mb-4">네 칸을 차례로 고르세요. 여기서 고른 <b>모둠과 짝 이름</b>이 사진 카드와 결과 카드에 그대로 붙습니다.</p>
     <div class="grid sm:grid-cols-4 gap-3">
       <div><label class="block text-xs font-semibold text-stone-500 mb-1">모둠</label>
-        <input id="f-group" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm" placeholder="3모둠"></div>
+        <select id="f-group" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm">
+          <option value="">고르세요</option>
+          <option value="1모둠">1모둠</option><option value="2모둠">2모둠</option>
+          <option value="3모둠">3모둠</option><option value="4모둠">4모둠</option>
+          <option value="5모둠">5모둠</option><option value="6모둠">6모둠</option>
+        </select></div>
       <div><label class="block text-xs font-semibold text-stone-500 mb-1">우리 짝</label>
         <select id="f-pair" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm">
           <option value="">고르세요</option><option value="A">A짝</option><option value="B">B짝</option>
         </select></div>
       <div><label class="block text-xs font-semibold text-stone-500 mb-1">표본</label>
-        <input id="f-spec" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm" placeholder="양파 뿌리 끝 영구 프레파라트"></div>
+        <select id="f-spec" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm">
+          <option value="">고르세요</option>
+          <option value="양파 뿌리 끝 영구 프레파라트">양파 뿌리 끝 영구 프레파라트</option>
+        </select></div>
       <div><label class="block text-xs font-semibold text-stone-500 mb-1">배율</label>
-        <input id="f-lens" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm" placeholder="10x로 초점 → 60x 관찰"></div>
+        <select id="f-lens" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm">
+          <option value="">고르세요</option>
+          <option value="10x로 초점 → 60x 관찰">10x로 초점 → 60x 관찰</option>
+        </select></div>
     </div>
   </div>
 
@@ -242,8 +260,19 @@
       사진과 글에 이름·학번·학교 이름이 들어가지 않게 하세요.
     </div>
     <div class="mt-4">
-      <label class="block text-xs font-semibold text-stone-500 mb-1">AI의 답을 그대로 붙여 넣으세요</label>
-      <textarea id="f-answer" rows="4" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm" placeholder="AI가 쓴 말을 그대로 붙여 넣으세요."></textarea>
+      <div class="answer-head">
+        <span class="n">1</span>AI의 답을 <b>그대로</b> 쓰세요.
+      </div>
+      <textarea id="f-answer" rows="5" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm" placeholder="AI가 쓴 말을 고치지 말고 그대로 붙여 넣으세요. ‘판단 불가’라고 해도 그대로."></textarea>
+
+      <div class="answer-head" style="margin-top:.9rem">
+        <span class="n">2</span>이어서 <b>내용 끝에 출처를 밝히세요.</b>
+      </div>
+      <input id="f-aitool" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm"
+             placeholder="예)  챗GPT · 제미나이 · 클로드 · 뤼튼">
+      <p class="text-[12px] text-stone-500 mt-1.5">
+        어느 AI가 한 말인지 적어 두어야 다른 사람이 <b>같은 조건에서 확인</b>해 볼 수 있습니다. 적어 둔 이름은 결과 카드와 한 줄 요약 끝에 함께 들어갑니다.
+      </p>
     </div>
   </div>
 
@@ -279,7 +308,8 @@
     <div class="soft rounded-xl p-3 mt-3 text-[11.5px] font-mono break-all text-stone-600" id="sheetLine">—</div>
     <div class="flex gap-2 mt-3 flex-wrap">
       <button onclick="copyLine()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-semibold">한 줄 요약 복사</button>
-      <span class="text-xs text-stone-400 self-center">복사해서 선생님이 안내한 구글 시트에 붙여 넣으세요</span>
+      <button onclick="copyHead()" class="bg-stone-100 hover:bg-stone-200 text-stone-700 px-3 py-2 rounded-xl text-sm font-semibold">제목 줄 복사</button>
+      <span class="text-xs text-stone-400 self-center">시트 첫 줄에 ‘제목 줄’을 한 번 붙여 두면 칸이 밀리지 않습니다</span>
       <button onclick="saveCard()" class="bg-stone-100 hover:bg-stone-200 text-stone-700 px-4 py-2 rounded-xl text-sm font-semibold">결과 카드 저장</button>
       <button onclick="drawCard()" class="text-stone-500 hover:text-stone-800 px-3 py-2 rounded-xl text-sm">다시 그리기</button>
     </div>
@@ -494,7 +524,7 @@ var BANK = (function(){
 /* ================= 상태 ================= */
 var KEY = "celllab.gene2.v1";
 function newCell(){ return {photo:"", bank:"", views:"", mine:"", feats:[], ai:"", aiev:"", conf:"", j:"", ev:"", ask2q:"", ask2:"", shift:""}; }
-var S = {group:"", pair:"", spec:"", lens:"", inter:"", interBank:"", withInter:false, answer:"", cells:[newCell()]};
+var S = {group:"", pair:"", spec:"", lens:"", inter:"", interBank:"", withInter:false, aitool:"", answer:"", cells:[newCell()]};
 /* 모둠·짝 이름 — 1단계에서 고른 값을 앱 전체에서 같은 말로 쓴다 */
 function pairName(){ return S.pair ? S.pair + "짝" : "우리 짝"; }
 function fullName(){ return (S.group || "모둠") + (S.pair ? " " + S.pair + "짝" : ""); }
@@ -516,10 +546,16 @@ function load(){
     if (!S.cells.length) S.cells.push(newCell());
     /* 예전에 저장된 것에 새 칸이 없을 수 있다 */
     S.cells.forEach(function(c){ if (typeof c.ask2q !== "string") c.ask2q = ""; });
-    /* 예전 판에서 기본 2칸이던 흔적 — 뒤쪽 빈 칸은 지운다 */
+    if (typeof S.aitool !== "string") S.aitool = "";
+    /* 예전 판에서 기본 2칸이던 흔적 — 사진도 판정도 없는 뒤쪽 칸은 지운다.
+       값이 아예 없는 예전 저장본에서도 멈추지 않도록 안전하게 읽는다. */
     while (S.cells.length > 1){
-      var last = S.cells[S.cells.length - 1];
-      if (last.photo || last.mine || last.ai || last.ev.trim()) break;
+      var last = S.cells[S.cells.length - 1] || {};
+      var 쓴흔적 = (last.photo || "") || (last.mine || "") || (last.ai || "") ||
+                   String(last.ev || "").trim() || String(last.ask2 || "").trim() ||
+                   String(last.ask2q || "").trim() || (last.shift || "") ||
+                   (last.feats && last.feats.length);
+      if (쓴흔적) break;
       S.cells.pop();
     }
   } catch(e){}
@@ -735,8 +771,10 @@ function renderCells(mode){
     head.innerHTML = '<span class="font-bold text-sm px-2.5 py-1 rounded-lg" style="background:#FBF5E9;color:#8A6512">' + pairName() + ' · 사진 ' + (i+1) + '</span>';
     if (mode === "find" && S.cells.length > 1){
       var del = document.createElement("button");
-      del.className = "ml-auto text-stone-400 hover:text-stone-700 text-sm px-2";
-      del.innerHTML = '';
+      del.className = "ml-auto text-stone-500 hover:text-stone-800 text-xs font-semibold px-2.5 py-1 rounded-lg";
+      del.style.border = "1px solid var(--beige)";
+      del.textContent = "✕  이 칸 지우기";
+      del.title = "사진 칸을 하나 줄입니다";
       del.onclick = function(){ S.cells.splice(i, 1); if (!S.cells.length) S.cells = [newCell()]; save(); renderCells("find"); buildPrompt(); };
       head.appendChild(del);
     }
@@ -1017,7 +1055,7 @@ function addCell(){
 function resetAll(){
   if (!window.confirm("이 기기에 저장된 기록을 모두 지우고 처음 상태로 되돌립니다.\n사진·판정·근거·되묻기가 모두 사라집니다. 계속할까요?")) return;
   try { localStorage.removeItem(KEY); } catch(e){}
-  S = {group:"", pair:"", spec:"", lens:"", inter:"", interBank:"", withInter:false, answer:"", cells:[newCell()]};
+  S = {group:"", pair:"", spec:"", lens:"", inter:"", interBank:"", withInter:false, aitool:"", answer:"", cells:[newCell()]};
   save();
   document.getElementById("f-answer").value = "";
   document.getElementById("f-group").value = "";
@@ -1025,6 +1063,7 @@ function resetAll(){
   document.getElementById("f-spec").value = "";
   document.getElementById("f-lens").value = "";
   document.getElementById("f-withinter").checked = false;
+  document.getElementById("f-aitool").value = "";
   renderInter(); renderCells("find"); renderCells("ask"); renderCells("duel");
   buildPrompt(); updateTally();
 }
@@ -1256,6 +1295,9 @@ function renderShift(c){
     list.appendChild(e);
   }
 }
+/* 시트 열 이름 — 한 줄 요약과 제목 줄이 같은 목록을 본다 */
+var SHEET_COLS = ["모둠·짝", "찾은 시기", "몇 번째 시야", "동의", "보류", "반박", "오독",
+                  "사용한 AI", "되묻기 결과", "AI가 든 근거", "우리 근거"];
 function buildSheet(){
   var c = counts();
   var stages = S.cells.map(function(x){ return x.mine; }).filter(function(x){ return x && x.indexOf("모르겠") < 0 && x !== "판단 불가"; });
@@ -1263,17 +1305,23 @@ function buildSheet(){
   var avg = views.length ? (views.reduce(function(a,b){ return a+b; }, 0) / views.length).toFixed(1) : "";
   var best = null;
   S.cells.forEach(function(x){ if (!best && (x.j === "refute" || x.j === "misread") && x.ev.trim()) best = x; });
+  /* 빈 칸을 그대로 두면 구글 시트에서 열이 한 칸씩 밀려 보인다. 비면 ‘-’ 를 넣는다. */
+  function v(x){ var t = (x === 0 || x) ? String(x).trim() : ""; return t === "" ? "-" : t; }
   var line = [
-    fullName(),
-    stages.join(","),
-    avg,
-    c.agree, c.hold, c.refute, c.misread,
-    "지킴" + c.kept + "/바꿈" + c.changed + "/흐림" + c.vague + (c.flip ? " ★같은답에서바꿈" + c.flip : ""),
-    best ? ("AI " + (best.ai || "") + " — " + best.aiev.replace(/\s+/g, " ").slice(0, 50)) : "",
-    best ? best.ev.replace(/\s+/g, " ").slice(0, 70) : ""
+    v(fullName()),
+    v(stages.join(",")),
+    v(avg),
+    v(c.agree), v(c.hold), v(c.refute), v(c.misread),
+    v(S.aitool),
+    v("지킴" + c.kept + "/바꿈" + c.changed + "/흐림" + c.vague + (c.flip ? " ★같은답에서바꿈" + c.flip : "")),
+    v(best ? ("AI " + (best.ai || "") + " — " + best.aiev.replace(/\s+/g, " ").slice(0, 50)) : ""),
+    v(best ? best.ev.replace(/\s+/g, " ").slice(0, 70) : "")
   ].join("\t");
-  document.getElementById("sheetLine").textContent = line.replace(/\t/g, " | ");
+  document.getElementById("sheetLine").textContent = line.replace(/\t/g, "  |  ");
   return line;
+}
+function copyHead(){
+  copyText(SHEET_COLS.join("\t"), "제목 줄을 복사했습니다. 시트 첫 줄에 한 번만 붙여 넣으세요.", "expMsg");
 }
 function copyLine(){ copyText(buildSheet(), "복사했습니다. 공유 시트에 붙여 넣으세요.", "expMsg"); }
 
@@ -1338,6 +1386,11 @@ async function drawCard(){
   var items = S.cells.filter(function(x){ return x.mine || x.ai; });
   var need = 320 + photoBlock;
   items.forEach(function(x){ need += 26 + (x.j ? 22 : 0) + (x.shift ? 22 : 0) + (x.ev.trim() ? 46 : 0) + 14; });
+  /* ① AI가 한 말 + ② 출처 — 카드에 함께 싣는다 */
+  var ansTxt = (S.answer || "").replace(/\s+/g, " ").trim();
+  var srcTxt = (S.aitool || "").trim();
+  var ansLines = ansTxt ? wrapT(ansTxt, 1200 - 130).slice(0, 5) : [];
+  if (ansTxt || srcTxt) need += 34 + ansLines.length * 24 + 16;
   if (!items.length) need += 30;
   cv.height = Math.max(470, need + 110);
   var W = 1200, H = cv.height, c = counts();
@@ -1406,6 +1459,23 @@ async function drawCard(){
   if (y === textTop){
     cx.fillStyle = "#A8A29E"; cx.font = FF(400, 17);
     cx.fillText("아직 판정한 세포가 없습니다.", 56, y);
+  }
+
+  /* ── AI가 한 말 그대로 + 출처 ── */
+  if (ansTxt || srcTxt){
+    y += 6;
+    cx.strokeStyle = "#E8E0D0"; cx.lineWidth = 1;
+    cx.beginPath(); cx.moveTo(56, y); cx.lineTo(W-56, y); cx.stroke();
+    y += 24;
+    cx.textAlign = "left"; cx.fillStyle = "#C8A96E"; cx.font = FF(600, 15);
+    cx.fillText("AI가 한 말" + (srcTxt ? "   ·   출처 — " + srcTxt : "   ·   출처를 적지 않았습니다"), 56, y);
+    y += 24;
+    cx.fillStyle = "#57534E"; cx.font = FF(400, 16);
+    ansLines.forEach(function(l){ cx.fillText(l, 56, y); y += 24; });
+    if (!ansLines.length){
+      cx.fillStyle = "#A8A29E"; cx.font = FF(400, 16);
+      cx.fillText("AI의 답을 적지 않았습니다.", 56, y); y += 24;
+    }
   }
 
   cx.fillStyle = "#F3EFE6"; cx.fillRect(24, H-86, W-48, 62);
@@ -1616,7 +1686,7 @@ function renderBankPreview(){
 
 /* photos/목록.txt 를 읽어 선생님 사진을 사진 서랍 맨 앞에 붙인다.
    파일 이름이 '간기'로 시작하면 간기 시야, 그 밖에는 찾은 세포로 넣는다. */
-var APPVER = "2026-11-01 g";
+var APPVER = "2026-11-02 a";
 var CB = "";                      /* 캐시 우회 꼬리표 — ‘다시 읽기’를 누를 때마다 바뀐다 */
 var LISTNAME = "";                /* 실제로 찾아낸 목록 파일 이름 */
 function loadMyPhotos(){
@@ -1630,9 +1700,13 @@ function loadMyPhotos(){
     var tried = [];
     function next(k){
       if (k >= TRY.length){
-        bankDiag("목록 파일을 찾지 못했습니다 (" + tried.join(", ") + "). " +
-          "깃허브가 한글 파일 이름을 못 넘기는 경우가 있습니다. photos 폴더에 영문 이름 list.txt 를 두거나, " +
-          "저장소 맨 위에 빈 파일 .nojekyll 을 만들어 보세요.", false);
+        var builtin = BANK.filter(function(x){ return x.builtin; }).length;
+        if (builtin){
+          bankDiag("이 파일 안에 들어 있는 사진 " + builtin + "장을 쓰고 있습니다. photos 폴더는 따로 없어도 됩니다.", true);
+        } else {
+          bankDiag("목록 파일을 찾지 못했습니다 (" + tried.join(", ") + "). " +
+            "photos 폴더가 있는지, 그 안에 목록.txt(또는 list.txt)가 있는지 확인하세요.", false);
+        }
         return Promise.resolve("");
       }
       return fetch(TRY[k] + CB, {cache:"no-store"}).then(function(r){
@@ -1715,7 +1789,7 @@ load();
   var el = document.getElementById(id);
   var k = id === "f-group" ? "group" : id === "f-spec" ? "spec" : "lens";
   el.value = S[k] || "";
-  el.oninput = function(){ S[k] = el.value; save(); buildPrompt(); buildSheet(); };
+  el.oninput = el.onchange = function(){ S[k] = el.value; save(); buildPrompt(); buildSheet(); };
 });
 var fp = document.getElementById("f-pair");
 fp.value = S.pair || "";
@@ -1724,6 +1798,9 @@ fp.onchange = function(){
   renderCells("find"); renderCells("ask"); renderCells("duel");
   buildPrompt(); buildSheet();
 };
+var at = document.getElementById("f-aitool");
+at.value = S.aitool || "";
+at.oninput = function(){ S.aitool = at.value; save(); buildSheet(); };
 var wi = document.getElementById("f-withinter");
 wi.checked = !!S.withInter;
 wi.onchange = function(){ S.withInter = wi.checked; save(); buildPrompt(); };
