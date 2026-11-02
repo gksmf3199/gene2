@@ -814,16 +814,16 @@ function renderCells(mode){
         L.appendChild(bankPicker("cell", i, c.bank));
       }
 
-      R.appendChild(Object.assign(lbl("몇 번째 시야에서 찾았나요?"), {style:"margin-top:0"}));
+      R.appendChild(Object.assign(lbl("슬라이드를 몇 번 옮겨서 찾았나요?"), {style:"margin-top:0"}));
       var vrow = document.createElement("div");
       vrow.className = "flex items-center gap-2";
       var vin = document.createElement("input");
       vin.type = "number"; vin.min = "1"; vin.className = "w-28 border border-stone-300 rounded-lg px-3 py-2 text-sm";
-      vin.value = c.views || ""; vin.placeholder = "3";
+      vin.value = c.views || ""; vin.placeholder = "2"; vin.min = "0";
       vin.oninput = function(){ c.views = vin.value; save(); buildPrompt(); };
       var vtx = document.createElement("span");
       vtx.className = "text-xs text-stone-400";
-      vtx.textContent = "번째 시야에서 찾았습니다";
+      vtx.textContent = "번 옮겨서 찾았습니다  (바로 찾았으면 0)";
       vrow.appendChild(vin); vrow.appendChild(vtx);
       R.appendChild(vrow);
 
@@ -1231,7 +1231,7 @@ function updateTally(){
   document.getElementById("tallyNote").textContent =
     "판단한 " + c.done + "개 중 " + c.evd + "개에 근거를 적었습니다. " +
     "내 판정과 AI 판정은 " + c.same + "개 일치, " + c.diff + "개 불일치. " +
-    "되묻기에 흔들린 판정 " + c.moved + "개. 평균 " + avg + "번째 시야에서 찾았습니다.";
+    "되묻기에 흔들린 판정 " + c.moved + "개. 슬라이드를 평균 " + avg + "번 옮겨서 찾았습니다.";
   renderShift(c);
   buildSheet();
 }
@@ -1296,7 +1296,7 @@ function renderShift(c){
   }
 }
 /* 시트 열 이름 — 한 줄 요약과 제목 줄이 같은 목록을 본다 */
-var SHEET_COLS = ["모둠·짝", "찾은 시기", "몇 번째 시야", "동의", "보류", "반박", "오독",
+var SHEET_COLS = ["모둠·짝", "찾은 시기", "옮긴 횟수", "동의", "보류", "반박", "오독",
                   "사용한 AI", "되묻기 결과", "AI가 든 근거", "우리 근거"];
 function buildSheet(){
   var c = counts();
@@ -1432,7 +1432,7 @@ async function drawCard(){
     if (!x.mine && !x.ai) return;
     cx.fillStyle = "#1F2937"; cx.font = FF(600, 18);
     cx.fillText(pairName() + " 사진 " + (i+1) + " — 내 판정 " + (x.mine || "—") + " · AI " + (x.ai || "—") +
-                (x.views ? " · " + x.views + "번째 시야" : ""), 56, y);
+                (x.views ? " · 슬라이드 " + x.views + "번 옮김" : ""), 56, y);
     y += 26;
     if (x.j){
       var nm = {agree:"동의", hold:"보류", refute:"반박", misread:"오독"}[x.j];
@@ -1550,7 +1550,7 @@ function renderBoard(rows){
     d.innerHTML =
       '<div class="font-bold text-base">' + esc(r.g) + '</div>' +
       '<div class="mt-2">' + (chips || '<span class="text-xs text-stone-400">찾은 시기 없음</span>') + '</div>' +
-      (isNaN(r.views) ? "" : '<div class="text-xs text-stone-400 mt-2">' + r.views + '번째 시야에서 찾음</div>') +
+      (isNaN(r.views) ? "" : '<div class="text-xs text-stone-400 mt-2">슬라이드 ' + r.views + '번 옮겨서 찾음</div>') +
       '<div class="mt-2 flex gap-1 flex-wrap">' + nums + '</div>' +
       (r.ai ? '<div class="mt-3 pt-3 text-[13px] leading-relaxed" style="border-top:1px solid var(--beige)">' +
               '<div style="color:var(--refute)" class="text-[11px] font-bold mb-1">우리의 반박</div>' +
@@ -1562,7 +1562,7 @@ function renderBoard(rows){
   drawTl(document.getElementById("classTl"), m);
   var avg = vs.length ? (vs.reduce(function(a,b){ return a+b; }, 0) / vs.length).toFixed(1) : "—";
   document.getElementById("boardNote").textContent = rows.length
-    ? rows.length + "개 모둠 · 찾아낸 세포 " + found + "개 · 평균 " + avg + "번째 시야에서 찾음 · 반박과 오독 합계 " + (tot.refute + tot.misread) + "건"
+    ? rows.length + "개 모둠 · 찾아낸 세포 " + found + "개 · 슬라이드를 평균 " + avg + "번 옮겨 찾음 · 반박과 오독 합계 " + (tot.refute + tot.misread) + "건"
     : "모둠 결과가 모이면 여기에 집계가 나타납니다.";
 
   var box = document.getElementById("classWall"); box.innerHTML = "";
@@ -1667,7 +1667,7 @@ function renderBankPreview(){
 
 /* photos/목록.txt 를 읽어 선생님 사진을 사진 서랍 맨 앞에 붙인다.
    파일 이름이 '간기'로 시작하면 간기 시야, 그 밖에는 찾은 세포로 넣는다. */
-var APPVER = "2026-11-02 a";
+var APPVER = "2026-11-02 b";
 var CB = "";                      /* 캐시 우회 꼬리표 — ‘다시 읽기’를 누를 때마다 바뀐다 */
 var LISTNAME = "";                /* 실제로 찾아낸 목록 파일 이름 */
 function loadMyPhotos(){
