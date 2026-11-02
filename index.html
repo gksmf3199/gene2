@@ -809,7 +809,7 @@ function renderCells(mode){
         L.appendChild(up);
         var uh = document.createElement("p");
         uh.className = "text-xs text-stone-400 mt-2 leading-snug";
-        uh.textContent = "찾아낸 세포에 동그라미를 쳐서 올려도 됩니다.";
+        uh.textContent = "찾아낸 세포에 동그라미를 치거나, 그 세포가 사진 가운데에 오도록 찍어 올리세요.";
         L.appendChild(uh);
         L.appendChild(bankPicker("cell", i, c.bank));
       }
@@ -1074,7 +1074,7 @@ function promptText(){
   var what = withA
     ? "· A: 간기 세포만 보이는 시야\n· B: 우리가 찾아낸, 간기가 아닌 것 같은 세포\n"
     : "· 우리가 찾아낸, 간기가 아닌 것 같은 세포\n";
-  var ask = withA ? "B의 세포가" : "이 세포가";
+  var ask = (withA ? "B 사진에서 " : "") + "가운데에 있는 세포(동그라미가 있으면 그 세포)가";
   var rules =
     "1. 흐려서 알 수 없으면 '판단 불가'라고 솔직히 써.\n" +
     "2. 보이지 않는 것을 보인다고 하지 마.\n" +
@@ -1386,11 +1386,8 @@ async function drawCard(){
   var items = S.cells.filter(function(x){ return x.mine || x.ai; });
   var need = 320 + photoBlock;
   items.forEach(function(x){ need += 26 + (x.j ? 22 : 0) + (x.shift ? 22 : 0) + (x.ev.trim() ? 46 : 0) + 14; });
-  /* ① AI가 한 말 + ② 출처 — 카드에 함께 싣는다 */
-  var ansTxt = (S.answer || "").replace(/\s+/g, " ").trim();
+  /* AI가 한 말은 카드가 길어져 싣지 않는다. 출처만 바닥에 한 줄. */
   var srcTxt = (S.aitool || "").trim();
-  var ansLines = ansTxt ? wrapT(ansTxt, 1200 - 130).slice(0, 5) : [];
-  if (ansTxt || srcTxt) need += 34 + ansLines.length * 24 + 16;
   if (!items.length) need += 30;
   cv.height = Math.max(470, need + 110);
   var W = 1200, H = cv.height, c = counts();
@@ -1461,26 +1458,10 @@ async function drawCard(){
     cx.fillText("아직 판정한 세포가 없습니다.", 56, y);
   }
 
-  /* ── AI가 한 말 그대로 + 출처 ── */
-  if (ansTxt || srcTxt){
-    y += 6;
-    cx.strokeStyle = "#E8E0D0"; cx.lineWidth = 1;
-    cx.beginPath(); cx.moveTo(56, y); cx.lineTo(W-56, y); cx.stroke();
-    y += 24;
-    cx.textAlign = "left"; cx.fillStyle = "#C8A96E"; cx.font = FF(600, 15);
-    cx.fillText("AI가 한 말" + (srcTxt ? "   ·   출처 — " + srcTxt : "   ·   출처를 적지 않았습니다"), 56, y);
-    y += 24;
-    cx.fillStyle = "#57534E"; cx.font = FF(400, 16);
-    ansLines.forEach(function(l){ cx.fillText(l, 56, y); y += 24; });
-    if (!ansLines.length){
-      cx.fillStyle = "#A8A29E"; cx.font = FF(400, 16);
-      cx.fillText("AI의 답을 적지 않았습니다.", 56, y); y += 24;
-    }
-  }
 
   cx.fillStyle = "#F3EFE6"; cx.fillRect(24, H-86, W-48, 62);
   cx.textAlign = "left"; cx.fillStyle = "#78716C"; cx.font = FF(400, 15);
-  cx.fillText("일치 " + c.same + " · 불일치 " + c.diff + " · 되묻기 — 지킴 " + c.kept + " 바꿈 " + c.changed + " 흐림 " + c.vague + (c.flip ? " (같은 답에서 바꿈 " + c.flip + ")" : "") + " · 근거를 적은 판단 " + c.evd + "/" + c.done, 56, H-48);
+  cx.fillText("일치 " + c.same + " · 불일치 " + c.diff + " · 되묻기 — 지킴 " + c.kept + " 바꿈 " + c.changed + " 흐림 " + c.vague + (c.flip ? " (같은 답에서 바꿈 " + c.flip + ")" : "") + " · 근거를 적은 판단 " + c.evd + "/" + c.done + "   ·   쓴 AI — " + (srcTxt || "적지 않음"), 56, H-48);
   cx.textAlign = "right"; cx.fillStyle = "#A8A29E"; cx.font = FF(400, 14);
   var t = new Date();
   cx.fillText("홍익대학교사범대학부속중학교 · " + t.getFullYear() + "." + (t.getMonth()+1) + "." + t.getDate(), W-56, H-48);
