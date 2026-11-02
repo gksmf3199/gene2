@@ -1383,14 +1383,62 @@ async function drawCard(){
   var photoH = Math.max(bFound.h, bInter.h);
   var photoBlock = photoH ? photoH + 60 : 0;
 
-  var items = S.cells.filter(function(x){ return x.mine || x.ai; });
-  var need = 320 + photoBlock;
-  items.forEach(function(x){ need += 26 + (x.j ? 22 : 0) + (x.shift ? 22 : 0) + (x.ev.trim() ? 46 : 0) + 14; });
   /* AI가 한 말은 카드가 길어져 싣지 않는다. 출처만 바닥에 한 줄. */
   var srcTxt = (S.aitool || "").trim();
-  if (!items.length) need += 30;
-  cv.height = Math.max(470, need + 110);
-  var W = 1200, H = cv.height, c = counts();
+  var W = 1200, TW = W - 112, c = counts();
+
+  /* 멀리서도 읽히도록 글씨를 키우되, 한 줄을 넘기면 한 단계씩 줄인다 */
+  function fitSize(txt, weight, maxS, minS, box){
+    var lim = box || TW;
+    for (var s = maxS; s > minS; s--){
+      cx.font = FF(weight, s);
+      if (cx.measureText(txt).width <= lim) return s;
+    }
+    return minS;
+  }
+  function L(txt, weight, color, maxS, minS, gap){
+    var s = fitSize(txt, weight, maxS, minS);
+    return {t:txt, w:weight, c:color, s:s, adv:Math.round(s*1.34) + (gap || 0)};
+  }
+
+  /* 사진 아래 글줄을 먼저 만들어 둔다 — 크기를 재야 카드 높이를 정할 수 있다 */
+  var LINES = [];
+  S.cells.forEach(function(x, i){
+    if (!x.mine && !x.ai) return;
+    LINES.push(L(pairName() + " 사진 " + (i+1) + " — 내 판정 " + (x.mine || "—") + " · AI " + (x.ai || "—") +
+                 (x.views ? " · 슬라이드 " + x.views + "번 옮김" : ""), 700, "#1F2937", 31, 19, 8));
+    var flipped = (x.shift === "change" && x.mine && x.ai && x.mine === x.ai);
+    var shiftTxt = x.shift ? "되묻기 → " + SHIFT_NAME[x.shift] + (flipped ? " (같은 답이었는데 바꿈)" : "") : "";
+    if (x.j){
+      var nm = {agree:"동의", hold:"보류", refute:"반박", misread:"오독"}[x.j];
+      var co = {agree:"#3F7D62", hold:"#B5862B", refute:"#B4524A", misread:"#4E6E9E"}[x.j];
+      LINES.push(L(nm + (shiftTxt ? "   ·   " + shiftTxt : ""), 700, co, 29, 18, 6));
+    } else if (shiftTxt){
+      var sc = {keep:"#3F7D62", change:"#B4524A", vague:"#B5862B"}[x.shift];
+      LINES.push(L(shiftTxt, 700, sc, 29, 18, 6));
+    }
+    if (x.ev.trim()){
+      var ev = "근거: " + x.ev.trim();
+      var es = fitSize(ev, 500, 27, 17);
+      cx.font = FF(500, es);
+      if (cx.measureText(ev).width <= TW){
+        LINES.push({t:ev, w:500, c:"#57534E", s:es, adv:Math.round(es*1.34) + 6});
+      } else {
+        wrapT(ev, TW).slice(0, 2).forEach(function(l){
+          LINES.push({t:l, w:500, c:"#57534E", s:es, adv:Math.round(es*1.28)});
+        });
+        LINES[LINES.length-1].adv += 6;
+      }
+    }
+    LINES[LINES.length-1].adv += 20;
+  });
+
+  var textH = LINES.length ? 0 : 36;
+  LINES.forEach(function(l){ textH += l.adv; });
+  var FOOT = 104;
+  var need = 320 + photoBlock + textH;
+  cv.height = Math.max(500, need + 40 + FOOT + 24);
+  var H = cv.height;
   cx.fillStyle = "#FAF7F0"; cx.fillRect(0, 0, W, H);
   cx.strokeStyle = "#E8E0D0"; cx.lineWidth = 2; cx.strokeRect(24, 24, W-48, H-48);
 
@@ -1422,49 +1470,35 @@ async function drawCard(){
   if (photoH){
     drawShot(imFound, 56, y, bFound, null);
     drawShot(imInter, 510, y, bInter, null);
-    cx.textAlign = "left"; cx.fillStyle = "#78716C"; cx.font = FF(500, 14);
-    if (bFound.w) cx.fillText("우리가 찾아낸 세포" + (withPhoto.length > 1 ? " (외 " + (withPhoto.length - 1) + "장)" : ""), 56, y + bFound.h + 22);
-    if (bInter.w) cx.fillText("비교 — 간기 시야", 510, y + bInter.h + 22);
+    cx.textAlign = "left"; cx.fillStyle = "#78716C"; cx.font = FF(600, 17);
+    if (bFound.w) cx.fillText("우리가 찾아낸 세포" + (withPhoto.length > 1 ? " (외 " + (withPhoto.length - 1) + "장)" : ""), 56, y + bFound.h + 25);
+    if (bInter.w) cx.fillText("비교 — 간기 시야", 510, y + bInter.h + 25);
     y += photoH + 60;
   }
-  var textTop = y;
-  S.cells.forEach(function(x, i){
-    if (!x.mine && !x.ai) return;
-    cx.fillStyle = "#1F2937"; cx.font = FF(600, 18);
-    cx.fillText(pairName() + " 사진 " + (i+1) + " — 내 판정 " + (x.mine || "—") + " · AI " + (x.ai || "—") +
-                (x.views ? " · 슬라이드 " + x.views + "번 옮김" : ""), 56, y);
-    y += 26;
-    if (x.j){
-      var nm = {agree:"동의", hold:"보류", refute:"반박", misread:"오독"}[x.j];
-      var co = {agree:"#3F7D62", hold:"#B5862B", refute:"#B4524A", misread:"#4E6E9E"}[x.j];
-      cx.fillStyle = co; cx.font = FF(600, 15);
-      cx.fillText(nm, 56, y); y += 22;
-    }
-    if (x.shift){
-      var sc = {keep:"#3F7D62", change:"#B4524A", vague:"#B5862B"}[x.shift];
-      var flipped = (x.shift === "change" && x.mine && x.ai && x.mine === x.ai);
-      cx.fillStyle = sc; cx.font = FF(600, 15);
-      cx.fillText("되묻기 → " + SHIFT_NAME[x.shift] + (flipped ? "  (같은 답이었는데 바꿈)" : ""), 56, y);
-      y += 22;
-    }
-    if (x.ev.trim()){
-      cx.fillStyle = "#57534E"; cx.font = FF(400, 16);
-      wrapT("근거: " + x.ev.trim(), W - 130).slice(0, 2).forEach(function(l){ cx.fillText(l, 56, y); y += 23; });
-    }
-    y += 14;
-  });
-  if (y === textTop){
-    cx.fillStyle = "#A8A29E"; cx.font = FF(400, 17);
-    cx.fillText("아직 판정한 세포가 없습니다.", 56, y);
+  cx.textAlign = "left";
+  if (LINES.length){
+    LINES.forEach(function(l){
+      cx.fillStyle = l.c; cx.font = FF(l.w, l.s);
+      y += Math.round(l.s * 0.9);
+      cx.fillText(l.t, 56, y);
+      y += l.adv - Math.round(l.s * 0.9);
+    });
+  } else {
+    cx.fillStyle = "#A8A29E"; cx.font = FF(400, 20);
+    cx.fillText("아직 판정한 세포가 없습니다.", 56, y + 18);
   }
 
-
-  cx.fillStyle = "#F3EFE6"; cx.fillRect(24, H-86, W-48, 62);
-  cx.textAlign = "left"; cx.fillStyle = "#78716C"; cx.font = FF(400, 15);
-  cx.fillText("일치 " + c.same + " · 불일치 " + c.diff + " · 되묻기 — 지킴 " + c.kept + " 바꿈 " + c.changed + " 흐림 " + c.vague + (c.flip ? " (같은 답에서 바꿈 " + c.flip + ")" : "") + " · 근거를 적은 판단 " + c.evd + "/" + c.done + "   ·   쓴 AI — " + (srcTxt || "적지 않음"), 56, H-48);
-  cx.textAlign = "right"; cx.fillStyle = "#A8A29E"; cx.font = FF(400, 14);
+  var fTop = H - 24 - FOOT;
+  cx.fillStyle = "#F3EFE6"; cx.fillRect(24, fTop, W-48, FOOT);
+  var tally = "일치 " + c.same + " · 불일치 " + c.diff + " · 되묻기 — 지킴 " + c.kept + " 바꿈 " + c.changed + " 흐림 " + c.vague +
+              (c.flip ? " (같은 답에서 바꿈 " + c.flip + ")" : "") + " · 근거를 적은 판단 " + c.evd + "/" + c.done +
+              "   ·   쓴 AI — " + (srcTxt || "적지 않음");
+  var fs = fitSize(tally, 600, 27, 14);
+  cx.textAlign = "left"; cx.fillStyle = "#57534E"; cx.font = FF(600, fs);
+  cx.fillText(tally, 56, fTop + 46);
+  cx.textAlign = "right"; cx.fillStyle = "#A8A29E"; cx.font = FF(400, 16);
   var t = new Date();
-  cx.fillText("홍익대학교사범대학부속중학교 · " + t.getFullYear() + "." + (t.getMonth()+1) + "." + t.getDate(), W-56, H-48);
+  cx.fillText("홍익대학교사범대학부속중학교 · " + t.getFullYear() + "." + (t.getMonth()+1) + "." + t.getDate(), W-56, fTop + 84);
 
   try { document.getElementById("resultImg").src = cv.toDataURL("image/png"); } catch(e){}
 }
@@ -1667,7 +1701,7 @@ function renderBankPreview(){
 
 /* photos/목록.txt 를 읽어 선생님 사진을 사진 서랍 맨 앞에 붙인다.
    파일 이름이 '간기'로 시작하면 간기 시야, 그 밖에는 찾은 세포로 넣는다. */
-var APPVER = "2026-11-02 b";
+var APPVER = "2026-11-02 c";
 var CB = "";                      /* 캐시 우회 꼬리표 — ‘다시 읽기’를 누를 때마다 바뀐다 */
 var LISTNAME = "";                /* 실제로 찾아낸 목록 파일 이름 */
 function loadMyPhotos(){
