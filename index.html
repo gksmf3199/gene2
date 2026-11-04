@@ -1295,10 +1295,11 @@ function renderShift(c){
     list.appendChild(e);
   }
 }
-/* 시트 열 이름 — 사진 한 장이 한 줄이다. 제목 줄과 요약 줄이 같은 목록을 본다 */
-var SHEET_COLS = ["모둠·짝", "사진", "내 판정", "AI 판정", "옮긴 횟수", "판단", "되묻기",
-                  "같은 답에서 바꿈", "우리 근거", "AI가 든 근거", "사용한 AI"];
-var JUDGE_NAME = {agree:"동의", hold:"보류", refute:"반박", misread:"오독"};
+/* 시트 열 이름 — 칸 차례는 선생님이 만들어 두신 구글 시트 그대로.
+   달라진 것은 '한 짝이 한 줄'에서 '사진 한 장이 한 줄'로 바뀐 것뿐이다.
+   동의·보류·반박·오독은 그 사진의 판단에만 1, 나머지는 0 — 시트에서 세로로 더하면 전과 같은 합이 된다. */
+var SHEET_COLS = ["모둠-짝", "찾은시기", "몇번 이동", "동의", "보류", "반박", "오독",
+                  "사용한 AI", "되묻기 결과", "AI가 든 근거", "우리 근거"];
 var SHIFT_SHORT = {keep:"지킴", change:"바꿈", vague:"흐림"};
 function buildSheet(){
   /* 빈 칸을 그대로 두면 구글 시트에서 열이 한 칸씩 밀려 보인다. 비면 ‘-’ 를 넣는다.
@@ -1307,27 +1308,30 @@ function buildSheet(){
     var t = (x === 0 || x) ? String(x).replace(/[\t\r\n]+/g, " ").trim() : "";
     return t === "" ? "-" : t;
   }
-  var rows = [], n = 0;
+  var rows = [];
   S.cells.forEach(function(x){
     if (!x.photo && !x.mine && !x.ai) return;
-    n++;
     var flipped = (x.shift === "change" && x.mine && x.ai && x.mine === x.ai);
+    var back = x.shift ? (SHIFT_SHORT[x.shift] + (flipped ? " ★같은답에서바꿈" : "")) : "";
+    var aiev = (x.ai || x.aiev)
+      ? ("AI " + (x.ai || "—") + (String(x.aiev || "").trim() ? " — " + x.aiev.trim() : ""))
+      : "";
     rows.push([
       v(fullName()),
-      v(n),
       v(x.mine),
-      v(x.ai),
       v(x.views),
-      v(JUDGE_NAME[x.j] || ""),
-      v(SHIFT_SHORT[x.shift] || ""),
-      flipped ? "○" : "-",
-      v(String(x.ev || "").slice(0, 120)),
-      v(String(x.aiev || "").slice(0, 120)),
-      v(S.aitool)
+      x.j === "agree"   ? 1 : 0,
+      x.j === "hold"    ? 1 : 0,
+      x.j === "refute"  ? 1 : 0,
+      x.j === "misread" ? 1 : 0,
+      v(S.aitool),
+      v(back),
+      v(aiev.slice(0, 120)),
+      v(String(x.ev || "").slice(0, 120))
     ].join("\t"));
   });
   if (!rows.length){
-    rows.push([v(fullName()), "-", "-", "-", "-", "-", "-", "-", "-", "-", v(S.aitool)].join("\t"));
+    rows.push([v(fullName()), "-", "-", 0, 0, 0, 0, v(S.aitool), "-", "-", "-"].join("\t"));
   }
   var out = rows.join("\n");
   var box = document.getElementById("sheetLine");
@@ -1582,38 +1586,54 @@ function esc(s){
   });
 }
 function parseBoard(raw){
-  /* 새 요약은 사진 한 장이 한 줄이다. 모둠 이름으로 묶어 모둠 카드 하나를 만든다.
-     칸 차례 — 모둠·짝 | 사진 | 내 판정 | AI 판정 | 옮긴 횟수 | 판단 | 되묻기 | 같은 답에서 바꿈 | 우리 근거 | AI가 든 근거 | 사용한 AI */
+  /* 칸 차례 — 모둠-짝 | 찾은시기 | 몇번 이동 | 동의 | 보류 | 반박 | 오독 | 사용한 AI | 되묻기 결과 | AI가 든 근거 | 우리 근거
+     사진 한 장이 한 줄이므로, 모둠 이름으로 묶어 모둠 카드 하나를 만든다.
+     예전의 '한 짝이 한 줄'(동의 3 처럼 합계가 들어간 줄)도 그대로 읽힌다. */
   var map = {}, order = [];
-  var JN = {"동의":"agree", "보류":"hold", "반박":"refute", "오독":"misread"};
-  var SN = {"지킴":"kept", "바꿈":"changed", "흐림":"vague"};
   function val(x){ var t = (x || "").trim(); return (t === "-" || t === "—") ? "" : t; }
+  function num(x){ var n = Number(val(x)); return isNaN(n) ? 0 : n; }
 
   raw.split(/\n+/).forEach(function(line){
     if (!line.trim()) return;
     var p = line.split(/\t|\s*\|\s*/).map(function(x){ return x.trim(); });
     if (p.length < 3) return;
-    if (p[1] === "사진" || p[0] === "모둠·짝") return;          /* 제목 줄은 건너뛴다 */
+    if (p[1] === "찾은시기" || p[1] === "찾은 시기") return;        /* 제목 줄은 건너뛴다 */
 
     var who = val(p[0]) || "모둠";
-    var g = who.split(/\s+/)[0];                                /* ‘1모둠 A짝’ → ‘1모둠’ */
+    var g = who.split(/\s+/)[0];                                   /* ‘1모둠 A짝’ → ‘1모둠’ */
     if (!map[g]){
       map[g] = {g:g, stages:[], vs:[], agree:0, hold:0, refute:0, misread:0,
                 kept:0, changed:0, vague:0, flip:0, ai:"", ev:""};
       order.push(g);
     }
     var r = map[g];
-    var mine = val(p[2]);
-    if (mine && mine.indexOf("모르겠") < 0 && mine !== "판단 불가") r.stages.push(mine);
-    var v = parseFloat(val(p[4]));
-    if (!isNaN(v) && v > 0) r.vs.push(v);
-    var jk = JN[val(p[5])]; if (jk) r[jk]++;
-    var sk = SN[val(p[6])]; if (sk) r[sk]++;
-    if (val(p[7])) r.flip++;
-    /* 반박·오독만 담벼락에 건다 */
-    if ((val(p[5]) === "반박" || val(p[5]) === "오독") && !r.ai){
-      r.ai = (val(p[3]) ? "AI " + val(p[3]) + " — " : "") + (val(p[9]) || "근거를 적지 않음");
-      r.ev = val(p[8]);
+
+    val(p[1]).split(/\s*,\s*/).forEach(function(st){
+      if (st && st.indexOf("모르겠") < 0 && st !== "판단 불가") r.stages.push(st);
+    });
+    var vw = parseFloat(val(p[2]));
+    if (!isNaN(vw) && vw > 0) r.vs.push(vw);
+    r.agree += num(p[3]); r.hold += num(p[4]); r.refute += num(p[5]); r.misread += num(p[6]);
+
+    /* 되묻기 — ‘바꿈’ 한 낱말도, ‘지킴0/바꿈3/흐림0’ 묶음도 읽는다 */
+    var bk = val(p[8]);
+    var m = bk.match(/지킴\s*(\d+)/), m2 = bk.match(/바꿈\s*(\d+)/), m3 = bk.match(/흐림\s*(\d+)/);
+    if (m || m2 || m3){
+      r.kept += m ? Number(m[1]) : 0;
+      r.changed += m2 ? Number(m2[1]) : 0;
+      r.vague += m3 ? Number(m3[1]) : 0;
+    } else {
+      if (bk.indexOf("지킴") >= 0) r.kept++;
+      if (bk.indexOf("바꿈") >= 0) r.changed++;
+      if (bk.indexOf("흐림") >= 0) r.vague++;
+    }
+    var fm = bk.match(/★같은답에서바꿈\s*(\d*)/);
+    if (fm) r.flip += fm[1] ? Number(fm[1]) : 1;
+
+    /* 반박·오독이 있는 줄만 담벼락에 건다 */
+    if ((num(p[5]) > 0 || num(p[6]) > 0) && !r.ai){
+      r.ai = val(p[9]) || "근거를 적지 않음";
+      r.ev = val(p[10]);
     }
   });
 
@@ -1720,12 +1740,12 @@ function loadFromHash(){
 }
 function demoBoard(){
   document.getElementById("f-board").value =
-    "1모둠 A짝\t1\t중기\t중기\t3\t동의\t지킴\t-\t가운데 한 줄로 서 있다\t중앙 배열이 보입니다\t제미나이\n" +
-    "1모둠 B짝\t1\t후기\t후기\t2\t동의\t바꿈\t○\t두 무리로 갈라졌다\t양극으로 끌려갑니다\t제미나이\n" +
-    "2모둠 A짝\t1\t전기\t중기\t5\t반박\t지킴\t-\t한 줄이 아니라 흩어져 있다\t가운데 모여 있습니다\t챗GPT\n" +
-    "2모둠 B짝\t1\t중기\t중기\t4\t동의\t지킴\t-\t막대가 한 줄이다\t중앙에 배열됩니다\t챗GPT\n" +
-    "3모둠 A짝\t1\t말기\t간기\t6\t오독\t흐림\t-\t새 세포벽이 보인다\t핵이 둥글게 보입니다\t클로드\n" +
-    "3모둠 B짝\t1\t후기\t후기\t2\t동의\t지킴\t-\t사이가 비어 있다\t두 무리로 갈라집니다\t클로드";
+    "1모둠 A짝\t중기\t3\t1\t0\t0\t0\t제미나이\t지킴\tAI 중기 — 중앙에 배열됩니다\t가운데 한 줄로 서 있다\n" +
+    "1모둠 B짝\t후기\t2\t1\t0\t0\t0\t제미나이\t바꿈 ★같은답에서바꿈\tAI 후기 — 양극으로 끌려갑니다\t두 무리로 갈라졌다\n" +
+    "2모둠 A짝\t전기\t5\t0\t0\t1\t0\t챗GPT\t지킴\tAI 중기 — 가운데 모여 있습니다\t한 줄이 아니라 흩어져 있다\n" +
+    "2모둠 B짝\t중기\t4\t1\t0\t0\t0\t챗GPT\t지킴\tAI 중기 — 중앙에 배열됩니다\t막대가 한 줄이다\n" +
+    "3모둠 A짝\t말기\t6\t0\t0\t0\t1\t클로드\t흐림\tAI 간기 — 핵이 둥글게 보입니다\t새 세포벽이 보인다\n" +
+    "3모둠 B짝\t후기\t2\t1\t0\t0\t0\t클로드\t지킴\tAI 후기 — 두 무리로 갈라집니다\t사이가 비어 있다";
   buildBoard();
 }
 var spareN = 0;
@@ -1774,7 +1794,7 @@ function renderBankPreview(){
 
 /* photos/목록.txt 를 읽어 선생님 사진을 사진 서랍 맨 앞에 붙인다.
    파일 이름이 '간기'로 시작하면 간기 시야, 그 밖에는 찾은 세포로 넣는다. */
-var APPVER = "2026-11-04 a";
+var APPVER = "2026-11-04 b";
 var CB = "";                      /* 캐시 우회 꼬리표 — ‘다시 읽기’를 누를 때마다 바뀐다 */
 var LISTNAME = "";                /* 실제로 찾아낸 목록 파일 이름 */
 function loadMyPhotos(){
