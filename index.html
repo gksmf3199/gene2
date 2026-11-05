@@ -1599,8 +1599,7 @@ function parseBoard(raw){
     if (p.length < 3) return;
     if (p[1] === "찾은시기" || p[1] === "찾은 시기") return;        /* 제목 줄은 건너뛴다 */
 
-    var who = val(p[0]) || "모둠";
-    var g = who.split(/\s+/)[0];                                   /* ‘1모둠 A짝’ → ‘1모둠’ */
+    var g = val(p[0]) || "모둠";                                    /* ‘1모둠 A짝’ 그대로 — 짝마다 카드 하나 */
     if (!map[g]){
       map[g] = {g:g, stages:[], vs:[], agree:0, hold:0, refute:0, misread:0,
                 kept:0, changed:0, vague:0, flip:0, ai:"", ev:""};
@@ -1646,6 +1645,9 @@ function parseBoard(raw){
 function renderBoard(rows){
   var m = {간기:0, 전기:0, 중기:0, 후기:0, 말기:0};
   var tot = {agree:0, hold:0, refute:0, misread:0, kept:0, changed:0, vague:0}, vs = [], found = 0;
+  var teams = {};
+  rows.forEach(function(r){ teams[String(r.g).split(/\s+/)[0]] = 1; });
+  var teamCnt = Object.keys(teams).length;
   rows.forEach(function(r){
     r.stages.forEach(function(s){ if (m.hasOwnProperty(s)) m[s]++; });
     found += r.stages.length;
@@ -1686,7 +1688,7 @@ function renderBoard(rows){
   drawTl(document.getElementById("classTl"), m);
   var avg = vs.length ? (vs.reduce(function(a,b){ return a+b; }, 0) / vs.length).toFixed(1) : "—";
   document.getElementById("boardNote").textContent = rows.length
-    ? rows.length + "개 모둠 · 찾아낸 세포 " + found + "개 · 슬라이드를 평균 " + avg + "번 옮겨 찾음" +
+    ? teamCnt + "개 모둠 · " + rows.length + "짝 · 찾아낸 세포 " + found + "개 · 슬라이드를 평균 " + avg + "번 옮겨 찾음" +
       " · 되묻기 — 지킴 " + tot.kept + " 바꿈 " + tot.changed + " 흐림 " + tot.vague +
       " · 반박과 오독 합계 " + (tot.refute + tot.misread) + "건"
     : "모둠 결과가 모이면 여기에 집계가 나타납니다.";
@@ -1794,7 +1796,7 @@ function renderBankPreview(){
 
 /* photos/목록.txt 를 읽어 선생님 사진을 사진 서랍 맨 앞에 붙인다.
    파일 이름이 '간기'로 시작하면 간기 시야, 그 밖에는 찾은 세포로 넣는다. */
-var APPVER = "2026-11-04 b";
+var APPVER = "2026-11-05 a";
 var CB = "";                      /* 캐시 우회 꼬리표 — ‘다시 읽기’를 누를 때마다 바뀐다 */
 var LISTNAME = "";                /* 실제로 찾아낸 목록 파일 이름 */
 function loadMyPhotos(){
